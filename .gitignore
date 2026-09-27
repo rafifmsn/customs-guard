@@ -1,0 +1,19 @@
+# Environment Secrets
+.env
+
+# Container Persistence
+data/postgres/
+data/langflow/
+data/qdrant/
+data/reports/*
+!data/reports/.gitkeep
+
+# Python bytecode & environments
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+
+# OS files
+.DS_Store
+Thumbs.db

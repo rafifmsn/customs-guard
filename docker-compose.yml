@@ -1,0 +1,70 @@
+services:
+  # PostgreSQL Database for Langflow State and Workflows
+  postgres:
+    image: postgres:16-alpine
+    container_name: customs_postgres
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER:-langflow_user}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-langflow_password_2026}
+      - POSTGRES_DB=${POSTGRES_DB:-langflow_db}
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${POSTGRES_USER:-langflow_user} -d ${POSTGRES_DB:-langflow_db}",
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: always
+
+  # Qdrant Vector Database for HS Code Semantic Search
+  qdrant:
+    image: qdrant/qdrant:v1.11.0
+    container_name: customs_qdrant
+    ports:
+      - "${QDRANT_PORT:-6333}:6333"
+      - "${QDRANT_GRPC_PORT:-6334}:6334"
+    volumes:
+      - ./data/qdrant:/qdrant/storage
+    restart: always
+
+  # Mailpit Mock SMTP & Preview Web UI
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: customs_mailpit
+    ports:
+      - "${MAILPIT_SMTP_PORT:-1025}:1025"
+      - "${MAILPIT_WEB_PORT:-8025}:8025"
+    restart: always
+
+  # Langflow Execution Backend & MCP Provider
+  langflow:
+    image: langflowai/langflow:latest
+    container_name: customs_langflow
+    ports:
+      - "${LANGFLOW_PORT:-7860}:7860"
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    environment:
+      - LANGFLOW_DATABASE_URL=postgresql://${POSTGRES_USER:-langflow_user}:${POSTGRES_PASSWORD:-langflow_password_2026}@postgres:5432/${POSTGRES_DB:-langflow_db}
+      - LANGFLOW_SECRET_KEY=${LANGFLOW_SECRET_KEY:-jeBQaQR-7HgWIxbm3TZSCvydh1Uu2eWbQHkdpY0RqEc=}
+      - LANGFLOW_AUTO_LOGIN=true
+      - LANGFLOW_SUPERUSER=${LANGFLOW_SUPERUSER:-admin}
+      - LANGFLOW_SUPERUSER_PASSWORD=${LANGFLOW_SUPERUSER_PASSWORD:-admin123}
+      - LANGFLOW_DO_NOT_TRACK=true
+      - LANGFLOW_SSRF_ALLOWED_HOSTS=qdrant,mailpit
+    volumes:
+      - ./data/langflow:/var/lib/langflow
+      - ./data/reports:/app/reports
+      - ./data/seed:/app/seed
+      - ./scripts:/app/scripts
+    depends_on:
+      postgres:
+        condition: service_healthy
+      qdrant:
+        condition: service_started
+    restart: always

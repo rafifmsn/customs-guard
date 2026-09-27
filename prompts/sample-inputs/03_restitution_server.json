@@ -1,0 +1,18 @@
+{
+  "shipment_id": "SHP-2026-0099",
+  "importer_name": "PT Cloud Data Raya",
+  "country_of_origin": "US",
+  "destination_port": "Tanjung Priok, Jakarta (IDTPP)",
+  "container_count": 1,
+  "items": [
+    {
+      "item_id": 1,
+      "declared_description": "Enterprise Processing Server Rack Unit",
+      "declared_hs_code": "8471.50",
+      "quantity": 10,
+      "unit_price": 10000.0,
+      "total_value": 100000.0,
+      "declared_duty_rate": 15.0
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+[
+  {
+    "shipment_id": "SHP-2026-0042",
+    "invoice_number": "INV-2026-APL-091",
+    "importer_name": "PT Nexus Indo Tech",
+    "exporter_name": "Shenzhen Global Electronics Ltd",
+    "country_of_origin": "CN",
+    "destination_port": "Tanjung Priok, Jakarta (IDTPP)",
+    "currency": "USD",
+    "items": [
+      {
+        "item_id": 1,
+        "declared_description": "Apple iPhone 15 Pro Max 256GB Dual SIM Smartphone",
+        "declared_hs_code": "8471.30",
+        "quantity": 100,
+        "unit_price": 1150.0,
+        "total_value": 115000.0,
+        "declared_duty_rate": 0.0
+      }
+    ],
+    "notes": "Test Case: High risk regulatory evasion (misdeclared as laptop to bypass mandatory SDPPI certification)."
+  },
+  {
+    "shipment_id": "SHP-2026-0089",
+    "invoice_number": "INV-2026-MED-442",
+    "importer_name": "PT Medika Nusantara Sejahtera",
+    "exporter_name": "Siemens Healthineers AG",
+    "country_of_origin": "DE",
+    "destination_port": "Tanjung Perak, Surabaya (IDSUB)",
+    "currency": "USD",
+    "items": [
+      {
+        "item_id": 1,
+        "declared_description": "Ultrasonic Diagnostic Scanner Probe System",
+        "declared_hs_code": "8471.50",
+        "quantity": 4,
+        "unit_price": 30000.0,
+        "total_value": 120000.0,
+        "declared_duty_rate": 0.0
+      }
+    ],
+    "notes": "Test Case: High risk tariff shortfall and missing Kemenkes medical distribution license (9018.12 requires 5% duty and Izin Edar)."
+  },
+  {
+    "shipment_id": "SHP-2026-0105",
+    "invoice_number": "INV-2026-SRV-810",
+    "importer_name": "PT Cloud Infrastructure Indonesia",
+    "exporter_name": "Dell Global B.V.",
+    "country_of_origin": "MY",
+    "destination_port": "Tanjung Priok, Jakarta (IDTPP)",
+    "currency": "USD",
+    "items": [
+      {
+        "item_id": 1,
+        "declared_description": "Dell PowerEdge R750 Rack Server Processing Unit",
+        "declared_hs_code": "8471.50",
+        "quantity": 10,
+        "unit_price": 6500.0,
+        "total_value": 65000.0,
+        "declared_duty_rate": 0.0
+      }
+    ],
+    "notes": "Test Case: Fully compliant shipment with matching HS code, correct zero duty, and no missing permits."
+  }
+]
