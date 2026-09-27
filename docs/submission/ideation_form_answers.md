@@ -11,7 +11,7 @@ CustomsGuard adalah AI Agent otonom untuk audit kepatuhan ekspor-impor dan detek
 
 Masalah yang diselesaikan:
 Proses verifikasi dokumen pengapalan (commercial invoice dan packing list) terhadap lebih dari 5.600 subpos 6-digit Harmonized System (HS) di Buku Tarif Kepabeanan Indonesia (BTKI) saat ini masih dilakukan secara manual dan lambat.
-Kesalahan klasifikasi tarif memicu penahanan kontainer di jalur merah pelabuhan dengan biaya demurrage mencapai $350 USD per kontainer per hari, serta ancaman denda administrasi kepabeanan sebesar 100% hingga 1000% dari kekurangan bea masuk.
+Kesalahan klasifikasi tarif memicu penahanan kontainer di jalur merah pelabuhan dengan akumulasi biaya demurrage harian yang tinggi, serta ancaman denda administrasi kepabeanan sebesar 100% hingga 1000% dari kekurangan bea masuk.
 
 Solusi yang ditawarkan:
 CustomsGuard mengotomatisasi audit kepatuhan dengan menghubungkan IBM Bob sebagai conversational orchestrator dengan workflow eksekusi Langflow melalui Model Context Protocol (MCP).

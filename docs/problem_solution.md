@@ -40,7 +40,7 @@ flowchart LR
 
 - When customs documentation contains an error, the shipment is shunted to the "Red Lane" (Jalur Merah) for physical inspection.
 - While the cargo is detained at port terminals (such as Tanjung Priok or Tanjung Perak), terminal operators assess container demurrage and detention fees.
-- **Measurable Impact**: Average detention costs are **$350.00 USD per container per day**.
+- **Measurable Impact**: Detention costs are modeled at a baseline of **$350.00 USD per container per day**.
   For a standard 4-container consignment detained for just 5 days, an enterprise incurs **$7,000.00 USD** in avoidable demurrage penalties.
 
 ### Problem 3: Invisible Non-Tariff Barriers (Lartas Permit Traps)

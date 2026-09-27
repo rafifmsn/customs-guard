@@ -1,14 +1,14 @@
 # Jawaban Formulir Pengumpulan Akhir (Project Submission Form)
 
-Dokumen ini berisi draf jawaban lengkap dalam Bahasa Indonesia untuk formulir pengumpulan akhir **National Hackathon — Project Submission Form**.
+Dokumen ini berisi draf jawaban lengkap dalam Bahasa Indonesia untuk formulir pengumpulan akhir National Hackathon — Project Submission Form.
 
 ### Judul Project
 
-**CustomsGuard: Autonomous Trade Compliance & Tariff Discrepancy Engine**
+CustomsGuard: Autonomous Trade Compliance & Tariff Discrepancy Engine
 
 ### Tema Project
 
-**Productivity & Smart Business**
+Productivity & Smart Business
 
 ### Deskripsi Singkat Project (150–300 kata)
 
@@ -30,7 +30,7 @@ Sebelum adanya solusi ini, petugas kepatuhan perdagangan harus memeriksa dokumen
 Pain point yang dihadapi:
 
 1. Kompleksitas klasifikasi 5.612 subpos HS 6-digit yang rawan human error.
-2. Penahanan kontainer di pelabuhan akibat masuk jalur merah, menimbulkan biaya demurrage sebesar $350.00 USD per kontainer per hari.
+2. Penahanan kontainer di pelabuhan akibat masuk jalur merah, memicu pembengkakan biaya demurrage dan penumpukan kontainer harian yang signifikan.
 3. Risiko sanksi denda administrasi kepabeanan di Indonesia sebesar 100% hingga 1000% dari kekurangan pembayaran bea masuk.
 4. Hilangnya potensi pengembalian bea masuk (restitusi) karena audit manual hampir tidak pernah mendeteksi kelebihan pembayaran tarif.
 
@@ -38,10 +38,7 @@ Masalah ini sangat mendesak diselesaikan demi kelancaran arus barang nasional, e
 
 ### Target User
 
-1. **Perusahaan Freight Forwarding & Logistik 3PL**: Tim operasional yang menangani ratusan pengapalan kontainer internasional per bulan.
-2. **Pengusaha Pengurusan Jasa Kepabeanan (PPJK)**: Ahli kepabeanan yang bertanggung jawab atas keakuratan pengisian dokumen Pemberitahuan Impor Barang (PIB).
-3. **Trade Compliance Officer Perusahaan Manufaktur & Ritel**: Tim kepatuhan internal yang mengawasi impor bahan baku dan barang jadi.
-4. **Pelaku Usaha Ekspor-Impor (UMKM & Korporasi)**: Bisnis yang membutuhkan audit instan sebelum kargo dikapalkan.
+Pengguna utama platform ini adalah praktisi dan pelaku rantai pasok global. Segmen inti mencakup tim operasional freight forwarding, penyedia jasa 3PL, dan spesialis PPJK yang memproses puluhan dokumen pabean setiap hari. Solusi ini juga menyasar internal compliance officer di perusahaan manufaktur atau ritel besar, serta pelaku bisnis ekspor impor mandiri yang membutuhkan validasi dokumen instan untuk mencegah demurrage dan denda kepabeanan.
 
 ### Mengapa Solusi Ini Dibutuhkan?
 
@@ -50,23 +47,18 @@ Solusi cloud pihak ketiga sering kali ditolak perusahaan multinasional karena me
 
 CustomsGuard menjadi solusi yang jauh lebih unggul karena:
 
-1. **Kecepatan & Konsistensi**: Menyelesaikan audit lengkap dalam hitungan detik dengan akurasi deterministik matematis.
-2. **Air-Gapped & Privasi Total**: Berjalan 100% lokal dalam container Docker tanpa mengirimkan data komersial rahasia ke cloud pihak ketiga.
-3. **Analisis Finansial Ganda**: Tidak hanya menghitung kekurangan bea masuk dan denda demurrage, tetapi juga mendeteksi peluang restitusi lebih bayar tarif.
-4. **Safety Guardrails Terintegrasi**: Menyaring data sensitif (PII) dan menangkal prompt injection sebelum menampilkan hasil audit.
+1. Menyelesaikan audit lengkap dalam hitungan detik dengan akurasi deterministik matematis.
+2. Berjalan 100% lokal dalam container Docker tanpa mengirimkan data komersial rahasia ke cloud pihak ketiga.
+3. Tidak hanya menghitung kekurangan bea masuk dan denda demurrage, tetapi juga mendeteksi peluang restitusi lebih bayar tarif.
+4. Menyaring data sensitif (PII) dan menangkal prompt injection sebelum menampilkan hasil audit.
 
 ### Fitur Utama Project
 
-1. **Autonomous Tariff RAG & Discrepancy Auditing**:
-   Mencocokkan deskripsi barang invoice secara otonom terhadap 5.612 kode HS Indonesia di database Qdrant untuk mendeteksi perbedaan kode dan kekurangan bea masuk.
-2. **Regulatory Permit Verification (Lartas Engine)**:
-   Memverifikasi kepemilikan sertifikasi wajib seperti SDPPI Kemkominfo, izin edar Alkes Kemenkes, dan izin BPOM sebelum kargo tiba di pelabuhan.
-3. **Multi-Container Demurrage & Restitution Calculator**:
-   Menghitung potensi biaya demurrage pelabuhan ($350/hari dikalikan jumlah kontainer) jika kargo tertahan, serta mendeteksi potensi pengembalian dana akibat kelebihan deklarasi tarif.
-4. **Automated Evidence Archiving**:
-   Mengekspor berkas audit resmi bertanda waktu dalam format Markdown dan JSON ke direktori penyimpanan lokal.
-5. **Real-Time SMTP Alert Dispatching**:
-   Mengirimkan email peringatan darurat otomatis ke tim kepatuhan melalui Mailpit ketika terdeteksi risiko penahanan tinggi.
+1. Autonomous Tariff RAG & Discrepancy Auditing — Mencocokkan deskripsi barang invoice secara otonom terhadap 5.612 kode HS Indonesia di database Qdrant untuk mendeteksi perbedaan kode dan kekurangan bea masuk.
+2. Regulatory Permit Verification (Lartas Engine) — Memverifikasi kepemilikan sertifikasi wajib seperti SDPPI Kemkominfo, izin edar Alkes Kemenkes, dan izin BPOM sebelum kargo tiba di pelabuhan.
+3. Multi-Container Demurrage & Restitution Calculator — Menghitung potensi biaya demurrage pelabuhan ($350/hari dikalikan jumlah kontainer) jika kargo tertahan, serta mendeteksi potensi pengembalian dana akibat kelebihan deklarasi tarif.
+4. Automated Evidence Archiving — Mengekspor berkas audit resmi bertanda waktu dalam format Markdown dan JSON ke direktori penyimpanan lokal.
+5. Real-Time SMTP Alert Dispatching — Mengirimkan email peringatan darurat otomatis ke tim kepatuhan melalui Mailpit ketika terdeteksi risiko penahanan tinggi.
 
 ### Alur Penggunaan Project
 
@@ -76,64 +68,66 @@ CustomsGuard menjadi solusi yang jauh lebih unggul karena:
 
 IBM Langflow digunakan sebagai mesin eksekusi workflow visual dan orkestrasi tools:
 
-- **Workflow yang dibuat**: Alur visual yang menghubungkan Chat Input, Agent LLM (gpt-4o-mini), Custom Toolkit Component, Guardrails, dan Chat Output.
-- **Node/Component yang digunakan**:
-  - `Chat Input`: Menerima payload invoice komersial.
-  - `CustomsGuard Tools`: Custom component Python yang mengintegrasikan fungsi audit tarif, ekspor laporan, dan dispatch email.
-  - `Agent`: Mengorkestrasi pemanggilan tools berdasarkan hasil audit.
-  - `Guardrails`: Menyaring PII (NPWP, rekening bank), memblokir prompt injection, dan mencegah kebocoran kredensial sebelum output dikirim.
-  - `Chat Output`: Menampilkan hasil audit final untuk jalur Pass dan notifikasi intervensi untuk jalur Fail.
-- **Fungsi Langflow**: Bertindak sebagai backend eksekusi logika bisnis terstruktur yang dapat diuji mandiri dan diekspos sebagai MCP tool.
+Workflow yang dibuat: Alur visual yang menghubungkan Chat Input, Agent LLM (gpt-4o-mini), Custom Toolkit Component, Guardrails, dan Chat Output.
+Node/Component yang digunakan:
+
+- `Chat Input`: Menerima payload invoice komersial.
+- `CustomsGuard Tools`: Custom component Python yang mengintegrasikan fungsi audit tarif, ekspor laporan, dan dispatch email.
+- `Agent`: Mengorkestrasi pemanggilan tools berdasarkan hasil audit.
+- `Guardrails`: Menyaring PII (NPWP, rekening bank), memblokir prompt injection, dan mencegah kebocoran kredensial sebelum output dikirim.
+- `Chat Output`: Menampilkan hasil audit final untuk jalur Pass dan notifikasi intervensi untuk jalur Fail.
+  Fungsi Langflow: Bertindak sebagai backend eksekusi logika bisnis terstruktur yang dapat diuji mandiri dan diekspos sebagai MCP tool.
 
 ### Penggunaan IBM Bob
 
 IBM Bob digunakan sebagai conversational client dan antarmuka interaksi pengguna:
 
-- **Fungsi IBM Bob**: Menyediakan antarmuka desktop dan CLI yang intuitif bagi petugas kepatuhan untuk berinteraksi dengan sistem menggunakan bahasa alami atau perintah skill.
-- **Proses/Task menggunakan Bob**:
-  - Membaca konfigurasi `AGENTS.md` untuk memahami persona kepatuhan kepabeanan.
-  - Menjalankan skill `$audit-shipment` atau menerima paste teks invoice dari pengguna.
-  - Memanggil tool `customsguard` yang diekspos oleh Langflow melalui MCP.
-  - Menampilkan ringkasan eksekutif, tabel temuan tarif, dan rekomendasi langkah tindak lanjut.
-- **Output yang dihasilkan**: Respons chat informatif dengan badge status kepatuhan, tabel komparasi tarif, rincian biaya, dan konfirmasi pengiriman email.
+Fungsi IBM Bob: Menyediakan antarmuka desktop dan CLI yang intuitif bagi petugas kepatuhan untuk berinteraksi dengan sistem menggunakan bahasa alami atau perintah skill.
+Proses/Task menggunakan Bob:
+
+- Membaca konfigurasi `AGENTS.md` untuk memahami persona kepatuhan kepabeanan.
+- Menjalankan skill `$audit-shipment` atau menerima paste teks invoice dari pengguna.
+- Memanggil tool `customsguard` yang diekspos oleh Langflow melalui MCP.
+- Menampilkan ringkasan eksekutif, tabel temuan tarif, dan rekomendasi langkah tindak lanjut.
+  Output yang dihasilkan: Respons chat informatif dengan badge status kepatuhan, tabel komparasi tarif, rincian biaya, dan konfirmasi pengiriman email.
 
 ### Bagaimana IBM Langflow dan IBM Bob Terintegrasi?
 
-Integrasi antara Langflow dan IBM Bob menggunakan standar **Model Context Protocol (MCP)** dengan transport Streamable HTTP:
+Integrasi antara Langflow dan IBM Bob menggunakan standar Model Context Protocol (MCP) dengan transport Streamable HTTP:
 
-1. **Peran Langflow**: Bertindak sebagai **MCP Server** yang mengemas seluruh flow audit kepatuhan menjadi sebuah callable tool bernama `customsguard`.
-2. **Peran Bob**: Bertindak sebagai **MCP Client** yang dikonfigurasi melalui `.bob/mcp.json` menggunakan proxy `uvx mcp-proxy`.
-3. **Aliran Data**:
+1. Peran Langflow: Bertindak sebagai MCP Server yang mengemas seluruh flow audit kepatuhan menjadi sebuah callable tool bernama `customsguard`.
+2. Peran Bob: Bertindak sebagai MCP Client yang dikonfigurasi melalui `.bob/mcp.json` menggunakan proxy `uvx mcp-proxy`.
+3. Aliran Data:
    - Pengguna memberikan perintah audit di antarmuka Bob.
    - Bob mengirimkan payload JSON invoice sebagai argumen `input_value` melalui protokol MCP ke endpoint Langflow (`/api/v1/mcp/project/.../streamable`).
    - Langflow mengeksekusi pipeline audit, menjalankan query ke database Qdrant, menulis laporan ke disk, mengirim alert ke Mailpit, dan membersihkan teks melalui Guardrails.
    - Hasil teks yang telah disanitasi dikembalikan melalui MCP stream ke IBM Bob.
-4. **Output Akhir Integrasi**: Pengguna di IBM Bob mendapatkan ringkasan audit komprehensif secara interaktif, sementara seluruh sistem backend (database, file laporan, dan email) telah sinkron secara otomatis.
+4. Output Akhir Integrasi: Pengguna di IBM Bob mendapatkan ringkasan audit komprehensif secara interaktif, sementara seluruh sistem backend (database, file laporan, dan email) telah sinkron secara otomatis.
 
 ### Dampak yang Dihasilkan
 
-1. **Efisiensi Waktu**: Memangkas waktu audit dokumen dari rata-rata **2-4 jam** menjadi **di bawah 5 detik per invoice** (penghematan waktu >98%).
-2. **Pencegahan Biaya Demurrage**: Menghindarkan denda penahanan pelabuhan sebesar **$350.00 USD per kontainer per hari** (penghematan **$1,750 USD** pada rata-rata penahanan 5 hari untuk 1 kontainer, atau **$7,000 USD** untuk 4 kontainer).
-3. **Pemberantasan Sanksi Denda**: Menghindarkan sanksi administrasi kepabeanan sebesar **100% s.d. 1000%** dari selisih bea masuk.
-4. **Penemuan Restitusi Pajak**: Mengidentifikasi kelebihan pembayaran bea masuk akibat salah deklarasi tarif, mengembalikan potensi cash flow ribuan dolar bagi importir.
-5. **Penghematan Biaya Infrastruktur**: Mengurangi biaya operasional software kepatuhan hingga **~87%** dengan arsitektur on-premise Docker ($980/tahun) dibandingkan langganan cloud API komersial ($7,560/tahun).
+1. Memangkas waktu audit dokumen dari rata-rata 2, 4 jam menjadi di bawah 5 detik per invoice (penghematan waktu >98%).
+2. Menghindarkan denda penahanan pelabuhan (dimodelkan pada baseline benchmark $350.00 USD per hari per kontainer, menghemat $1,750 USD pada simulasi 5 hari penahanan 1 kontainer, atau $7,000 USD untuk 4 kontainer).
+3. Menghindarkan sanksi administrasi kepabeanan sebesar 100% s.d. 1000% dari selisih bea masuk.
+4. Mengidentifikasi kelebihan pembayaran bea masuk akibat salah deklarasi tarif, mengembalikan potensi cash flow ribuan dolar bagi importir.
+5. Mengurangi biaya operasional software kepatuhan hingga ~87% dengan arsitektur on-premise Docker ($980 per tahun) dibandingkan langganan cloud API komersial ($7,560 per tahun).
 
 ### Potensi Pengembangan & Skalabilitas
 
-1. **Integrasi OCR & Vision**: Menambahkan modul OCR multimodal untuk mengekstrak data langsung dari file PDF Bill of Lading, invoice pindaian, dan packing list fisik.
-2. **Ekspansi Regulasi ASEAN**: Memperluas database tarif ke skema Free Trade Agreement (ATIGA, ACFTA) dan integrasi dokumen Certificate of Origin (Form D / Form E).
-3. **Koneksi Langsung EDI INSW / CEISA**: Menghubungkan output audit dengan sistem pertukaran data elektronik pabean nasional untuk validasi pra-pengajuan PIB.
+1. Menambahkan modul OCR multimodal untuk mengekstrak data langsung dari file PDF Bill of Lading, invoice pindaian, dan packing list fisik.
+2. Memperluas database tarif ke skema Free Trade Agreement (ATIGA, ACFTA) dan integrasi dokumen Certificate of Origin (Form D / Form E).
+3. Menghubungkan output audit dengan sistem pertukaran data elektronik pabean nasional untuk validasi pra-pengajuan PIB.
 
 ### Apa yang Membuat Project Ini Berbeda?
 
-1. **Arsitektur Air-Gapped & Privasi Total**: Beroperasi sepenuhnya di lingkungan lokal pengguna (on-premise Docker), menjamin data komersial rahasia tidak pernah bocor ke cloud.
-2. **Dual Financial Analysis (Shortfall & Restitution)**: Tidak hanya mendeteksi kekurangan pembayaran, tetapi juga menjadi satu-satunya sistem yang proaktif mendeteksi hak pengembalian dana (restitusi lebih bayar).
-3. **Multi-Container Demurrage Scaling**: Mengkalkulasi risiko penahanan pelabuhan secara riil berdasarkan jumlah kontainer pengapalan, bukan sekadar tarif nominal statis.
+1. Beroperasi sepenuhnya di lingkungan lokal pengguna (on-premise Docker), menjamin data komersial rahasia tidak pernah bocor ke cloud.
+2. Tidak hanya mendeteksi kekurangan pembayaran, tetapi juga menjadi satu-satunya sistem yang proaktif mendeteksi hak pengembalian dana (restitusi lebih bayar).
+3. Mengkalkulasi risiko penahanan pelabuhan secara riil berdasarkan jumlah kontainer pengapalan, bukan sekadar tarif nominal statis.
 
 ### Kemampuan AI Agent
 
 AI Agent pada CustomsGuard memiliki kapabilitas:
 
-1. **Autonomous Tool Orchestration**: Secara mandiri memutuskan kapan harus mengeksekusi pencarian tarif, kapan harus mengekspor laporan pembuktian, dan kapan harus menembakkan peringatan darurat.
-2. **Deterministic Mathematical Calculation**: Menghitung selisih persentase bea masuk, akumulasi nilai kekurangan pembayaran, dan perkalian demurrage harian tanpa halusinasi angka.
-3. **Safety & Security Compliance**: Melindungi diri dari manipulasi prompt injection pada deskripsi barang dan otomatis menyamarkan data pribadi (PII) sebelum menyerahkan hasil ke pengguna.
+1. Secara mandiri memutuskan kapan harus mengeksekusi pencarian tarif, kapan harus mengekspor laporan pembuktian, dan kapan harus menembakkan peringatan darurat.
+2. Menghitung selisih persentase bea masuk, akumulasi nilai kekurangan pembayaran, dan perkalian demurrage harian tanpa halusinasi angka.
+3. Melindungi diri dari manipulasi prompt injection pada deskripsi barang dan otomatis menyamarkan data pribadi (PII) sebelum menyerahkan hasil ke pengguna.

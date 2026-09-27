@@ -19,7 +19,7 @@ flowchart LR
 ### Direct Economic Value
 
 1. **Demurrage Elimination**:
-   Container detention costs average **$350.00 USD per 40ft container per day**.
+   Container detention holding fees are modeled at a standard baseline of **$350.00 USD per container per day**.
    Preventing a single 5-day hold on a 4-container consignment saves **$7,000.00 USD** in direct cash bleed.
 2. **Penalty Prevention**:
    In Indonesia, under-invoiced or misclassified customs duty attracts administrative surcharges ranging from 100% to 1,000% of the duty shortfall.
