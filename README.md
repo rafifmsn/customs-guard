@@ -8,13 +8,13 @@ _IBM SkillsBuild x Hacktiv8 National Hackathon 2026 (Productivity & Smart Busine
 
 CustomsGuard is an autonomous enterprise AI agent designed to audit commercial shipping invoices, eliminate port container detentions, detect customs tariff discrepancies, and protect cross-border businesses from regulatory penalties.
 
-<video src="https://github.com/user-attachments/assets/1314ea68-9a22-4bd4-b271-67d6c965fb6b" controls width="100%"></video>
+<video src="https://github.com/user-attachments/assets/bacb2242-b02d-41cb-ada0-c51904311d83" controls width="100%"></video>
 
 ## The Problem & Strategic Context
 
 Manual paperwork and documentation bottlenecks cost the global shipping ecosystem $6.5 billion in direct costs annually while holding back up to $40 billion in cross-border trade.[^mckinsey-trade] While digital trade initiatives target multi-billion-dollar documentation delays, digitizing manifests does not eliminate the operational burden of verifying trade compliance.
 
-In Indonesia, cross-border clearance aligns with the Directorate General of Customs and Excise (DJBC) framework via the Indonesian Customs Tariff Book (BTKI), evaluated against more than 5,600 standardized 6-digit Harmonized System (HS) subheadings.
+In Indonesia, cross-border clearance aligns with the Directorate General of Customs and Excise (DJBC) regulatory framework, evaluated against 5,612 standardized 6-digit Harmonized System (HS) subheadings sourced from the WTO/UNCTAD International Trade Centre (ITC) Market Access Map (MAcMap) dataset.
 
 - **Manual Verification Bottleneck**: Compliance teams spend 2 to 4 hours per manifest manually verifying invoices against dynamic tariff schedules and ministry import restrictions (Lartas).
 - **Catastrophic Port Demurrage**: Documentation errors or missing permits trigger customs "Red Lane" holds, incurring steep daily container detention and port storage penalties.
@@ -51,7 +51,7 @@ flowchart LR
 
 1. **Autonomous Tariff RAG**: Matches declared item descriptions against 5,612 official Indonesian HS codes in milliseconds.
 2. **Regulatory License Verification**: Cross-references mandatory pre-import approvals (SDPPI Kemkominfo, Kemenkes, BPOM).
-3. **Multi-Container Demurrage Scaling**: Calculates port detention financial exposure based on physical container count ($350.00/day \* containers).
+3. **Grounded Demurrage & Detention Modeling**: Benchmarks container detention liabilities against the official CMA CGM Indonesia published tariff schedule (5 free days, progressive day-slabs, defaulting to 40ft Dry Standard if container size is omitted).
 4. **Duty Restitution Discovery**: Detects over-declared duties, proactively identifying tax refund recovery opportunities.
 5. **Automated Evidence Archiving**: Generates timestamped Markdown and JSON dossiers in `./data/reports/YYYY-MM-DD/{shipment_id}/`.
 6. **Real-Time SMTP Alerting**: Automatically dispatches detention alert emails to compliance officers when high-risk cargo is flagged.
@@ -112,27 +112,27 @@ $audit-shipment SHP-2026-0042
 6. Or run non-interactive verification directly using Bob CLI:
 
 ```bash
-bob run --trust "Audit shipment SHP-2026-0042 using customsguard tool"
+BOB_API_KEY="your_api_key_here" bob run --trust "Audit shipment SHP-2026-0042 using customsguard tool"
 ```
 
 7. Inspect the audit results in Bob, check the exported report in `./data/reports/`, and preview the email alert in Mailpit (`http://localhost:8025`).
 
 ## Documentation & Scenarios Directory
 
-| Category                     | Document                                                                                                 | Description                                                                                     |
-| :--------------------------- | :------------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------- |
-| **Domain Analysis**          | [`docs/problem_solution.md`](./docs/problem_solution.md)                                                 | Deep analysis of customs bottlenecks, demurrage costs, and our AI solution.                     |
-| **Technical Architecture**   | [`docs/technical/architecture.md`](./docs/technical/architecture.md)                                     | Langflow canvas topology, node specifications, guardrails, and data contracts.                  |
-| **Design & Scope Decisions** | [`docs/technical/design_decisions.md`](./docs/technical/design_decisions.md)                             | Rationale behind flexible agent reasoning, permit verification, and enterprise roadmap.         |
-| **MCP Integration**          | [`docs/technical/mcp_setup.md`](./docs/technical/mcp_setup.md)                                           | Step-by-step connection guide for IBM Bob and Langflow MCP proxy.                               |
-| **Commercial Strategy**      | [`docs/business/business_canvas.md`](./docs/business/business_canvas.md)                                 | Business model canvas, ROI model, demurrage savings, and ~87% tech cost reduction.              |
-| **Pitching Deck**            | [`docs/business/pitch_deck_draft.md`](./docs/business/pitch_deck_draft.md)                               | Slide-by-slide script for the 5-minute hackathon presentation.                                  |
-| **Submission Form Answers**  | [`docs/submission/final_submission_form_answers.md`](./docs/submission/final_submission_form_answers.md) | Pre-filled Indonesian answers for the National Hackathon Project Submission Form.               |
-| **Ideation Form Answers**    | [`docs/submission/ideation_form_answers.md`](./docs/submission/ideation_form_answers.md)                 | Pre-filled Indonesian answers for the Hackathon Ideation & Progress Form.                       |
-| **Prompts Library**          | [`prompts/`](./prompts/)                                                                                 | Modular prompts for high-risk audits, demurrage scaling, and duty restitution.                  |
-| **Test Invoices**            | [`prompts/sample-inputs/`](./prompts/sample-inputs/)                                                     | Dedicated scenario payloads (`01-high-risk`, `02-demurrage`, `03-restitution`, `04-compliant`). |
-| **Reference Dossiers**       | [`expected-outputs/`](./expected-outputs/)                                                               | Ground-truth reference audit reports matching each test scenario.                               |
-| **Source Tariff Data**       | [`docs/macmap.xlsx`](./docs/macmap.xlsx)                                                                 | Official primary Indonesian tariff and Lartas schedule used for data seeding.                   |
+| Category                     | Document                                                                                                 | Description                                                                                                    |
+| :--------------------------- | :------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------- |
+| **Domain Analysis**          | [`docs/problem_solution.md`](./docs/problem_solution.md)                                                 | Deep analysis of customs bottlenecks, demurrage costs, and our AI solution.                                    |
+| **Technical Architecture**   | [`docs/technical/architecture.md`](./docs/technical/architecture.md)                                     | Langflow canvas topology, node specifications, guardrails, and data contracts.                                 |
+| **Design & Scope Decisions** | [`docs/technical/design_decisions.md`](./docs/technical/design_decisions.md)                             | Rationale behind flexible agent reasoning, permit verification, and enterprise roadmap.                        |
+| **MCP Integration**          | [`docs/technical/mcp_setup.md`](./docs/technical/mcp_setup.md)                                           | Step-by-step connection guide for IBM Bob and Langflow MCP proxy.                                              |
+| **Commercial Strategy**      | [`docs/business/business_canvas.md`](./docs/business/business_canvas.md)                                 | Business model canvas, ROI model, demurrage savings, and ~87% tech cost reduction.                             |
+| **Pitching Deck**            | [`docs/business/pitch_deck_draft.md`](./docs/business/pitch_deck_draft.md)                               | Slide-by-slide script for the 5-minute hackathon presentation.                                                 |
+| **Submission Form Answers**  | [`docs/submission/final_submission_form_answers.md`](./docs/submission/final_submission_form_answers.md) | Pre-filled Indonesian answers for the National Hackathon Project Submission Form.                              |
+| **Ideation Form Answers**    | [`docs/submission/ideation_form_answers.md`](./docs/submission/ideation_form_answers.md)                 | Pre-filled Indonesian answers for the Hackathon Ideation & Progress Form.                                      |
+| **Prompts Library**          | [`prompts/`](./prompts/)                                                                                 | Modular prompts for high-risk audits, demurrage scaling, and duty restitution.                                 |
+| **Test Invoices**            | [`data/seed/sample_invoices.json`](./data/seed/sample_invoices.json)                                     | Scenario invoice payloads with carrier, container metadata, and declared commodities.                          |
+| **Reference Dossiers**       | [`expected-outputs/`](./expected-outputs/)                                                               | Ground-truth reference audit reports matching each test scenario.                                              |
+| **Source Tariff Data**       | [`docs/macmap.xlsx`](./docs/macmap.xlsx)                                                                 | Official WTO/UNCTAD International Trade Centre (ITC) Market Access Map (MAcMap) tariff schedule for Indonesia. |
 
 [^mckinsey-trade]: Casanova, D., Dierker, D., Jensen, B., Hausmann, L., & Stoffels, J. (2022, November 29). The multi-billion-dollar paper jam: Unlocking trade by digitalizing documentation. McKinsey & Company. https://www.mckinsey.com/industries/logistics/our-insights/the-multi-billion-dollar-paper-jam-unlocking-trade-by-digitalizing-documentation
 

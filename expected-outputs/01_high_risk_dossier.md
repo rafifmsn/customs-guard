@@ -8,10 +8,13 @@
 
 - **Importer**: PT Nexus Indo Tech
 - **Destination Port**: Tanjung Priok, Jakarta (IDTPP)
-- **Container Count**: 1
+- **Container Count**: 4 (40ft Dry Standard default)
 - **Container Detention Risk**: YES
 - **Total Duty Shortfall**: $0.00 USD
-- **Estimated Daily Demurrage**: $350.00 USD / day
+- **Carrier Benchmark**: CMA CGM Indonesia (Merged Import D&D Tariff)
+- **Free Time Allowed**: 5 Days Free
+- **Estimated Daily Demurrage**: $404.00 USD / day ($101/day per container, Slab 1)
+- **Projected 5-Day Hold Liability**: $2,020.00 USD
 
 ### Critical Discrepancies & Regulatory Violations
 

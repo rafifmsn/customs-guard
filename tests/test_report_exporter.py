@@ -21,7 +21,7 @@ def test_export_compliance_report(export_tool, tmp_path):
         "overall_status": "NON_COMPLIANT_HIGH_RISK",
         "container_detention_risk": True,
         "total_duty_shortfall_usd": 12000.0,
-        "estimated_demurrage_per_day_usd": 350.0
+        "estimated_demurrage_per_day_usd": 404.0
     }
     audit_json = json.dumps(audit_data, indent=2)
 

@@ -58,7 +58,6 @@ services:
       - LANGFLOW_DO_NOT_TRACK=true
       - LANGFLOW_SSRF_ALLOWED_HOSTS=qdrant,mailpit
     volumes:
-      - ./data/langflow:/var/lib/langflow
       - ./data/reports:/app/reports
       - ./data/seed:/app/seed
       - ./scripts:/app/scripts

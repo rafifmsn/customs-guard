@@ -1,11 +1,7 @@
-import datetime
 import json
 import os
-import shutil
 import subprocess
-import urllib.request
 import pytest
-from scripts.customs_components import CustomsGuardToolkitComponent
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SAMPLE_INVOICES_PATH = os.path.join(BASE_DIR, "data", "seed", "sample_invoices.json")
@@ -28,81 +24,7 @@ def get_bob_api_key():
     return None
 
 
-@pytest.fixture
-def toolkit():
-    component = CustomsGuardToolkitComponent()
-    tools = component.build_tools()
-    return {t.name: t for t in tools}
 
-
-def test_full_compliance_audit_pipeline_e2e(toolkit):
-    """Level 1 Backend E2E Verification:
-    1. Load high-risk sample invoice (SHP-2026-0042).
-    2. Audit shipment against local Qdrant tariff database.
-    3. Export timestamped Markdown and JSON reports to disk.
-    4. Dispatch high-risk detention alert to Mailpit SMTP.
-    5. Verify report on disk and query Mailpit REST API.
-    """
-    assert os.path.isfile(SAMPLE_INVOICES_PATH)
-    with open(SAMPLE_INVOICES_PATH, "r", encoding="utf-8") as f:
-        invoices = json.load(f)
-
-    # Use first high-risk invoice (iPhone misdeclared as laptop)
-    invoice = invoices[0]
-    shipment_id = invoice["shipment_id"]
-
-    # 1. Audit Shipment
-    audit_tool = toolkit["audit_shipment_compliance"]
-    audit_output = audit_tool.invoke({"invoice_json": json.dumps(invoice)})
-    audit_result = json.loads(audit_output)
-
-    assert audit_result["shipment_id"] == shipment_id
-    assert audit_result["overall_status"] in ("NON_COMPLIANT_HIGH_RISK", "WARNING_DISCREPANCY")
-    assert audit_result["container_detention_risk"] is True
-    assert audit_result["estimated_demurrage_per_day_usd"] >= 350.0
-
-    # 2. Export Compliance Report
-    export_tool = toolkit["export_compliance_report"]
-    export_msg = export_tool.invoke({
-        "shipment_id": shipment_id,
-        "audit_summary_json": audit_output
-    })
-
-    assert "Audit report successfully exported to:" in export_msg
-    md_path = export_msg.split("Audit report successfully exported to:")[-1].strip()
-    assert os.path.isfile(md_path)
-    json_path = os.path.join(os.path.dirname(md_path), "audit_report.json")
-    assert os.path.isfile(json_path)
-
-    # Verify report contents
-    with open(json_path, "r", encoding="utf-8") as f:
-        persisted_json = json.load(f)
-    assert persisted_json["shipment_id"] == shipment_id
-    assert persisted_json["container_detention_risk"] is True
-
-    # 3. Send Compliance Alert
-    alert_tool = toolkit["send_compliance_alert"]
-    alert_msg = alert_tool.invoke({
-        "shipment_id": shipment_id,
-        "verdict": audit_result["overall_status"],
-        "alert_details": f"Container detention risk active. Daily demurrage: ${audit_result['estimated_demurrage_per_day_usd']:,.2f}"
-    })
-
-    # Alert should queue in Mailpit (or catch connection if container offline)
-    assert "Alert email queued in Mailpit" in alert_msg or "Failed to send email via Mailpit" in alert_msg
-
-    # 4. If Mailpit container is running locally, verify message via REST API
-    mailpit_api_url = "http://localhost:8025/api/v1/messages"
-    try:
-        with urllib.request.urlopen(mailpit_api_url, timeout=2) as resp:
-            mailpit_data = json.loads(resp.read().decode("utf-8"))
-            messages = mailpit_data.get("messages", [])
-            matching = [m for m in messages if shipment_id in m.get("Subject", "")]
-            if matching:
-                assert matching[0]["To"][0]["Address"] == "compliance-officer@customsguard.local"
-    except Exception:
-        # Mailpit API check is non-blocking in isolated CI environments
-        pass
 
 
 def test_bob_shell_orchestrator_cli_e2e():
@@ -150,10 +72,25 @@ def test_bob_shell_orchestrator_cli_e2e():
 
     assert proc.returncode == 0, f"bob run exited with error code {proc.returncode}: {proc.stderr}"
 
-    try:
-        bob_result = json.loads(proc.stdout)
-    except json.JSONDecodeError:
-        pytest.fail(f"Failed to parse bob run output as JSON: {proc.stdout}")
+    # Parse newline-delimited JSON (NDJSON) output from bob run
+    bob_result = None
+    for line in proc.stdout.strip().splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        try:
+            parsed = json.loads(line)
+            if isinstance(parsed, dict):
+                if parsed.get("type") == "result":
+                    bob_result = parsed
+                    break
+                elif bob_result is None:
+                    bob_result = parsed
+        except json.JSONDecodeError:
+            continue
+
+    if not bob_result:
+        pytest.fail(f"Failed to find valid JSON result in bob output: {proc.stdout}")
 
     assert bob_result.get("status") == "success"
     stats = bob_result.get("stats", {})

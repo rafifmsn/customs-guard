@@ -1,6 +1,6 @@
 # Jawaban Formulir Pengumpulan Akhir (Project Submission Form)
 
-Dokumen ini berisi draf jawaban lengkap dalam Bahasa Indonesia untuk formulir pengumpulan akhir National Hackathon — Project Submission Form.
+Dokumen ini berisi draf jawaban lengkap dalam Bahasa Indonesia untuk formulir pengumpulan akhir National Hackathon - Project Submission Form.
 
 ### Judul Project
 
@@ -10,16 +10,16 @@ CustomsGuard: Autonomous Trade Compliance & Tariff Discrepancy Engine
 
 Productivity & Smart Business
 
-### Deskripsi Singkat Project (150–300 kata)
+### Deskripsi Singkat Project (150-300 kata)
 
 CustomsGuard adalah AI Agent otonom yang dirancang untuk mengotomatisasi audit kepatuhan dokumen ekspor-impor, mencegah penahanan kontainer di pelabuhan, dan menghindarkan pelaku usaha dari denda kepabeanan.
 
-Sistem ini menyelesaikan tantangan verifikasi manual dokumen commercial invoice dan packing list terhadap lebih dari 5.600 subpos 6-digit Harmonized System (HS) dalam Buku Tarif Kepabeanan Indonesia (BTKI).
+Sistem ini menyelesaikan tantangan verifikasi manual dokumen commercial invoice dan packing list terhadap 5.612 subpos 6-digit Harmonized System (HS) bersumber dari dataset Market Access Map (MAcMap) yang dikelola International Trade Centre (ITC), badan gabungan WTO dan UNCTAD.
 Masalah ini dialami oleh perusahaan freight forwarding, pengusaha pengurusan jasa kepabeanan (PPJK), dan importir yang sering mengalami penahanan kargo di jalur merah akibat salah klasifikasi kode HS atau ketiadaan izin Lartas.
 
 CustomsGuard bekerja dengan mengintegrasikan IBM Bob sebagai antarmuka conversational agent dan IBM Langflow sebagai backend visual workflow melalui Model Context Protocol (MCP).
 Invoice dianalisis secara instan menggunakan pencarian semantik lokal Qdrant terhadap 5.612 data tarif dan regulasi impor Indonesia.
-Sistem secara otomatis mendeteksi selisih kode HS, menghitung kekurangan bea masuk, mendeteksi peluang restitusi lebih bayar, memverifikasi izin edar wajib (SDPPI, Kemenkes, BPOM), dan memodelkan risiko demurrage kontainer ($350/hari per kontainer).
+Sistem secara otomatis mendeteksi selisih kode HS, menghitung kekurangan bea masuk, mendeteksi peluang restitusi lebih bayar, memverifikasi izin edar wajib (SDPPI, Kemenkes, BPOM), dan memodelkan risiko demurrage kontainer berbasis tarif resmi CMA CGM Indonesia (5 free days, progressive day-slabs, dengan default standar 40ft Dry).
 Hasil audit disimpan otomatis dalam bentuk laporan Markdown dan JSON di penyimpanan lokal serta mengirimkan notifikasi email darurat via Mailpit SMTP.
 
 Manfaat utama dari CustomsGuard adalah memangkas waktu verifikasi dokumen dari 4 jam menjadi di bawah 5 detik, mencegah kerugian demurrage ribuan dolar per kontainer, serta menjamin privasi data perdagangan karena beroperasi sepenuhnya secara on-premise (air-gapped).
@@ -38,7 +38,10 @@ Masalah ini sangat mendesak diselesaikan demi kelancaran arus barang nasional, e
 
 ### Target User
 
-Pengguna utama platform ini adalah praktisi dan pelaku rantai pasok global. Segmen inti mencakup tim operasional freight forwarding, penyedia jasa 3PL, dan spesialis PPJK yang memproses puluhan dokumen pabean setiap hari. Solusi ini juga menyasar internal compliance officer di perusahaan manufaktur atau ritel besar, serta pelaku bisnis ekspor impor mandiri yang membutuhkan validasi dokumen instan untuk mencegah demurrage dan denda kepabeanan.
+Pengguna utama platform ini adalah praktisi dan pelaku rantai pasok global.
+Segmen inti mencakup tim operasional freight forwarding, penyedia jasa 3PL, dan spesialis PPJK yang memproses puluhan dokumen pabean setiap hari di pelabuhan utama seperti Tanjung Priok yang menangani lebih dari 8,3 juta TEU per tahun.
+Pasar jasa kepabeanan Indonesia sendiri bernilai USD 2,23 miliar pada 2025 dan diproyeksikan mencapai USD 3,32 miliar pada 2031 (Mordor Intelligence), dengan segmen digital dan API mencatat pertumbuhan tertinggi sebesar 15,34% CAGR seiring kewajiban CEISA 4.0 dan SSm Ekspor/Impor.
+Solusi ini juga menyasar internal compliance officer di perusahaan manufaktur atau ritel besar, serta pelaku bisnis ekspor impor mandiri yang membutuhkan validasi dokumen instan untuk mencegah demurrage dan denda kepabeanan.
 
 ### Mengapa Solusi Ini Dibutuhkan?
 
@@ -54,11 +57,11 @@ CustomsGuard menjadi solusi yang jauh lebih unggul karena:
 
 ### Fitur Utama Project
 
-1. Autonomous Tariff RAG & Discrepancy Auditing — Mencocokkan deskripsi barang invoice secara otonom terhadap 5.612 kode HS Indonesia di database Qdrant untuk mendeteksi perbedaan kode dan kekurangan bea masuk.
-2. Regulatory Permit Verification (Lartas Engine) — Memverifikasi kepemilikan sertifikasi wajib seperti SDPPI Kemkominfo, izin edar Alkes Kemenkes, dan izin BPOM sebelum kargo tiba di pelabuhan.
-3. Multi-Container Demurrage & Restitution Calculator — Menghitung potensi biaya demurrage pelabuhan ($350/hari dikalikan jumlah kontainer) jika kargo tertahan, serta mendeteksi potensi pengembalian dana akibat kelebihan deklarasi tarif.
-4. Automated Evidence Archiving — Mengekspor berkas audit resmi bertanda waktu dalam format Markdown dan JSON ke direktori penyimpanan lokal.
-5. Real-Time SMTP Alert Dispatching — Mengirimkan email peringatan darurat otomatis ke tim kepatuhan melalui Mailpit ketika terdeteksi risiko penahanan tinggi.
+1. Autonomous Tariff RAG & Discrepancy Auditing: Mencocokkan deskripsi barang invoice secara otonom terhadap 5.612 kode HS Indonesia bersumber dari WTO/UNCTAD ITC MAcMap di database Qdrant untuk mendeteksi perbedaan kode dan kekurangan bea masuk.
+2. Regulatory Permit Verification (Lartas Engine): Memverifikasi kepemilikan sertifikasi wajib seperti SDPPI Kemkominfo, izin edar Alkes Kemenkes, dan izin BPOM sebelum kargo tiba di pelabuhan.
+3. Carrier Demurrage & Restitution Calculator: Menghitung liabilitas demurrage harian dan kumulatif berbasis tarif resmi CMA CGM Indonesia (5 free days dan tier progresif per kontainer) dengan default kontainer 40ft Dry Standard, serta mendeteksi potensi restitusi lebih bayar tarif.
+4. Automated Evidence Archiving: Mengekspor berkas audit resmi bertanda waktu dalam format Markdown dan JSON ke direktori penyimpanan lokal.
+5. Real-Time SMTP Alert Dispatching: Mengirimkan email peringatan darurat otomatis ke tim kepatuhan melalui Mailpit ketika terdeteksi risiko penahanan tinggi.
 
 ### Alur Penggunaan Project
 
@@ -107,7 +110,7 @@ Integrasi antara Langflow dan IBM Bob menggunakan standar Model Context Protocol
 ### Dampak yang Dihasilkan
 
 1. Memangkas waktu audit dokumen dari rata-rata 2, 4 jam menjadi di bawah 5 detik per invoice (penghematan waktu >98%).
-2. Menghindarkan denda penahanan pelabuhan (dimodelkan pada baseline benchmark $350.00 USD per hari per kontainer, menghemat $1,750 USD pada simulasi 5 hari penahanan 1 kontainer, atau $7,000 USD untuk 4 kontainer).
+2. Menghindarkan denda penahanan pelabuhan (dimodelkan berbasis tarif resmi CMA CGM Indonesia pada slab hari ke-6 s.d. 10 sebesar $101.00 USD/hari per kontainer 40ft, menghemat $2,020 USD pada simulasi 5 hari penahanan 4 kontainer pasca-free time).
 3. Menghindarkan sanksi administrasi kepabeanan sebesar 100% s.d. 1000% dari selisih bea masuk.
 4. Mengidentifikasi kelebihan pembayaran bea masuk akibat salah deklarasi tarif, mengembalikan potensi cash flow ribuan dolar bagi importir.
 5. Mengurangi biaya operasional software kepatuhan hingga ~87% dengan arsitektur on-premise Docker ($980 per tahun) dibandingkan langganan cloud API komersial ($7,560 per tahun).

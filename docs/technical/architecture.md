@@ -69,34 +69,21 @@ The Langflow visual canvas integrates six core nodes designed for deterministic 
 
 ## 3. Model Context Protocol (MCP) Interface
 
-CustomsGuard exposes its complete pipeline as a standardized MCP tool to IBM Bob:
+CustomsGuard exposes its complete pipeline as a standardized Model Context Protocol (MCP) tool using the Streamable HTTP transport.
+For complete step-by-step connection instructions and active client configuration, refer to [`docs/technical/mcp_setup.md`](./mcp_setup.md) and [`.bob/mcp.json`](../../.bob/mcp.json).
 
-```json
-{
-  "mcpServers": {
-    "lf-starter_project": {
-      "command": "/home/rafif/.local/bin/uvx",
-      "args": [
-        "--with",
-        "mcp<2.0.0",
-        "mcp-proxy",
-        "--transport",
-        "streamablehttp",
-        "--headers",
-        "x-api-key",
-        "GENERATED_API_KEY",
-        "http://localhost:7860/api/v1/mcp/project/PROJECT_ID/streamable"
-      ],
-      "disabled": false
-    }
-  }
-}
-```
+### Tool Specification
 
-- **Tool Published**: `customsguard`
-- **Execution Flow**:
-  1. Bob receives user prompt (e.g. `$audit-shipment SHP-2026-0042`).
-  2. Bob makes an MCP tool call to `customsguard` on Langflow.
-  3. Langflow runs the visual pipeline and executes the tools.
-  4. Langflow returns the sanitized output to Bob.
-  5. Bob displays the verdict to the user.
+- **Tool Name**: `customsguard`
+- **Transport**: `streamablehttp` via `mcp-proxy` (`mcp<2.0.0`)
+- **Input Parameters**:
+  - `input_value`: Serialized JSON invoice string or natural-language audit instruction.
+  - `session_id`: Optional identifier to persist compliance state across multi-turn sessions.
+
+### Execution Flow
+
+1. Bob receives the user audit command (e.g. `$audit-shipment SHP-2026-0042` or pasted invoice payload).
+2. Bob makes an MCP tool call to `customsguard` hosted on the Langflow server.
+3. Langflow executes the visual pipeline, querying Qdrant tariffs, generating audit reports, and queuing Mailpit alerts.
+4. Langflow passes the synthesized audit through the Guardrails safety filter.
+5. Bob receives the sanitized verdict stream and renders the executive summary to the compliance officer.

@@ -11,6 +11,121 @@ from langflow.custom import Component
 from langflow.io import Output
 
 
+# CMA CGM Indonesia Merged Import Demurrage & Detention Tariff (Effective July 1, 2026)
+# Standard Dry: 5 Free Days. Slabs: D6-10, D11-15, D16-20, D21+
+# Reefer: 3 Free Days. Slabs: D4-5, D6-7, D8+
+CMA_CGM_TARIFFS = {
+    "DRY": {
+        "free_days": 5,
+        "slabs": [
+            {"max_day": 5, "rates": {"20": 0.0, "40": 0.0, "45": 0.0}},
+            {"max_day": 10, "rates": {"20": 66.0, "40": 101.0, "45": 141.0}},
+            {"max_day": 15, "rates": {"20": 86.0, "40": 121.0, "45": 171.0}},
+            {"max_day": 20, "rates": {"20": 96.0, "40": 151.0, "45": 181.0}},
+            {"max_day": 999, "rates": {"20": 106.0, "40": 161.0, "45": 191.0}},
+        ],
+    },
+    "REEFER": {
+        "free_days": 3,
+        "slabs": [
+            {"max_day": 3, "rates": {"20": 0.0, "40": 0.0, "45": 0.0}},
+            {"max_day": 5, "rates": {"20": 89.0, "40": 141.0, "45": 141.0}},
+            {"max_day": 7, "rates": {"20": 126.0, "40": 176.0, "45": 176.0}},
+            {"max_day": 999, "rates": {"20": 130.0, "40": 180.0, "45": 180.0}},
+        ],
+    },
+}
+
+
+def calculate_cma_cgm_demurrage(
+    container_count: int = 1,
+    container_size: str = "40",
+    container_type: str = "DRY",
+    days_held_projected: int = 10,
+    container_detention_risk: bool = True,
+) -> dict:
+  """Calculates demurrage and detention liabilities using official CMA CGM Indonesia tariffs."""
+  normalized_type = "REEFER" if "REEF" in str(container_type).upper() else "DRY"
+  normalized_size = (
+      "20" if "20" in str(container_size) else ("45" if "45" in str(container_size) else "40")
+  )
+  tariff = CMA_CGM_TARIFFS[normalized_type]
+  free_days = tariff["free_days"]
+
+  if not container_detention_risk:
+    return {
+        "benchmark_carrier": "CMA CGM Indonesia (Merged Import D&D Tariff)",
+        "container_size": f"{normalized_size}ft",
+        "container_type": f"Standard {normalized_type.capitalize()}",
+        "container_count": container_count,
+        "free_days_allowed": free_days,
+        "days_projected": days_held_projected,
+        "detention_days": 0,
+        "daily_rate_per_container_usd": 0.0,
+        "daily_burn_rate_total_usd": 0.0,
+        "projected_cumulative_liability_usd": 0.0,
+        "applicable_slab": f"Within free time allowance ({free_days} free days)",
+        "carrier_policy_notes": (
+            "Merged D&D clock (terminal + depot). Carrier group covers CMA CGM, APL, CNC, ANL."
+        ),
+    }
+
+  cumulative_per_container = 0.0
+  active_daily_rate = 0.0
+  active_slab_name = ""
+
+  for day in range(1, days_held_projected + 1):
+    day_rate = 0.0
+    for slab in tariff["slabs"]:
+      if day <= slab["max_day"]:
+        day_rate = slab["rates"].get(normalized_size, slab["rates"]["40"])
+        if day == days_held_projected:
+          active_daily_rate = day_rate
+          if normalized_type == "DRY":
+            if slab["max_day"] == 5:
+              active_slab_name = "Days 1 to 5 (Free)"
+            elif slab["max_day"] == 10:
+              active_slab_name = f"Days 6 to 10 (${day_rate:.2f}/day)"
+            elif slab["max_day"] == 15:
+              active_slab_name = f"Days 11 to 15 (${day_rate:.2f}/day)"
+            elif slab["max_day"] == 20:
+              active_slab_name = f"Days 16 to 20 (${day_rate:.2f}/day)"
+            else:
+              active_slab_name = f"Days 21+ (${day_rate:.2f}/day)"
+          else:
+            if slab["max_day"] == 3:
+              active_slab_name = "Days 1 to 3 (Free)"
+            elif slab["max_day"] == 5:
+              active_slab_name = f"Days 4 to 5 (${day_rate:.2f}/day)"
+            elif slab["max_day"] == 7:
+              active_slab_name = f"Days 6 to 7 (${day_rate:.2f}/day)"
+            else:
+              active_slab_name = f"Days 8+ (${day_rate:.2f}/day)"
+        break
+    cumulative_per_container += day_rate
+
+  daily_burn_rate_total = round(active_daily_rate * container_count, 2)
+  total_cumulative = round(cumulative_per_container * container_count, 2)
+  detention_days = max(0, days_held_projected - free_days)
+
+  return {
+      "benchmark_carrier": "CMA CGM Indonesia (Merged Import D&D Tariff)",
+      "container_size": f"{normalized_size}ft",
+      "container_type": f"Standard {normalized_type.capitalize()}",
+      "container_count": container_count,
+      "free_days_allowed": free_days,
+      "days_projected": days_held_projected,
+      "detention_days": detention_days,
+      "daily_rate_per_container_usd": active_daily_rate,
+      "daily_burn_rate_total_usd": daily_burn_rate_total,
+      "projected_cumulative_liability_usd": total_cumulative,
+      "applicable_slab": active_slab_name,
+      "carrier_policy_notes": (
+          "Merged D&D clock (terminal + depot). Carrier group covers CMA CGM, APL, CNC, ANL."
+      ),
+  }
+
+
 class CustomsGuardToolkitComponent(Component):
   display_name = "CustomsGuard Tools"
   description = "Suite of customs compliance audit, report export, and Mailpit alerting tools."
@@ -50,11 +165,20 @@ class CustomsGuardToolkitComponent(Component):
       container_detention_risk = False
       critical_notes = []
 
-      # Feature B: Extract container count for scaled demurrage liability
+      # Feature B: Extract container metadata for scaled demurrage liability
       try:
         container_count = max(1, int(data.get("container_count") or 1))
       except (ValueError, TypeError):
         container_count = 1
+
+      container_size = str(data.get("container_size") or "40")
+      container_type = str(data.get("container_type") or "DRY")
+      try:
+        days_held_projected = int(
+            data.get("days_held_projected") or data.get("days_in_port") or 10
+        )
+      except (ValueError, TypeError):
+        days_held_projected = 10
 
       items = data.get("items", [])
       if not items:
@@ -177,10 +301,26 @@ class CustomsGuardToolkitComponent(Component):
             "required_permits": permits,
         })
 
-      # Feature B: Scale estimated demurrage by container_count ($350/day/container)
-      daily_demurrage = (
-          (350.0 * container_count) if container_detention_risk else 0.0
+      # Feature B: Grounded demurrage liability via official CMA CGM Indonesia Tariff
+      demurrage_assessment = calculate_cma_cgm_demurrage(
+          container_count=container_count,
+          container_size=container_size,
+          container_type=container_type,
+          days_held_projected=days_held_projected,
+          container_detention_risk=container_detention_risk,
       )
+      daily_demurrage = demurrage_assessment["daily_burn_rate_total_usd"]
+
+      if container_detention_risk:
+        critical_notes.append(
+            f"CMA CGM Demurrage & Detention risk active: "
+            f"{demurrage_assessment['container_size']} {demurrage_assessment['container_type']} "
+            f"({demurrage_assessment['applicable_slab']}). "
+            f"Consignment burn rate: ${daily_demurrage:,.2f}/day "
+            f"(${demurrage_assessment['daily_rate_per_container_usd']:,.2f}/day/container). "
+            f"Projected {demurrage_assessment['detention_days']}-day hold liability: "
+            f"${demurrage_assessment['projected_cumulative_liability_usd']:,.2f}."
+        )
 
       result = {
           "shipment_id": data.get("shipment_id", "SHP-UNKNOWN"),
@@ -190,6 +330,7 @@ class CustomsGuardToolkitComponent(Component):
           "container_detention_risk": container_detention_risk,
           "total_duty_shortfall_usd": total_duty_shortfall,
           "estimated_demurrage_per_day_usd": daily_demurrage,
+          "demurrage_assessment": demurrage_assessment,
           "critical_notes": critical_notes,
           "findings": findings,
       }

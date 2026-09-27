@@ -8,10 +8,17 @@ Detect HS code misclassifications, verify whether mandatory SDPPI import permits
 
 {
   "shipment_id": "SHP-2026-0042",
+  "invoice_number": "INV-2026-APL-091",
+  "carrier": "CMA CGM / APL",
   "importer_name": "PT Nexus Indo Tech",
+  "exporter_name": "Shenzhen Global Electronics Ltd",
   "country_of_origin": "CN",
   "destination_port": "Tanjung Priok, Jakarta (IDTPP)",
-  "container_count": 1,
+  "container_count": 4,
+  "container_size": "40",
+  "container_type": "DRY",
+  "days_held_projected": 10,
+  "currency": "USD",
   "items": [
     {
       "item_id": 1,

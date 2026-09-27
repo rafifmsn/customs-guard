@@ -11,12 +11,12 @@ The agent operates as an intelligent co-pilot for customs brokers, freight forwa
    Parse incoming commercial invoices, bills of lading, and packing lists to extract declared commodity descriptions, HS codes, quantities, and values.
 
 2. **Tariff & Discrepancy Auditing**:
-   Cross-reference declared items against the local Qdrant customs tariff knowledge base (5,612 Indonesian HS-6 codes and Lartas import restrictions).
+   Cross-reference declared items against the local Qdrant customs tariff knowledge base (5,612 Indonesian HS-6 subheadings from the WTO/UNCTAD ITC Market Access Map dataset and import regulatory permit schedules).
 
 3. **Financial Liability Calculation**:
    Calculate exact duty shortfalls resulting from tariff misclassification.
    Identify opportunities for customs duty restitution/refund when tariffs are over-declared.
-   Calculate multi-container port demurrage liabilities ($350.00/day per container).
+   Calculate container demurrage and detention liabilities benchmarked against official CMA CGM Indonesia published tariff schedules (5 free days, progressive day-slabs, defaulting to 40ft Dry Standard if container size is omitted).
 
 4. **Regulatory Permit Verification**:
    Verify mandatory import licenses before cargo reaches port (e.g., SDPPI certification for telecommunications, Kemenkes distribution permits for medical apparatus, BPOM licenses for food and cosmetics).

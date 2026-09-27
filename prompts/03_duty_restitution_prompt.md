@@ -9,10 +9,16 @@ Verify if the official tariff rate is lower than declared, ensure zero duty shor
 
 {
   "shipment_id": "SHP-2026-0099",
+  "invoice_number": "INV-2026-SRV-990",
+  "carrier": "CMA CGM",
   "importer_name": "PT Cloud Data Raya",
   "country_of_origin": "US",
   "destination_port": "Tanjung Priok, Jakarta (IDTPP)",
   "container_count": 1,
+  "container_size": "40",
+  "container_type": "DRY",
+  "days_held_projected": 5,
+  "currency": "USD",
   "items": [
     {
       "item_id": 1,

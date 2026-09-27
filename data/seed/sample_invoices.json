@@ -2,10 +2,15 @@
   {
     "shipment_id": "SHP-2026-0042",
     "invoice_number": "INV-2026-APL-091",
+    "carrier": "CMA CGM / APL",
     "importer_name": "PT Nexus Indo Tech",
     "exporter_name": "Shenzhen Global Electronics Ltd",
     "country_of_origin": "CN",
     "destination_port": "Tanjung Priok, Jakarta (IDTPP)",
+    "container_count": 4,
+    "container_size": "40",
+    "container_type": "DRY",
+    "days_held_projected": 10,
     "currency": "USD",
     "items": [
       {
@@ -23,10 +28,15 @@
   {
     "shipment_id": "SHP-2026-0089",
     "invoice_number": "INV-2026-MED-442",
+    "carrier": "CMA CGM / CNC",
     "importer_name": "PT Medika Nusantara Sejahtera",
     "exporter_name": "Siemens Healthineers AG",
     "country_of_origin": "DE",
     "destination_port": "Tanjung Perak, Surabaya (IDSUB)",
+    "container_count": 2,
+    "container_size": "20",
+    "container_type": "DRY",
+    "days_held_projected": 10,
     "currency": "USD",
     "items": [
       {
@@ -44,10 +54,15 @@
   {
     "shipment_id": "SHP-2026-0105",
     "invoice_number": "INV-2026-SRV-810",
+    "carrier": "CMA CGM",
     "importer_name": "PT Cloud Infrastructure Indonesia",
     "exporter_name": "Dell Global B.V.",
     "country_of_origin": "MY",
     "destination_port": "Tanjung Priok, Jakarta (IDTPP)",
+    "container_count": 1,
+    "container_size": "40",
+    "container_type": "DRY",
+    "days_held_projected": 5,
     "currency": "USD",
     "items": [
       {

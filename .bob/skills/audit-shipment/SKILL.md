@@ -5,7 +5,7 @@ description: Audit commercial shipping invoices against Indonesian customs tarif
 
 # Audit Shipment Skill
 
-Use this skill to audit commercial shipping manifests, detect HS code misclassifications, calculate duty shortfalls and restitution opportunities, and evaluate container detention risks.
+Use this skill to audit commercial shipping manifests, detect HS code misclassifications against the WTO/UNCTAD ITC Market Access Map dataset (5,612 Indonesian HS-6 subheadings), calculate duty shortfalls and restitution opportunities, and evaluate container detention risks.
 
 ## Usage
 
@@ -36,7 +36,7 @@ Examples:
      - Total Declared Value (USD).
      - Net Duty Shortfall (USD).
      - Duty Overpayment Restitution Savings (if applicable).
-     - Estimated Daily Demurrage Risk ($350.00/day \* container count).
+     - Demurrage & Detention Liability: Active daily burn rate and projected cumulative hold cost benchmarked against CMA CGM Indonesia tariffs (5 free days, progressive day-slabs, defaulting to 40ft Dry Standard if container size is omitted).
    - **Discrepancy Details**:
      - Item-by-item comparison showing Declared HS vs Matched HS.
      - Declared Duty Rate vs Official Tariff Rate.

@@ -8,10 +8,16 @@ Confirm that declared classification matches official schedules, verify zero dut
 
 {
   "shipment_id": "SHP-2026-0105",
+  "invoice_number": "INV-2026-SRV-810",
+  "carrier": "CMA CGM",
   "importer_name": "PT Cloud Infrastruktur Indonesia",
   "country_of_origin": "SG",
   "destination_port": "Tanjung Priok, Jakarta (IDTPP)",
-  "container_count": 2,
+  "container_count": 1,
+  "container_size": "40",
+  "container_type": "DRY",
+  "days_held_projected": 5,
+  "currency": "USD",
   "items": [
     {
       "item_id": 1,

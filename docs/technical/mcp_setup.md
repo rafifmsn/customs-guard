@@ -60,8 +60,9 @@ This guide details how to expose CustomsGuard flows as MCP tools in Langflow and
 
 ## 5. Verify via Bob Shell (CLI)
 
-You can also run non-interactive verification directly using the Bob CLI:
+You can also run non-interactive verification directly using the Bob CLI.
+Ensure your `BOB_API_KEY` is exported in your environment, or provide it inline:
 
 ```bash
-bob run --trust "Audit shipment SHP-2026-0042 using customsguard tool"
+BOB_API_KEY="your_api_key_here" bob run --trust "Audit shipment SHP-2026-0042 using customsguard tool"
 ```

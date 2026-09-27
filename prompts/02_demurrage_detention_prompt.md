@@ -1,18 +1,23 @@
 # Prompt: Multi-Container Scaled Demurrage Liability
 
 Use this prompt to test multi-container demurrage penalty scaling (Feature B).
-When a multi-container consignment faces customs detention, daily port holding fees accumulate per container ($350.00/day \* container count).
+When a multi-container consignment faces customs detention, daily holding fees accumulate per container benchmarked against official CMA CGM Indonesia published tariff schedules (5 free days, progressive day-slabs, defaulting to 40ft Dry Standard if container size is omitted).
 
 ```text
 Audit shipment SHP-2026-0089 covering 3 shipping containers.
-Evaluate whether restricted medical diagnostic equipment triggers container detention, calculate the total daily demurrage exposure across all 3 containers, and export the audit report:
+Evaluate whether restricted medical diagnostic equipment triggers container detention, calculate the total daily demurrage exposure across all 3 containers under the CMA CGM Indonesia tariff, and export the audit report:
 
 {
   "shipment_id": "SHP-2026-0089",
+  "invoice_number": "INV-2026-MED-442",
+  "carrier": "CMA CGM / CNC",
   "importer_name": "PT Medika Nusantara Sejahtera",
   "country_of_origin": "DE",
   "destination_port": "Tanjung Perak, Surabaya (IDTPS)",
   "container_count": 3,
+  "container_size": "20",
+  "container_type": "DRY",
+  "days_held_projected": 10,
   "items": [
     {
       "item_id": 1,

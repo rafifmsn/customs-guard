@@ -8,10 +8,13 @@
 
 - **Importer**: PT Medika Nusantara Sejahtera
 - **Destination Port**: Tanjung Perak, Surabaya (IDTPS)
-- **Container Count**: 3
+- **Container Count**: 3 (20ft Dry)
 - **Container Detention Risk**: YES
 - **Total Duty Shortfall**: $0.00 USD
-- **Estimated Daily Demurrage**: $1,050.00 USD / day ($350.00/day \* 3 containers)
+- **Carrier Benchmark**: CMA CGM Indonesia (Merged Import D&D Tariff)
+- **Free Time Allowed**: 5 Days Free
+- **Estimated Daily Demurrage**: $198.00 USD / day ($66/day per container, Slab 1)
+- **Projected 5-Day Hold Liability**: $990.00 USD
 
 ### Critical Discrepancies & Regulatory Violations
 
@@ -26,6 +29,6 @@
 
 ### Automated Actions Taken
 
-- Multi-container demurrage risk evaluated: $1,050.00 USD per day across 3 containers.
+- Multi-container demurrage risk evaluated: $198.00 USD per day across 3 containers (20ft Dry, CMA CGM Slab 1).
 - Audit dossier saved to disk.
 - Urgent detention alert queued in Mailpit (`http://localhost:8025`).

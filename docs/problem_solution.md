@@ -5,12 +5,9 @@ It is written for trade practitioners, business stakeholders, and technical eval
 
 ## 1. Domain Context: The High-Stakes World of Cross-Border Trade
 
-Global merchandise trade now exceeds $26 trillion each year.[^unctad2025]  
-Every container, pallet, and cross border parcel entering a country must clear national customs authorities before it reaches its final destination.
+Total international trade including commercial services surpasses $35 trillion annually. The physical merchandise subset specifically represents over $26 trillion, all of which is subject to physical customs declarations, tariff classifications, and border control inspections.[^unctad2025] Every container, pallet, and cross border parcel entering a country must clear national customs authorities before it reaches its final destination.
 
-(Note: Total international trade including commercial services surpasses $35 trillion annually. The physical merchandise subset specifically represents over $26 trillion, all of which is subject to physical customs declarations, tariff classifications, and border control inspections.)
-
-In Indonesia, international trade is governed by the Directorate General of Customs and Excise (DJBC / Bea Cukai) under the Indonesian Customs Tariff Book (Buku Tarif Kepabeanan Indonesia / BTKI).
+In Indonesia, cross-border trade is governed by the Directorate General of Customs and Excise (DJBC / Bea Cukai), evaluated against standardized 6-digit Harmonized System (HS) subheadings sourced from the WTO/UNCTAD International Trade Centre (ITC) Market Access Map (MAcMap) dataset.
 Every commercial commodity must be declared with:
 
 1. A valid 6-digit to 8-digit Harmonized System (HS) Code.
@@ -22,30 +19,33 @@ Every commercial commodity must be declared with:
 
 ```mermaid
 flowchart LR
-    A["Commercial Invoice (Manual Entry)"] --> B["BTKI Tariff Maze (5,612 HS Subheadings)"]
+    A["Commercial Invoice (Manual Entry)"] --> B["Tariff Schedule Maze (5,612 HS Subheadings)"]
     B --> C["Misclassification / Missing Permits"]
     C --> D["Customs Red Lane Hold"]
-    D --> E["Demurrage Bleed ($350/day/container)"]
+    D --> E["Demurrage Bleed (Carrier Day-Slabs)"]
     D --> F["Administrative Fines (100% to 1000%)"]
 ```
 
 ### Problem 1: The Tariff Classification Maze (BTKI Complexity)
 
-- **The Challenge**: The tariff schedule contains 5,612 active 6-digit HS subheadings in Indonesia alone.
+- The tariff schedule contains 5,612 active 6-digit HS subheadings in Indonesia alone.
 - Distinguishing between subtly different commodities requires hours of expert analysis.
   For example, declaring a cellular smartphone under computing machinery (`8471.30`) rather than telecommunications (`8517.11`) completely alters the regulatory framework.
-- **The Bottleneck**: A typical freight forwarder compliance team spends 20 to 30 minutes manually looking up tariff books for every single line item on an invoice.
+- A typical freight forwarder compliance team spends 20 to 30 minutes manually looking up tariff books for every single line item on an invoice.
 
-### Problem 2: Port Congestion and Demurrage Penalties ($350.00/day per container)
+### Problem 2: Port Congestion and Carrier Demurrage Liabilities
 
 - When customs documentation contains an error, the shipment is shunted to the "Red Lane" (Jalur Merah) for physical inspection.
-- While the cargo is detained at port terminals (such as Tanjung Priok or Tanjung Perak), terminal operators assess container demurrage and detention fees.
-- **Measurable Impact**: Detention costs are modeled at a baseline of **$350.00 USD per container per day**.
-  For a standard 4-container consignment detained for just 5 days, an enterprise incurs **$7,000.00 USD** in avoidable demurrage penalties.
+- Indonesia's premier gateway, Tanjung Priok, processed 8.30 million TEUs in 2025.[^mordor-id]
+- During peak periods, un-booked or document-flagged cargo queues 7 to 10 days before terminal clearance, turning paperwork delays into catastrophic container demurrage.[^mordor-id]
+- While cargo is detained at port terminals (such as Tanjung Priok or Tanjung Perak), shipping carriers assess combined demurrage and detention fees.
+- Under official carrier schedules such as CMA CGM Indonesia (effective July 1, 2026), importers receive 5 free days for standard dry containers, followed by progressive daily rate slabs.
+- When container dimensions are not specified, the system intentionally defaults to a **40ft Standard Dry container** ($101/day on Days 6 to 10, rising to $161/day beyond Day 21).
+  For a standard 4-container consignment detained for 5 days post-free-time, an enterprise incurs **$2,020 USD** in avoidable demurrage penalties.
 
-### Problem 3: Invisible Non-Tariff Barriers (Lartas Permit Traps)
+### Problem 3: Invisible Non-Tariff Barriers (Permit Traps)
 
-- Over 500 HS codes in Indonesia require mandatory pre-import approvals:
+- Exactly 546 of 5,612 HS-6 subheadings (9.73%) in the national tariff schedule require mandatory pre-import approvals:
   - **SDPPI Certification (Kemkominfo)**: Mandatory for telecommunications and wireless devices.
   - **Distribution Permits (Izin Edar Kemenkes)**: Mandatory for medical devices and diagnostic apparatus.
   - **BPOM Approvals**: Mandatory for food, cosmetics, and pharmaceuticals.
@@ -86,7 +86,7 @@ flowchart LR
 ### Solution Capability 2: Multi-Container Financial Liability Engine
 
 - **Duty Shortfall**: Calculates exact mathematical differences between official and declared rates.
-- **Demurrage Modeling**: Extracts container counts and calculates daily detention exposure ($350.00/day \* container count).
+- **Demurrage Modeling**: Calculates daily detention burn rates and cumulative exposure benchmarked against official CMA CGM Indonesia published tariff schedules (5 free days, progressive day-slabs, defaulting to 40ft Dry Standard if container size is omitted).
 - **Restitution Recovery**: Detects over-declared duties and calculates potential customs refunds.
 
 ### Solution Capability 3: Automated Evidentiary Dossiers & Instant Alerting
@@ -102,14 +102,16 @@ flowchart LR
 
 ## 4. Measurable Business Impact
 
-| Metric                         | Manual Customs Compliance          | CustomsGuard Autonomous Engine      | Improvement                            |
-| :----------------------------- | :--------------------------------- | :---------------------------------- | :------------------------------------- |
-| **Audit Processing Time**      | 2 to 4 hours per manifest          | Less than 5 seconds per manifest    | **>98% Time Saved**                    |
-| **Tariff Coverage**            | Selective manual search            | 5,612 Indonesian HS-6 Subheadings   | **100% Tariff Schedule Coverage**      |
-| **Port Demurrage Risk**        | High ($350/day/container holds)    | Zero surprise detentions            | **$1,750+ saved per avoided hold**     |
-| **Duty Restitution Discovery** | Rarely identified                  | Automatic calculation               | **Proactive tax recovery**             |
-| **Annual Software Cost**       | ~$7,560 USD / yr (Cloud SaaS APIs) | ~$980 USD / yr (Self-hosted Docker) | **~87% Infrastructure Cost Reduction** |
+| Metric                         | Manual Customs Compliance               | CustomsGuard Autonomous Engine      | Improvement                             |
+| :----------------------------- | :-------------------------------------- | :---------------------------------- | :-------------------------------------- |
+| **Audit Processing Time**      | 2 to 4 hours per manifest               | Less than 5 seconds per manifest    | **>98% Time Saved**                     |
+| **Tariff Coverage**            | Selective manual search                 | 5,612 Indonesian HS-6 Subheadings   | **100% Tariff Schedule Coverage**       |
+| **Port Demurrage Risk**        | High (escalating progressive day-slabs) | Zero surprise detentions            | **$2,020+ saved per avoided 40ft hold** |
+| **Duty Restitution Discovery** | Rarely identified                       | Automatic calculation               | **Proactive tax recovery**              |
+| **Annual Software Cost**       | ~$7,560 USD / yr (Cloud SaaS APIs)      | ~$980 USD / yr (Self-hosted Docker) | **~87% Infrastructure Cost Reduction**  |
 
 [^unctad2025]: United Nations Conference on Trade and Development (UNCTAD), [UNCTADstat Data Centre](https://unctadstat.unctad.org) and [Global Trade Update](https://unctad.org), 2025.
 
 [^uu-kepabeanan]: Republic of Indonesia. Law No. 17 of 2006 amending Law No. 10 of 1995 on Customs (Undang-Undang Kepabeanan), Article 82(5) and Article 16(4); implemented via Government Regulation (PP) No. 39 of 2019.
+
+[^mordor-id]: Mordor Intelligence, "Indonesia Customs Brokerage Market Size & Share Analysis (2026-2031)", 2026.
