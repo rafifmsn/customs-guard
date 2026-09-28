@@ -69,24 +69,85 @@ CustomsGuard adopts a hybrid B2B subscription and transactional pricing model, s
 
 ## 4. Cost Engineering: Self-Hosted vs Cloud SaaS (CAPEX & OPEX)
 
-CustomsGuard's on-premise Docker architecture provides substantial cost advantages over brittle, cloud-dependent SaaS integrations:
+CustomsGuard's on-premise Docker architecture provides substantial cost advantages over brittle, cloud-dependent SaaS integrations.
+While conventional enterprise compliance software relies on expensive multi-tenant cloud APIs and managed infrastructure, CustomsGuard executes locally on dedicated edge hardware.
 
 ```mermaid
 flowchart LR
-    A["Architecture Cost Comparison"] --> B["Cloud SaaS APIs: ~$7,560/yr"]
-    A --> C["CustomsGuard On-Premise: ~$980/yr"]
-    C --> D["~87% Annual Infrastructure Cost Savings"]
+    A["Infrastructure Architecture Comparison"] --> B["Enterprise Cloud SaaS: ~$7,080/yr"]
+    A --> C["CustomsGuard On-Premise: $1,087 Year 1 ($252/yr thereafter)"]
+    C --> D["~84.6% Year 1 / ~96.4% Year 2+ Infrastructure Cost Reduction"]
 ```
 
-| Expense Category          | Cloud SaaS Alternative                       | CustomsGuard On-Premise Docker                   | Annual Savings          |
-| :------------------------ | :------------------------------------------- | :----------------------------------------------- | :---------------------- |
-| **LLM Inference**         | Proprietary cloud APIs ($250/mo)             | Micro-routing / Local quantization ($15/mo)      | ~$2,820 USD / yr        |
-| **Vector Database**       | Managed Pinecone / Qdrant Cloud ($120/mo)    | Self-hosted Qdrant on local Docker ($0/mo)       | ~$1,440 USD / yr        |
-| **Data Egress & Storage** | Cloud bandwidth and audit retention ($80/mo) | Local disk storage and on-premise network ($0)   | ~$960 USD / yr          |
-| **Hosting Compute**       | Cloud VM hosting ($180/mo)                   | Dedicated edge mini-server ($800 one-time CAPEX) | ~$1,360 USD / yr        |
-| **Total Annual Cost**     | **~$7,560 USD / year**                       | **~$980 USD (Year 1, hardware included)**        | **~87% Cost Reduction** |
+### A. Enterprise Cloud SaaS Alternative Architecture
 
-_Note: In Year 2 and beyond, after the edge mini-server hardware is amortized, on-premise operating expense drops to ~$180 USD / year, expanding cost savings to ~97%._
+A typical cloud-hosted compliance stack handling ~3,000 monthly audit payloads incurs significant monthly operational expenditures across compute, database, network egress, and AI tokens:
+
+| Expense Component                        | Technical Specification                                                                 | Monthly Fee     | Annual Cost              |
+| :--------------------------------------- | :-------------------------------------------------------------------------------------- | :-------------- | :----------------------- |
+| **Cloud Hosting Compute**                | 1x AWS EC2 `t4g.xlarge` (4 vCPU, 16GB RAM) Linux instance in Jakarta/Singapore region   | $105.00 USD     | $1,260.00 USD            |
+| **Managed Vector Database**              | Qdrant Cloud Starter / Pinecone Standard dedicated node (4GB RAM, 10GB index)           | $95.00 USD      | $1,140.00 USD            |
+| **Cloud LLM Inference Tokens**           | Blended commercial API tokens (~2,800 tokens per audit across reasoning and Guardrails) | $150.00 USD     | $1,800.00 USD            |
+| **Network Egress & NAT Gateway**         | AWS Managed NAT Gateway ($0.059/hr) plus ~100GB audit dossier data egress ($0.11/GB)    | $60.00 USD      | $720.00 USD              |
+| **Object Storage & Automated Snapshots** | AWS S3 Standard archive, 100GB GP3 EBS root volume, and daily automated snapshots       | $30.00 USD      | $360.00 USD              |
+| **Network Security & VPN Tunnel**        | AWS Elastic IP address allocations and managed client/site-to-site VPN connection       | $50.00 USD      | $600.00 USD              |
+| **Cloud SRE & DevOps Overhead**          | CloudWatch log monitoring, TLS certificate automation, and basic SLA support buffer     | $100.00 USD     | $1,200.00 USD            |
+| **Total Cloud SaaS Stack**               | **Fully managed multi-tenant cloud infrastructure**                                     | **$590.00 USD** | **$7,080.00 USD / year** |
+
+---
+
+### B. CustomsGuard On-Premise Docker Architecture
+
+By deploying as containerized microservices on an on-premise industrial edge mini-server, CustomsGuard eliminates ongoing cloud infrastructure markups:
+
+#### 1. Hardware Capital Expenditures (One-Time CAPEX)
+
+| Hardware Asset                   | Specification & Operational Purpose                                                            | Acquisition Cost |
+| :------------------------------- | :--------------------------------------------------------------------------------------------- | :--------------- |
+| **Industrial Edge Mini-Server**  | 8-core CPU, 32GB DDR5 RAM, 1TB NVMe PCIe 4.0 SSD, dual Gigabit Ethernet ports                  | $750.00 USD      |
+| **Line-Interactive UPS Battery** | 650VA / 360W battery backup with Automatic Voltage Regulation (AVR) for power surge protection | $85.00 USD       |
+| **Total Hardware CAPEX**         | **Complete turnkey physical appliance deployed at client premise or terminal**                 | **$835.00 USD**  |
+
+_Amortization Note: Over a standard 3-year enterprise IT depreciation schedule, hardware CAPEX equates to **$278.33 USD / year**._
+
+#### 2. Annual Operating Expenditures (Ongoing Direct OPEX)
+
+| Operational Component         | Engineering Mechanism & Indonesian Market Reality                                          | Annual Cost     | Monthly Equivalent     |
+| :---------------------------- | :----------------------------------------------------------------------------------------- | :-------------- | :--------------------- |
+| **Commercial Electricity**    | Mini-server continuous draw of 35W = 306.6 kWh/year at PLN commercial rate (Rp 1,500/kWh)  | $29.11 USD      | $2.43 USD              |
+| **Encrypted Cold Backup**     | Automated differential snapshot sync via Restic to Backblaze B2 / AWS S3 Glacier (100GB)   | $18.00 USD      | $1.50 USD              |
+| **Local Network & Static IP** | Operates over existing PPJK broker office local area network (LAN) and office broadband    | $0.00 USD       | $0.00 USD              |
+| **Vector DB & Core Engine**   | Self-hosted Qdrant Community Edition and Python runtime on Docker (Apache 2.0 Open Source) | $0.00 USD       | $0.00 USD              |
+| **Hybrid Token Reserve**      | Deterministic calculations run locally; cloud LLM token reserve for multi-turn edge cases  | $180.00 USD     | $15.00 USD             |
+| **Hardware Maintenance Fund** | Annual maintenance allocation for fan replacement, CMOS battery, and thermal maintenance   | $25.00 USD      | $2.08 USD              |
+| **Total Direct Annual OPEX**  | **Total cash bleed required to run the on-premise system 24/7/365**                        | **$252.11 USD** | **$21.01 USD / month** |
+
+---
+
+### C. Total Cost of Ownership (TCO) & Net Savings Analysis
+
+Comparing cumulative costs across 1-year and 3-year horizons demonstrates massive capital efficiency:
+
+| Evaluation Horizon        | Cloud SaaS Alternative | CustomsGuard On-Premise Docker              | Net Dollar Savings  | Cost Reduction (%)  |
+| :------------------------ | :--------------------- | :------------------------------------------ | :------------------ | :------------------ |
+| **Year 1 (CAPEX + OPEX)** | $7,080.00 USD          | $1,087.11 USD ($835 CAPEX + $252.11 OPEX)   | **+$5,992.89 USD**  | **~84.65% Savings** |
+| **Year 2 (Ongoing OPEX)** | $7,080.00 USD          | $252.11 USD (Direct operating cost)         | **+$6,827.89 USD**  | **~96.44% Savings** |
+| **Year 3 (Ongoing OPEX)** | $7,080.00 USD          | $252.11 USD (Direct operating cost)         | **+$6,827.89 USD**  | **~96.44% Savings** |
+| **3-Year Cumulative TCO** | **$21,240.00 USD**     | **$1,591.33 USD (Hardware + 3 Years OPEX)** | **+$19,648.67 USD** | **~92.51% Savings** |
+
+---
+
+### D. Startup Unit Economics & SaaS Gross Margins
+
+Because CustomsGuard's marginal infrastructure serving cost is negligible, the subscription tiers yield exceptional enterprise software gross margins:
+
+| Subscription Tier               | Monthly Revenue | Annual Revenue | Estimated Marginal Serving COGS    | Annual Gross Profit | Software Gross Margin |
+| :------------------------------ | :-------------- | :------------- | :--------------------------------- | :------------------ | :-------------------- |
+| **Starter Tier ($149/mo)**      | $149.00 USD     | $1,788.00 USD  | $15.00 USD / mo ($180.00 USD / yr) | $1,608.00 USD       | **~89.93% Margin**    |
+| **Professional Tier ($599/mo)** | $599.00 USD     | $7,188.00 USD  | $38.00 USD / mo ($456.00 USD / yr) | $6,732.00 USD       | **~93.66% Margin**    |
+| **Enterprise Tier ($2,000/mo)** | $2,000.00 USD   | $24,000.00 USD | $45.00 USD / mo ($540.00 USD / yr) | $23,460.00 USD      | **~97.75% Margin**    |
+
+_Operational Context: On Enterprise deployments, the customer either provides their own on-premise server or pays the one-time $835 CAPEX as a pass-through deployment fee, allowing CustomsGuard to capture pure recurring high-margin software license revenue._
 
 ---
 
