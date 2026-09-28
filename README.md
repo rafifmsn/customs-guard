@@ -61,7 +61,7 @@ flowchart LR
 ### 1. Prerequisites
 
 - Docker and Docker Compose
-- Python 3.10+ (or Astral `uv`)
+- Python 3.10+ (or [Astral uv](https://docs.astral.sh/uv/))
 - IBM Bob Desktop Application
 
 ### 2. Start the Docker Services
@@ -95,7 +95,8 @@ CustomsGuard includes an automated test suite verifying database integrity, disc
 uv run pytest
 ```
 
-_(Runs 14 automated unit and integration tests in under 3 seconds)._
+_Note: Core tariff lookup, arithmetic, and reporting tests run locally against containerized services.
+Full live end-to-end conversational CLI tests require configuring the model provider API key in Langflow and setting `BOB_API_KEY` in `.env`._
 
 ## Connecting with IBM Bob
 
