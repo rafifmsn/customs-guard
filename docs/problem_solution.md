@@ -39,7 +39,7 @@ flowchart LR
 - Indonesia's premier gateway, Tanjung Priok, processed 8.30 million TEUs in 2025.[^mordor-id]
 - During peak periods, un-booked or document-flagged cargo queues 7 to 10 days before terminal clearance, turning paperwork delays into catastrophic container demurrage.[^mordor-id]
 - While cargo is detained at port terminals (such as Tanjung Priok or Tanjung Perak), shipping carriers assess combined demurrage and detention fees.
-- Under official carrier schedules such as CMA CGM Indonesia (effective July 1, 2026), importers receive 5 free days for standard dry containers, followed by progressive daily rate slabs.
+- Under official carrier schedules such as CMA CGM Indonesia (effective July 1, 2026), importers receive 5 free days for standard dry containers, followed by progressive daily rate slabs (documented in [`docs/technical/design_decisions.md`](./technical/design_decisions.md#5-carrier-demurrage-benchmark-cma-cgm-indonesia-tariff)).
 - When container dimensions are not specified, the system intentionally defaults to a **40ft Standard Dry container** ($101/day on Days 6 to 10, rising to $161/day beyond Day 21).
   For a standard 4-container consignment detained for 5 days post-free-time, an enterprise incurs **$2,020 USD** in avoidable demurrage penalties.
 

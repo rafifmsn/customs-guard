@@ -75,11 +75,37 @@ Annual schedule updates are managed through straightforward batch re-indexing sc
 Rather than relying on an arbitrary flat rate, CustomsGuard anchors demurrage and detention liabilities to the official published tariff schedule of CMA CGM Indonesia (effective July 1, 2026).
 The engine models the carrier's Merged Import Demurrage & Detention clock across progressive day-slabs (Days 6 to 10, Days 11 to 15, Days 16 to 20, and Days 21+), incorporating mandatory free time allowances (5 free days for Standard Dry, 3 free days for Reefer).
 
-### Container Sizing & Intelligent Defaults
+### Published Tariff Schedule (Merged Import D&D)
 
-The engine evaluates container dimensions (20ft, 40ft, 45ft) and equipment types (Standard Dry vs Reefer).
-When container size is not specified in an incoming invoice or manifest, the system intentionally defaults to a **40ft Standard Dry container**.
-The 40ft container represents the global standard benchmark for containerized ocean freight, ensuring consistent, defendable liability modeling.
+#### Standard Dry Containers (5 Free Days)
+
+| Day Slab | 20ft Container | 40ft Container | 45ft Container |
+| :--- | :--- | :--- | :--- |
+| **Days 1 to 5** | Free ($0.00) | Free ($0.00) | Free ($0.00) |
+| **Days 6 to 10** | $66.00 / day | $101.00 / day | $141.00 / day |
+| **Days 11 to 15** | $86.00 / day | $121.00 / day | $171.00 / day |
+| **Days 16 to 20** | $96.00 / day | $151.00 / day | $181.00 / day |
+| **Days 21+** | $106.00 / day | $161.00 / day | $191.00 / day |
+
+#### Reefer Containers (3 Free Days)
+
+| Day Slab | 20ft Container | 40ft Container |
+| :--- | :--- | :--- |
+| **Days 1 to 3** | Free ($0.00) | Free ($0.00) |
+| **Days 4 to 5** | $89.00 / day | $141.00 / day |
+| **Days 6 to 7** | $126.00 / day | $176.00 / day |
+| **Days 8+** | $130.00 / day | $180.00 / day |
+
+### Calculation Mechanics & Sizing Defaults
+
+The engine evaluates container dimensions (20ft, 40ft, 45ft) and equipment types (Standard Dry vs Reefer):
+- **Active Daily Burn Rate**:
+  Calculated as the active slab rate per container multiplied by the total container count.
+- **Projected Cumulative Hold Liability**:
+  Calculated as the cumulative sum of progressive day-by-day slab rates over the projected holding duration (defaulting to 5 detention days, representing Days 6 to 10 for Standard Dry), multiplied by container count.
+- **Graceful Standard Default**:
+  When container dimensions or types are omitted from an invoice, the system defaults to a **40ft Standard Dry container**.
+  The 40ft container represents the global workhorse benchmark for containerized ocean freight, ensuring defendable liability modeling.
 
 ### Strategic Scope Boundary: Multi-Carrier API Adapters
 
