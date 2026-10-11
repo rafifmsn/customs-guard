@@ -139,6 +139,14 @@ Because CustomsGuard's marginal infrastructure serving cost is negligible, the s
 
 _Operational Context: On Enterprise deployments, the customer either provides their own on-premise server or pays the one-time $835 CAPEX as a pass-through deployment fee, allowing CustomsGuard to capture pure recurring high-margin software license revenue._
 
+#### Marginal Serving COGS Composition
+
+Because core tariff retrieval, container demurrage arithmetic, and report generation run locally on client edge nodes at $0 vendor hosting cost, direct serving COGS comprises:
+- **Cloud LLM API Token Allocation**: Conversational reasoning and Guardrails evaluation quotas ($4/mo for Starter, $18/mo for Professional, $20/mo for Enterprise).
+- **Automated Regulatory & Tariff Sync**: Differential distribution of official HS code amendments and ministerial Lartas permit updates ($3.50 to $12/mo).
+- **Cold Disaster Recovery Storage**: Automated encrypted offsite snapshot archival via Backblaze B2 or AWS Glacier ($1.50 to $5/mo).
+- **Licensing Heartbeat & Telemetry Gateway**: Remote client authentication, container health monitoring, and telemetry ingress ($6 to $8/mo).
+
 ## 5. Core Solution Capabilities & Operational Value Matrix
 
 CustomsGuard bridges commercial shipping documents and trade compliance through six deterministic capabilities:
