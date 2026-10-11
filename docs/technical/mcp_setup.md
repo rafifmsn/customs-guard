@@ -20,7 +20,7 @@ This guide details how to expose CustomsGuard flows as MCP tools in Langflow and
 
 ## 3. Enable MCP on the CustomsGuard Flow
 
-1. Inside your flow in Langflow, click the **MCP Server** button in the header.
+1. Inside your flow in Langflow (imported from [`langflow/CustomsGuard.json`](../../langflow/CustomsGuard.json)), click the **MCP Server** button in the header.
 2. Switch to the **JSON** tab.
 3. Click **Generate API Key** and copy the generated JSON block.
 4. **Mandatory Hackathon Flag**:

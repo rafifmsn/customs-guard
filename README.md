@@ -10,6 +10,8 @@ CustomsGuard is an autonomous enterprise AI agent designed to audit commercial s
 
 <video src="https://github.com/user-attachments/assets/bacb2242-b02d-41cb-ada0-c51904311d83" controls width="100%"></video>
 
+> 🎬 **Demo Walkthrough**: [Click here to view or download the demo video](https://github.com/user-attachments/assets/bacb2242-b02d-41cb-ada0-c51904311d83).
+
 ## The Problem & Strategic Context
 
 Manual paperwork and documentation bottlenecks cost the global shipping ecosystem $6.5 billion in direct costs annually while holding back up to $40 billion in cross-border trade.[^mckinsey-trade] While digital trade initiatives target multi-billion-dollar documentation delays, digitizing manifests does not eliminate the operational burden of verifying trade compliance.
@@ -79,7 +81,12 @@ Service endpoints:
 - **Qdrant REST API**: `http://localhost:6333`
 - **PostgreSQL**: `localhost:5432`
 
-### 3. Seed the Customs Tariff Database
+### 3. Import Workflow Template
+
+The complete pipeline definition is exported in [`langflow/CustomsGuard.json`](./langflow/CustomsGuard.json).
+On a fresh environment, navigate to `http://localhost:7860`, go to **My Projects** -> **Import**, and upload `langflow/CustomsGuard.json` to load the canvas with all agent nodes, custom tools, and guardrails pre-configured.
+
+### 4. Seed the Customs Tariff Database
 
 Index all 5,612 official Indonesian HS codes, duty rates, and permit regulations into Qdrant:
 
@@ -127,6 +134,7 @@ BOB_API_KEY="your_api_key_here" bob run --trust "Audit shipment SHP-2026-0042 us
 | **Design & Scope Decisions** | [`docs/technical/design_decisions.md`](./docs/technical/design_decisions.md) | Rationale behind flexible agent reasoning, permit verification, and enterprise roadmap.                        |
 | **MCP Integration**          | [`docs/technical/mcp_setup.md`](./docs/technical/mcp_setup.md)               | Step-by-step connection guide for IBM Bob and Langflow MCP proxy.                                              |
 | **Commercial Strategy**      | [`docs/business/business_canvas.md`](./docs/business/business_canvas.md)     | Business model canvas, ROI model, demurrage savings, and ~87% tech cost reduction.                             |
+| **Langflow Flow Template**   | [`langflow/CustomsGuard.json`](./langflow/CustomsGuard.json)                 | Pre-configured Langflow visual pipeline export (Agent, CustomsGuard Tools, Guardrails).                       |
 | **Prompts Library**          | [`prompts/`](./prompts/)                                                     | Modular prompts for high-risk audits, demurrage scaling, and duty restitution.                                 |
 | **Test Invoices**            | [`data/seed/sample_invoices.json`](./data/seed/sample_invoices.json)         | Scenario invoice payloads with carrier, container metadata, and declared commodities.                          |
 | **Reference Dossiers**       | [`expected-outputs/`](./expected-outputs/)                                   | Ground-truth reference audit reports matching each test scenario.                                              |

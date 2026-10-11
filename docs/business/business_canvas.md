@@ -27,8 +27,6 @@ flowchart LR
 3. **Duty Restitution Discovery**:
    Identifies over-declared tariffs (such as declaring 15% duty on processing servers whose official MFN rate is 0%), directly unlocking legitimate tax refund claims.
 
----
-
 ## 2. Market Sizing (TAM, SAM, SOM) & Operational Grounding
 
 CustomsGuard targets a multi-billion dollar logistics market propelled by regional manufacturing reshoring and digital customs mandates:
@@ -40,8 +38,6 @@ CustomsGuard targets a multi-billion dollar logistics market propelled by region
 | **Serviceable Addressable Market (SAM)** | $2.23 Billion USD in 2025, expanding to $2.38 Billion USD in 2026 and $3.32 Billion USD by 2031 (6.83% CAGR)                 | Indonesian Customs Brokerage market; sea freight accounts for 58.67% ($1.31B USD) and 3PL/forwarders command 68.74% ($1.53B USD) | Mordor Intelligence (2026) [2]                                    |
 | **Port Gateway Realities**               | 8.30 million TEUs (5.69 million container boxes) and 21.51 million non-container tons processed in 2025                      | Tanjung Priok terminal utilization; un-booked or document-flagged cargo queues 7 to 10 days before terminal clearance            | PT Pelindo Regional 2 Tanjung Priok [1] / Mordor Intelligence [2] |
 | **Serviceable Obtainable Market (SOM)**  | $30 Million to $60 Million USD initial obtainable beachhead                                                                  | Digital-first and API-based brokerages growing at 15.34% CAGR; capturing 2.5% to 5.0% of digital transactions at Tanjung Priok   | Mordor Intelligence (2026) [2] / Pelindo Priok [1]                |
-
----
 
 ## 3. Monetization Strategy & Tiered B2B SaaS
 
@@ -65,8 +61,6 @@ CustomsGuard adopts a hybrid B2B subscription and transactional pricing model, s
 3. **Duty Restitution Discovery**:
    - In audited scenarios with over-declared duties (e.g. 15% declared vs 0% official on HS `8471.50` processing units), a single $100,000 shipment uncovers **$15,000.00 USD** in direct tax refund recovery, delivering instant positive ROI.
 
----
-
 ## 4. Cost Engineering: Self-Hosted vs Cloud SaaS (CAPEX & OPEX)
 
 CustomsGuard's on-premise Docker architecture provides substantial cost advantages over brittle, cloud-dependent SaaS integrations.
@@ -83,18 +77,18 @@ flowchart LR
 
 A typical cloud-hosted compliance stack handling ~3,000 monthly audit payloads incurs significant monthly operational expenditures across compute, database, network egress, and AI tokens:
 
-| Expense Component                        | Technical Specification                                                                 | Monthly Fee     | Annual Cost              |
-| :--------------------------------------- | :-------------------------------------------------------------------------------------- | :-------------- | :----------------------- |
-| **Cloud Hosting Compute**                | 1x AWS EC2 `t4g.xlarge` (4 vCPU, 16GB RAM) Linux instance in Jakarta/Singapore region   | $105.00 USD     | $1,260.00 USD            |
-| **Managed Vector Database**              | Qdrant Cloud Starter / Pinecone Standard dedicated node (4GB RAM, 10GB index)           | $95.00 USD      | $1,140.00 USD            |
-| **Cloud LLM Inference Tokens**           | Blended commercial API tokens (~2,800 tokens per audit across reasoning and Guardrails) | $150.00 USD     | $1,800.00 USD            |
-| **Network Egress & NAT Gateway**         | AWS Managed NAT Gateway ($0.059/hr) plus ~100GB audit dossier data egress ($0.11/GB)    | $60.00 USD      | $720.00 USD              |
-| **Object Storage & Automated Snapshots** | AWS S3 Standard archive, 100GB GP3 EBS root volume, and daily automated snapshots       | $30.00 USD      | $360.00 USD              |
-| **Network Security & VPN Tunnel**        | AWS Elastic IP address allocations and managed client/site-to-site VPN connection       | $50.00 USD      | $600.00 USD              |
-| **Cloud SRE & DevOps Overhead**          | CloudWatch log monitoring, TLS certificate automation, and basic SLA support buffer     | $100.00 USD     | $1,200.00 USD            |
-| **Total Cloud SaaS Stack**               | **Fully managed multi-tenant cloud infrastructure**                                     | **$590.00 USD** | **$7,080.00 USD / year** |
+| Expense Component                        | Technical Specification                                                                              | Monthly Fee     | Annual Cost              |
+| :--------------------------------------- | :--------------------------------------------------------------------------------------------------- | :-------------- | :----------------------- |
+| **Cloud Hosting Compute**                | 1x AWS EC2 `t4g.xlarge` (4 vCPU, 16GB RAM) in Jakarta (`ap-southeast-3` at $0.1696/hr \* 730 hrs)    | $123.81 USD     | $1,485.70 USD            |
+| **Managed Vector Database**              | Qdrant Cloud Starter / Pinecone Standard dedicated node (4GB RAM, 10GB index)                        | $95.00 USD      | $1,140.00 USD            |
+| **Cloud LLM Inference Tokens**           | Blended commercial API tokens (~2,800 tokens per audit across reasoning and Guardrails)              | $150.00 USD     | $1,800.00 USD            |
+| **Network Egress & NAT Gateway**         | AWS Managed NAT Gateway ($0.050/hr in Jakarta) plus ~100GB audit dossier egress ($0.11/GB)           | $56.00 USD      | $672.00 USD              |
+| **Object Storage & Automated Snapshots** | AWS S3 Standard archive, 100GB GP3 EBS root volume ($0.08/GB-mo in Jakarta), and automated snapshots | $20.00 USD      | $240.00 USD              |
+| **Network Security & VPN Tunnel**        | AWS Elastic IP address allocations and managed client/site-to-site VPN connection ($0.050/hr)        | $50.00 USD      | $600.00 USD              |
+| **Cloud SRE & DevOps Overhead**          | CloudWatch log monitoring ($0.50/GB), Secrets Manager, TLS automation, and support buffer            | $95.00 USD      | $1,140.00 USD            |
+| **Total Cloud SaaS Stack**               | **Fully managed multi-tenant cloud infrastructure**                                                  | **$589.81 USD** | **$7,077.72 USD / year** |
 
----
+_Note: AWS EC2 compute is benchmarked via Vantage Remote Instances MCP Server ([instances.vantage.sh](https://instances.vantage.sh/)) for `ap-southeast-3` (Jakarta), while managed vector DB, networking, and utility rates are conservative regional estimates [10]._
 
 ### B. CustomsGuard On-Premise Docker Architecture
 
@@ -122,20 +116,16 @@ _Amortization Note: Over a standard 3-year enterprise IT depreciation schedule, 
 | **Hardware Maintenance Fund** | Annual maintenance allocation for fan replacement, CMOS battery, and thermal maintenance   | $25.00 USD      | $2.08 USD              |
 | **Total Direct Annual OPEX**  | **Total cash bleed required to run the on-premise system 24/7/365**                        | **$252.11 USD** | **$21.01 USD / month** |
 
----
-
 ### C. Total Cost of Ownership (TCO) & Net Savings Analysis
 
 Comparing cumulative costs across 1-year and 3-year horizons demonstrates massive capital efficiency:
 
 | Evaluation Horizon        | Cloud SaaS Alternative | CustomsGuard On-Premise Docker              | Net Dollar Savings  | Cost Reduction (%)  |
 | :------------------------ | :--------------------- | :------------------------------------------ | :------------------ | :------------------ |
-| **Year 1 (CAPEX + OPEX)** | $7,080.00 USD          | $1,087.11 USD ($835 CAPEX + $252.11 OPEX)   | **+$5,992.89 USD**  | **~84.65% Savings** |
-| **Year 2 (Ongoing OPEX)** | $7,080.00 USD          | $252.11 USD (Direct operating cost)         | **+$6,827.89 USD**  | **~96.44% Savings** |
-| **Year 3 (Ongoing OPEX)** | $7,080.00 USD          | $252.11 USD (Direct operating cost)         | **+$6,827.89 USD**  | **~96.44% Savings** |
-| **3-Year Cumulative TCO** | **$21,240.00 USD**     | **$1,591.33 USD (Hardware + 3 Years OPEX)** | **+$19,648.67 USD** | **~92.51% Savings** |
-
----
+| **Year 1 (CAPEX + OPEX)** | $7,077.72 USD          | $1,087.11 USD ($835 CAPEX + $252.11 OPEX)   | **+$5,990.61 USD**  | **~84.64% Savings** |
+| **Year 2 (Ongoing OPEX)** | $7,077.72 USD          | $252.11 USD (Direct operating cost)         | **+$6,825.61 USD**  | **~96.44% Savings** |
+| **Year 3 (Ongoing OPEX)** | $7,077.72 USD          | $252.11 USD (Direct operating cost)         | **+$6,825.61 USD**  | **~96.44% Savings** |
+| **3-Year Cumulative TCO** | **$21,233.16 USD**     | **$1,591.33 USD (Hardware + 3 Years OPEX)** | **+$19,641.83 USD** | **~92.51% Savings** |
 
 ### D. Startup Unit Economics & SaaS Gross Margins
 
@@ -148,8 +138,6 @@ Because CustomsGuard's marginal infrastructure serving cost is negligible, the s
 | **Enterprise Tier ($2,000/mo)** | $2,000.00 USD   | $24,000.00 USD | $45.00 USD / mo ($540.00 USD / yr) | $23,460.00 USD      | **~97.75% Margin**    |
 
 _Operational Context: On Enterprise deployments, the customer either provides their own on-premise server or pays the one-time $835 CAPEX as a pass-through deployment fee, allowing CustomsGuard to capture pure recurring high-margin software license revenue._
-
----
 
 ## 5. Core Solution Capabilities & Operational Value Matrix
 
@@ -164,16 +152,15 @@ CustomsGuard bridges commercial shipping documents and trade compliance through 
 | **Automated Evidentiary Dossiers** | Local disk export of timestamped Markdown and JSON audit dossiers to `./data/reports/`                | Programmatic, immutable audit trail generation                                                       | Provides certified documentation for post-clearance audits and tax authority verification                      |
 | **Sub-Second Incident Alerting**   | Automated SMTP email alert dispatching via Mailpit (`localhost:8025`)                                 | Real-time notification dispatch when high-risk non-compliance is detected                            | Alerts operations coordinators days before container vessels berth at port                                     |
 
----
-
 ## 6. Authoritative Reference Citations & Regulatory Bases
 
-- **[1] PT Pelindo Regional 2 Tanjung Priok (Ocean Week)**: Operational performance release confirming 8.30M TEUs (5.69M boxes) and 21.51M tons throughput in 2025. ([oceanweek.co.id](https://oceanweek.co.id/pelindo-priok-tangani-830-juta-teus-2151-juta-ton/))
-- **[2] Mordor Intelligence**: _Indonesia Customs Brokerage Market Size & Share Analysis (2026-2031)_. Market size $2.23B in 2025 to $3.32B in 2031 (6.83% CAGR), 15.34% digital-first CAGR, and 7 to 10 day un-booked slot queue times. ([mordorintelligence.com](https://www.mordorintelligence.com/industry-reports/indonesia-customs-brokerage-market))
-- **[3] CMA CGM Group**: _CMA CGM Indonesia Merged Import Demurrage & Detention Tariff_. Effective July 1, 2026. Establishes 5 free days for Standard Dry containers, progressive day-slabs ($101/day on Days 6 to 10 for 40ft Dry Standard), and 3 free days for Reefer containers. ([cma-cgm.com](https://www.cma-cgm.com/local/indonesia/news/630/adjustment-of-demurrage-amp-detention-tariffs))
-- **[4] Republic of Indonesia Customs Law**: Law No. 17 of 2006 amending Law No. 10 of 1995 on Customs (Undang-Undang Kepabeanan), Articles 82(5) and 16(4); implemented via Government Regulation (PP) No. 39 of 2019, establishing 100% to 1,000% administrative surcharges.
-- **[5] ASEAN Secretariat**: _ASEAN Statistical Yearbook 2023 (ASYB)_. Volume 19, ISSN 2986-3627, Jakarta: ASEAN Secretariat, December 2023. Confirms total ASEAN merchandise trade in goods of $3.85T USD ($2.35T waterborne) and Indonesia's Transportation and Storage sector GDP of 983.5T IDR.
-- **[6] WTO / UNCTAD ITC MAcMap**: Market Access Map Customs Tariff Database. 5,612 Indonesian 6-digit Harmonized System subheadings, MFN tariff rates, and 546 restricted commodity schedules. ([macmap.org](https://www.macmap.org))
-- **[7] Research and Markets**: _ASEAN Freight and Logistics Market Share Analysis (2026-2031)_. Report ID 5759301. Sizing broader ASEAN freight and logistics market from $288.24B (2025) to $406.10B by 2031 (5.82% CAGR). ([researchandmarkets.com](https://www.researchandmarkets.com/reports/5759301/asean-freight-logistics-market-share-analysis))
-- **[8] MetaStat Insight**: _ASEAN Freight Forwarding Market (2026-2033)_. Forecasting ASEAN freight forwarding from $31.9B in 2025 to $46.1B by 2033 at a 4.7% CAGR. ([metastatinsight.com](https://metastatinsight.com/press-releases/asean-freight-forwarding-market))
-- **[9] Ministry of Health & SDPPI Regulatory Decrees**: Ministry of Health Regulation Permenkes No. 5 of 2026 (medical devices) and Ministry of Communication and Digital / SDPPI certification decrees under Law No. 36 of 1999 (telecom equipment).
+**[1] PT Pelindo Regional 2 Tanjung Priok (Ocean Week)**: Operational performance release confirming 8.30M TEUs (5.69M boxes) and 21.51M tons throughput in 2025. ([oceanweek.co.id](https://oceanweek.co.id/pelindo-priok-tangani-830-juta-teus-2151-juta-ton/))  
+**[2] Mordor Intelligence**: _Indonesia Customs Brokerage Market Size & Share Analysis (2026-2031)_. Market size $2.23B in 2025 to $3.32B in 2031 (6.83% CAGR), 15.34% digital-first CAGR, and 7 to 10 day un-booked slot queue times. ([mordorintelligence.com](https://www.mordorintelligence.com/industry-reports/indonesia-customs-brokerage-market))  
+**[3] CMA CGM Group**: _CMA CGM Indonesia Merged Import Demurrage & Detention Tariff_. Effective July 1, 2026. Establishes 5 free days for Standard Dry containers, progressive day-slabs ($101/day on Days 6 to 10 for 40ft Dry Standard), and 3 free days for Reefer containers. ([cma-cgm.com](https://www.cma-cgm.com/local/indonesia/news/630/adjustment-of-demurrage-amp-detention-tariffs))  
+**[4] Republic of Indonesia Customs Law**: Law No. 17 of 2006 amending Law No. 10 of 1995 on Customs (Undang-Undang Kepabeanan), Articles 82(5) and 16(4); implemented via Government Regulation (PP) No. 39 of 2019, establishing 100% to 1,000% administrative surcharges.  
+**[5] ASEAN Secretariat**: _ASEAN Statistical Yearbook 2023 (ASYB)_. Volume 19, ISSN 2986-3627, Jakarta: ASEAN Secretariat, December 2023. Confirms total ASEAN merchandise trade in goods of $3.85T USD ($2.35T waterborne) and Indonesia's Transportation and Storage sector GDP of 983.5T IDR.  
+**[6] WTO / UNCTAD ITC MAcMap**: Market Access Map Customs Tariff Database. 5,612 Indonesian 6-digit Harmonized System subheadings, MFN tariff rates, and 546 restricted commodity schedules. ([macmap.org](https://www.macmap.org))  
+**[7] Research and Markets**: _ASEAN Freight and Logistics Market Share Analysis (2026-2031)_. Report ID 5759301. Sizing broader ASEAN freight and logistics market from $288.24B (2025) to $406.10B by 2031 (5.82% CAGR). ([researchandmarkets.com](https://www.researchandmarkets.com/reports/5759301/asean-freight-logistics-market-share-analysis))  
+**[8] MetaStat Insight**: _ASEAN Freight Forwarding Market (2026-2033)_. Forecasting ASEAN freight forwarding from $31.9B in 2025 to $46.1B by 2033 at a 4.7% CAGR. ([metastatinsight.com](https://metastatinsight.com/press-releases/asean-freight-forwarding-market))  
+**[9] Ministry of Health & SDPPI Regulatory Decrees**: Ministry of Health Regulation Permenkes No. 5 of 2026 (medical devices) and Ministry of Communication and Digital / SDPPI certification decrees under Law No. 36 of 1999 (telecom equipment).  
+**[10] Vantage Instances MCP & Cloud Infrastructure Schedules**: Real-time AWS EC2 instance pricing queried via the Vantage Remote Instances MCP Server ([instances.vantage.sh](https://instances.vantage.sh/)) for `ap-southeast-3` (Jakarta), official AWS regional pricing schedules for NAT Gateway and EBS gp3, and PT PLN (Persero) commercial electricity tariffs (Golongan Bisnis B-1/TR).
