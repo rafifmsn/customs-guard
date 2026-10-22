@@ -7,19 +7,8 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from typing import List
 from langchain_core.tools import BaseTool, Tool, tool
-
-try:
-  from langflow.custom import Component
-  from langflow.io import Output
-except ImportError:
-
-  class Component:
-    pass
-
-  class Output:
-
-    def __init__(self, **kwargs):
-      self.__dict__.update(kwargs)
+from langflow.custom import Component
+from langflow.io import Output
 
 
 # CMA CGM Indonesia Merged Import Demurrage & Detention Tariff (Effective July 1, 2026)
@@ -315,6 +304,25 @@ def format_compliance_alert_body(
       except Exception:
         parsed = None
 
+  # Disk fallback: If plain text was passed by LLM, load cached dossier metadata if present
+  if parsed is None and shipment_id:
+    base_dirs = ["/app/reports", "./data/reports"]
+    for base in base_dirs:
+      if os.path.exists(base):
+        try:
+          for date_dir in sorted(os.listdir(base), reverse=True):
+            candidate = os.path.join(
+                base, date_dir, shipment_id, "audit_report.json"
+            )
+            if os.path.isfile(candidate):
+              with open(candidate, "r", encoding="utf-8") as jf:
+                parsed = json.load(jf)
+              break
+          if parsed is not None:
+            break
+        except Exception:
+          pass
+
   if parsed is not None:
     importer = (
         parsed.get("importer") or parsed.get("importer_name") or "UNKNOWN"
@@ -343,11 +351,18 @@ def format_compliance_alert_body(
     )
     projected_str = f"${projected_val:,.2f} USD"
 
-    raw_notes = parsed.get("critical_notes") or []
-    if raw_notes:
-      notes_lines = [f"- {n}" for n in raw_notes]
+    details_text = str(alert_details or "").strip()
+    if details_text and not details_text.startswith("{"):
+      for line in details_text.splitlines():
+        clean = line.strip()
+        if clean:
+          notes_lines.append(clean if clean.startswith("-") else f"- {clean}")
     else:
-      notes_lines = [f"- Audit flagged status: {verdict}"]
+      raw_notes = parsed.get("critical_notes") or []
+      if raw_notes:
+        notes_lines = [f"- {n}" for n in raw_notes]
+      else:
+        notes_lines = [f"- Audit flagged status: {verdict}"]
   else:
     details_text = str(alert_details or "").strip()
     if details_text:

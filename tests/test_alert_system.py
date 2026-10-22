@@ -53,3 +53,48 @@ def test_send_compliance_alert_smtp_failure_handling(alert_tool):
         })
 
     assert "Failed to send email via Mailpit" in result
+
+
+def test_send_compliance_alert_plain_text_enriches_from_disk(alert_tool, tmp_path):
+    """Verify that when an LLM passes a plain text summary, the alert is enriched with cached dossier numbers."""
+    from scripts.customs_components import format_compliance_alert_body
+    import json
+    import os
+
+    shipment_id = "SHP-DISK-ENRICH-001"
+    report_dir = os.path.join("data", "reports", "2026-10-22", shipment_id)
+    os.makedirs(report_dir, exist_ok=True)
+    report_file = os.path.join(report_dir, "audit_report.json")
+
+    mock_audit = {
+        "shipment_id": shipment_id,
+        "importer": "Enriched Importer PT",
+        "container_count": 3,
+        "total_duty_shortfall_usd": 7500.0,
+        "estimated_demurrage_per_day_usd": 303.0,
+        "demurrage_assessment": {
+            "container_size": "40ft",
+            "container_type": "Standard Dry",
+            "applicable_slab": "Days 6 to 10 ($101.00/day)",
+            "projected_cumulative_liability_usd": 1515.0,
+        },
+    }
+    with open(report_file, "w", encoding="utf-8") as f:
+        json.dump(mock_audit, f)
+
+    try:
+        body = format_compliance_alert_body(
+            shipment_id=shipment_id,
+            verdict="NON_COMPLIANT_HIGH_RISK",
+            alert_details="Critical discrepancies identified by Bob LLM.",
+        )
+        assert "Importer                : Enriched Importer PT" in body
+        assert "3x 40ft Standard Dry" in body
+        assert "$7,500.00 USD" in body
+        assert "$303.00 USD / day" in body
+        assert "$1,515.00 USD" in body
+        assert "Critical discrepancies identified by Bob LLM." in body
+    finally:
+        import shutil
+        shutil.rmtree(report_dir, ignore_errors=True)
+
