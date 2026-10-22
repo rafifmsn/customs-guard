@@ -820,18 +820,19 @@ def render_app() -> None:
         with st.container(border=True):
             st.markdown("**:material/shield: CustomsGuard v2**")
             st.caption(
-                f"Active Manifest: `{active_shp}` ({active_status})"
+                f"Manifest: `{active_shp}`  \n"
+                f"Status: `{active_status}`"
             )
             q_ok = health.get("qdrant", {}).get("reachable", False)
             m_ok = health.get("mailpit", {}).get("reachable", False)
             l_ok = health.get("langflow", {}).get("reachable", False)
             st.caption(
-                f"Qdrant: `{'ON' if q_ok else 'SEED'}` · "
-                f"Mailpit: `{'ON' if m_ok else 'OFF'}` · "
+                f"Qdrant: `{'ON' if q_ok else 'SEED'}`  \n"
+                f"Mailpit: `{'ON' if m_ok else 'OFF'}`  \n"
                 f"Langflow: `{'ON' if l_ok else 'OFF'}`"
             )
         st.caption(
-            "Swagger API: [localhost:8000/docs](http://localhost:8000/docs) · "
+            "API: [localhost:8000/docs](http://localhost:8000/docs)  \n"
             "Mailpit: [localhost:8025](http://localhost:8025)"
         )
 
