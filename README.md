@@ -76,6 +76,8 @@ docker compose up -d
 
 Service endpoints:
 
+- **CustomsGuard Dashboard**: `http://localhost:8501`
+- **FastAPI Controller & Swagger UI**: `http://localhost:8000/docs`
 - **Langflow Canvas**: `http://localhost:7860` (Username: `admin`, Password: `admin123`)
 - **Mailpit Web UI**: `http://localhost:8025`
 - **Qdrant REST API**: `http://localhost:6333`

@@ -106,6 +106,11 @@ Why FastAPI is used here: Streamlit re-executes its entire script on every user 
 Running multi-minute subprocess calls or heavy network orchestration directly inside Streamlit causes UI lockups and cancelled runs when users switch tabs.
 FastAPI isolates all state and process management behind clean REST endpoints without adding heavy message brokers like Celery or Redis.
 
+- **Programmatic OpenAPI & Swagger UI (Anti-Bloat Documentation)**:
+  Instead of maintaining fragile static Markdown API tables that drift out of sync with code changes, the API relies on strict Pydantic models (`InvoicePayload`, `AuditResult`, `ReportItem`, `AssistantQuery`).
+  FastAPI automatically serves the interactive Swagger UI at `http://localhost:8000/docs`, ReDoc at `http://localhost:8000/redoc`, and the OpenAPI JSON schema at `http://localhost:8000/openapi.json`.
+  This allows evaluators and developers to test all endpoints interactively in their browser with zero documentation maintenance overhead.
+
 - **Endpoints**:
   - `GET /api/v1/health`: Checks connectivity to Qdrant (`:6333`), Langflow (`:7860`), and Mailpit (`:1025`).
   - `POST /api/v1/audit`:

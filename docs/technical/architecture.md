@@ -87,3 +87,10 @@ For complete step-by-step connection instructions and active client configuratio
 3. Langflow executes the visual pipeline, querying Qdrant tariffs, generating audit reports, and queuing Mailpit alerts.
 4. Langflow passes the synthesized audit through the Guardrails safety filter.
 5. Bob receives the sanitized verdict stream and renders the executive summary to the compliance officer.
+
+## 4. Centralized REST Controller & Swagger Documentation
+
+In the v2 architecture, a centralized FastAPI controller (`customsguard-api`) operates on port `:8000`.
+It exposes REST endpoints for invoice auditing, dossier report listing, and bounded IBM Bob CLI subprocess execution.
+Interactive API documentation and OpenAPI schemas are generated programmatically from Pydantic models at `http://localhost:8000/docs` (Swagger UI) and `http://localhost:8000/redoc` (ReDoc).
+This provides an interactive testing environment with zero static documentation maintenance debt.
