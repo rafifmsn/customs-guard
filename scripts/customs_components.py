@@ -139,7 +139,7 @@ def format_markdown_dossier(
       raise ValueError("Payload is not a JSON object")
   except Exception:
     return (
-        "# CustomsGuard Compliance Audit Report\n\n"
+        "### CustomsGuard Compliance Audit Report\n\n"
         f"**Shipment ID**: {shipment_id}  \n"
         f"**Generated At**: {generated_at}  \n\n"
         f"```json\n{audit_summary_json}\n```\n"
@@ -193,13 +193,13 @@ def format_markdown_dossier(
   findings = data.get("findings") or []
 
   lines = [
-      "# CustomsGuard Compliance Audit Report",
+      "### CustomsGuard Compliance Audit Report",
       "",
       f"**Shipment ID**: {shipment_id}  ",
       f"**Generated At**: {generated_at}  ",
       f"**Verdict**: {verdict}",
       "",
-      "### Executive Summary",
+      "#### Executive Summary",
       "",
       f"- **Importer**: {importer}",
       f"- **Destination Port**: {destination_port}",
@@ -212,7 +212,7 @@ def format_markdown_dossier(
       f"- **Estimated Daily Demurrage**: ${daily_demurrage:,.2f} USD / day (${daily_per_container:,.2f}/day per container, {applicable_slab})",
       f"- **Projected {detention_days}-Day Hold Liability**: ${projected_liability:,.2f} USD",
       "",
-      "### Critical Discrepancies & Regulatory Violations",
+      "#### Critical Discrepancies & Regulatory Violations",
       "",
   ]
 
@@ -230,7 +230,7 @@ def format_markdown_dossier(
 
   lines.extend([
       "",
-      "### Itemized Audit Findings",
+      "#### Itemized Audit Findings",
       "",
       "| Item ID | Declared Description | Declared HS | Matched HS | Declared Duty | Official Duty | Shortfall (USD) | Restricted | Mandatory Permits |",
       "| :---: | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :--- |",
@@ -258,7 +258,7 @@ def format_markdown_dossier(
 
   lines.extend([
       "",
-      "### Automated Actions Taken",
+      "#### Automated Actions Taken",
       "",
   ])
   if md_path:

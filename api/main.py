@@ -125,29 +125,91 @@ def _build_executive_narrative(audit: AuditResult) -> str:
     return f"{status_line}\n\n{risk_line}"
 
 
-def _try_langflow_narrative(invoice_dict: dict, fallback_narrative: str) -> str:
-    """Optionally queries Langflow REST endpoint if a flow ID is configured in environment."""
-    flow_id = os.environ.get("LANGFLOW_FLOW_ID")
-    if not flow_id:
-        return fallback_narrative
+def _get_langflow_api_key() -> Optional[str]:
+    """Resolves LANGFLOW_API_KEY from environment, .env file, or .bob/mcp.json."""
+    env_key = os.environ.get("LANGFLOW_API_KEY")
+    if env_key:
+        return env_key
 
-    payload = json.dumps(
-        {
-            "input_value": json.dumps(invoice_dict),
-            "output_type": "chat",
-            "input_type": "chat",
-        }
-    ).encode("utf-8")
+    env_path = os.path.join(BASE_DIR, ".env")
+    if os.path.isfile(env_path):
+        try:
+            with open(env_path, "r", encoding="utf-8") as f:
+                for line in f:
+                    clean = line.strip()
+                    if clean.startswith("LANGFLOW_API_KEY="):
+                        val = clean.split("=", 1)[1].strip().strip('"').strip("'")
+                        if val:
+                            return val
+        except Exception:
+            pass
+
+    mcp_path = os.path.join(BASE_DIR, ".bob", "mcp.json")
+    if os.path.isfile(mcp_path):
+        try:
+            with open(mcp_path, "r", encoding="utf-8") as f:
+                mcp_cfg = json.load(f)
+            args = (
+                mcp_cfg.get("mcpServers", {})
+                .get("lf-ibmsb", {})
+                .get("args", [])
+            )
+            if "x-api-key" in args:
+                idx = args.index("x-api-key")
+                if idx + 1 < len(args):
+                    return str(args[idx + 1])
+        except Exception:
+            pass
+    return None
+
+
+def _try_langflow_narrative(invoice_dict: dict, fallback_narrative: str) -> str:
+    """Queries Langflow v2 (/api/v2/workflows) or v1 (/api/v1/run/{flow_id}) with x-api-key."""
+    import uuid
+
+    flow_id = (
+        os.environ.get("LANGFLOW_FLOW_ID")
+        or "d79a75e5-63f9-4da4-ac36-9c7d7d1b9e1b"
+    )
+    api_key = _get_langflow_api_key()
+    headers = {"Content-Type": "application/json"}
+    if api_key:
+        headers["x-api-key"] = api_key
+
+    input_str = json.dumps(invoice_dict)
 
     for host in ["langflow", "localhost"]:
-        url = f"http://{host}:7860/api/v1/run/{flow_id}"
+        # 1. Try Langflow v2 workflows endpoint
+        v2_url = f"http://{host}:7860/api/v2/workflows"
+        v2_payload = json.dumps(
+            {
+                "flow_id": flow_id,
+                "input_value": input_str,
+            }
+        ).encode("utf-8")
         try:
-            req = urllib.request.Request(
-                url,
-                data=payload,
-                headers={"Content-Type": "application/json"},
-            )
-            with urllib.request.urlopen(req, timeout=15) as resp:
+            req = urllib.request.Request(v2_url, data=v2_payload, headers=headers)
+            with urllib.request.urlopen(req, timeout=20) as resp:
+                data = json.loads(resp.read().decode("utf-8"))
+                v2_text = data.get("output", {}).get("text")
+                if v2_text:
+                    return str(v2_text)
+        except Exception:
+            pass
+
+        # 2. Fallback to Langflow v1 run endpoint
+        v1_url = f"http://{host}:7860/api/v1/run/{flow_id}"
+        v1_payload = json.dumps(
+            {
+                "output_type": "chat",
+                "input_type": "chat",
+                "input_value": input_str,
+                "session_id": str(uuid.uuid4()),
+            }
+        ).encode("utf-8")
+        try:
+            req = urllib.request.Request(v1_url, data=v1_payload, headers=headers)
+            with urllib.request.urlopen(req, timeout=20) as resp:
                 data = json.loads(resp.read().decode("utf-8"))
                 outputs = data.get("outputs", [])
                 if outputs:
@@ -159,7 +221,7 @@ def _try_langflow_narrative(invoice_dict: dict, fallback_narrative: str) -> str:
                         .get("text")
                     )
                     if text:
-                        return text
+                        return str(text)
         except Exception:
             continue
     return fallback_narrative
@@ -462,7 +524,10 @@ def list_reports() -> List[ReportItem]:
                 if os.path.isfile(md_file):
                     with open(md_file, "r", encoding="utf-8") as mf:
                         md_content = mf.read()
-                    if "```json" in md_content and "### Executive Summary" not in md_content:
+                    if (
+                        ("```json" in md_content and "Executive Summary" not in md_content)
+                        or md_content.startswith("# ")
+                    ):
                         md_content = format_markdown_dossier(
                             shipment_id=shp_id,
                             audit_summary_json=json_content,

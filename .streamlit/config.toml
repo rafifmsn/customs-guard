@@ -8,18 +8,18 @@ enableXsrfProtection = false
 gatherUsageStats = false
 
 [theme]
-base = "light"
-primaryColor = "#111111"
-backgroundColor = "#FFFFFF"
-secondaryBackgroundColor = "#F8FAFC"
-textColor = "#0F172A"
+base = "dark"
+primaryColor = "#A78BFA"
+backgroundColor = "#121212"
+secondaryBackgroundColor = "#1A1A22"
+textColor = "#F8FAFC"
 font = "sans-serif"
 baseFontSize = 15
-borderColor = "#E2E8F0"
+borderColor = "#2A2A35"
 showSidebarBorder = true
 
 [theme.sidebar]
-backgroundColor = "#F8FAFC"
-secondaryBackgroundColor = "#F1F5F9"
-textColor = "#0F172A"
-borderColor = "#E2E8F0"
+backgroundColor = "#0B0B0F"
+secondaryBackgroundColor = "#16161E"
+textColor = "#E2E8F0"
+borderColor = "#23232E"

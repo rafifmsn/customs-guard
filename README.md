@@ -27,20 +27,50 @@ CustomsGuard transforms this manual routine into a deterministic, sub-5-second a
 
 ## System Architecture
 
-CustomsGuard connects a local multi-service backend with IBM Bob via the Model Context Protocol (MCP):
+CustomsGuard operates via a **split-channel architecture** that separates instant deterministic auditing from conversational agent reasoning:
 
 ```mermaid
-flowchart LR
-    A["IBM Bob Client (Desktop / CLI)"] -- "MCP (Streamable HTTP)" --> B["Langflow Server (:7860)"]
-    B --> C["CustomsGuard Agent"]
-    C --> D["CustomsGuard Toolkit"]
-    D --> E["Qdrant DB (5,612 Tariffs)"]
-    D --> F["Reports Storage (:./data/reports)"]
-    D --> G["Mailpit SMTP Server (:1025)"]
-    C --> H["Safety Guardrails Node"]
-    H -- "Pass" --> I["Executive Audit Verdict"]
-    H -- "Fail" --> J["Security Intervention Alert"]
+flowchart TD
+    subgraph UI_Layer ["Front-End & Client Layer"]
+        A["Streamlit Web UI (:8501)"]
+        B["Next.js Landing Showcase (:3000)"]
+        C["IBM Bob Desktop / CLI"]
+    end
+
+    subgraph Deterministic_Path ["FastAPI Deterministic Engine (:8000)"]
+        D["FastAPI Controller"]
+        E["CustomsGuard Toolkit"]
+    end
+
+    subgraph Agent_Path ["Autonomous Agent Engine (:7860)"]
+        F["Langflow Workflow / MCP (:7860)"]
+        G["LLM Agent & Guardrails"]
+    end
+
+    subgraph Storage_Services ["Local Infrastructure"]
+        H["Qdrant DB (5,612 HS Tariffs)"]
+        I["Local Reports Archive (./data/reports)"]
+        J["Mailpit SMTP (:1025 / :8025)"]
+    end
+
+    A -- "Direct REST API" --> D
+    D --> E
+    E --> H
+    E --> I
+    E --> J
+
+    C -- "MCP Protocol" --> F
+    F --> G
+    G --> E
 ```
+
+> [!NOTE]
+> **Dual Execution Channels**:
+> 1. **Deterministic Operator Channel (Streamlit & FastAPI)**:
+> Direct REST calls (`POST /api/v1/audit`) bypass remote LLM inference loops.
+> They execute tariff vector lookups, demurrage calculations, Markdown dossier exports, and Mailpit SMTP dispatches deterministically in under 50ms.
+> 2. **Autonomous Agent Channel (IBM Bob & Langflow)**:
+> Interactive prompts and Bob MCP requests route to Langflow (`:7860`) where the LLM (`gpt-4o-mini`) reasons across multi-turn queries, invokes the toolkit, and generates conversational synthesis.
 
 - **IBM Bob**: Desktop conversational interface and CLI orchestrator.
 - **Model Context Protocol (MCP)**: Standardized protocol exposing the Langflow workflow as a callable client tool.

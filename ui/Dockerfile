@@ -10,4 +10,4 @@ COPY data/seed ./data/seed
 
 EXPOSE 8501
 
-ENTRYPOINT ["sh", "-c", "uv pip install streamlit && python -m streamlit run ui/app.py --server.port=8501 --server.address=0.0.0.0"]
+ENTRYPOINT ["sh", "-c", "uv pip install streamlit && python3 -c \"import streamlit, os; p = os.path.join(os.path.dirname(streamlit.__file__), 'static', 'index.html'); c = open(p).read(); '<base href=\\\"/\\\"' in c or open(p, 'w').write(c.replace('<head>', '<head>\\n    <base href=\\\"/\\\" />'))\" && python -m streamlit run ui/app.py --server.port=8501 --server.address=0.0.0.0"]
