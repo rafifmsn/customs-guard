@@ -2,7 +2,7 @@
 """
 CustomsGuard Tariff Database Parser
 Extracts all 5,613 Indonesian HS-6 codes, MFN tariff rates, and product descriptions
-from docs/macmap.xlsx and enriches them with trade restriction metadata.
+from docs/domain/macmap.xlsx and enriches them with trade restriction metadata.
 """
 
 import json
@@ -191,6 +191,8 @@ def parse_macmap(xlsx_path: str, output_json_path: str):
 
 if __name__ == "__main__":
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    xlsx_file = os.path.join(base_dir, "docs", "macmap.xlsx")
+    xlsx_file = os.path.join(base_dir, "docs", "domain", "macmap.xlsx")
+    if not os.path.exists(xlsx_file):
+        xlsx_file = os.path.join(base_dir, "docs", "macmap.xlsx")
     json_file = os.path.join(base_dir, "data", "seed", "tariff_database.json")
     parse_macmap(xlsx_file, json_file)

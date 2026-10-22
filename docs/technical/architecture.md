@@ -42,7 +42,7 @@ The Langflow visual canvas integrates six core nodes designed for deterministic 
 
 - **Type**: Autonomous Agent Component (`Agent`).
 - **Language Model**: `openai/gpt-4o-mini` (configured via OpenRouter / Model Providers).
-- **Instructions**: Defined in [`prompts/system_agent_instruction.md`](../../prompts/system_agent_instruction.md).
+- **Instructions**: Defined in [`scenarios/prompts/system_agent_instruction.md`](../../scenarios/prompts/system_agent_instruction.md).
 - **Behavior**: Evaluates discrepancies, decides when to export reports, and triggers alerts on high-risk violations.
 
 ### Node 4: Safety Guardrails Node

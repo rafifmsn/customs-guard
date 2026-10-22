@@ -127,18 +127,21 @@ BOB_API_KEY="your_api_key_here" bob run --trust "Audit shipment SHP-2026-0042 us
 
 ## Documentation & Scenarios Directory
 
-| Category                     | Document                                                                     | Description                                                                                                    |
-| :--------------------------- | :--------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------- |
-| **Domain Analysis**          | [`docs/problem_solution.md`](./docs/problem_solution.md)                     | Deep analysis of customs bottlenecks, demurrage costs, and our AI solution.                                    |
-| **Technical Architecture**   | [`docs/technical/architecture.md`](./docs/technical/architecture.md)         | Langflow canvas topology, node specifications, guardrails, and data contracts.                                 |
-| **Design & Scope Decisions** | [`docs/technical/design_decisions.md`](./docs/technical/design_decisions.md) | Rationale behind flexible agent reasoning, permit verification, and enterprise roadmap.                        |
-| **MCP Integration**          | [`docs/technical/mcp_setup.md`](./docs/technical/mcp_setup.md)               | Step-by-step connection guide for IBM Bob and Langflow MCP proxy.                                              |
-| **Commercial Strategy**      | [`docs/business/business_canvas.md`](./docs/business/business_canvas.md)     | Business model canvas, ROI model, demurrage savings, and ~87% tech cost reduction.                             |
-| **Langflow Flow Template**   | [`langflow/CustomsGuard.json`](./langflow/CustomsGuard.json)                 | Pre-configured Langflow visual pipeline export (Agent, CustomsGuard Tools, Guardrails).                       |
-| **Prompts Library**          | [`prompts/`](./prompts/)                                                     | Modular prompts for high-risk audits, demurrage scaling, and duty restitution.                                 |
-| **Test Invoices**            | [`data/seed/sample_invoices.json`](./data/seed/sample_invoices.json)         | Scenario invoice payloads with carrier, container metadata, and declared commodities.                          |
-| **Reference Dossiers**       | [`expected-outputs/`](./expected-outputs/)                                   | Ground-truth reference audit reports matching each test scenario.                                              |
-| **Source Tariff Data**       | [`docs/macmap.xlsx`](./docs/macmap.xlsx)                                     | Official WTO/UNCTAD International Trade Centre (ITC) Market Access Map (MAcMap) tariff schedule for Indonesia. |
+### Domain & Business Strategy
+- [`docs/domain/problem_solution.md`](./docs/domain/problem_solution.md): Deep analysis of customs bottlenecks, demurrage costs, and our AI solution.
+- [`docs/domain/business_canvas.md`](./docs/domain/business_canvas.md): Business model canvas, ROI model, demurrage savings, and ~87% tech cost reduction.
+- [`docs/domain/macmap.xlsx`](./docs/domain/macmap.xlsx): Official WTO/UNCTAD International Trade Centre (ITC) Market Access Map (MAcMap) tariff schedule for Indonesia.
+
+### Technical Architecture & Setup
+- [`docs/technical/architecture.md`](./docs/technical/architecture.md): Langflow canvas topology, node specifications, guardrails, and data contracts.
+- [`docs/technical/design_decisions.md`](./docs/technical/design_decisions.md): Rationale behind flexible agent reasoning, permit verification, and enterprise roadmap.
+- [`docs/technical/mcp_setup.md`](./docs/technical/mcp_setup.md): Step-by-step connection guide for IBM Bob and Langflow MCP proxy.
+- [`langflow/CustomsGuard.json`](./langflow/CustomsGuard.json): Pre-configured Langflow visual pipeline export (Agent, CustomsGuard Tools, Guardrails).
+
+### Prompts, Test Fixtures & Reference Outputs
+- [`scenarios/prompts/`](./scenarios/prompts/): Modular prompts for high-risk audits, demurrage scaling, and duty restitution.
+- [`data/seed/sample_invoices.json`](./data/seed/sample_invoices.json): Scenario invoice payloads with carrier, container metadata, and declared commodities.
+- [`scenarios/expected-outputs/`](./scenarios/expected-outputs/): Ground-truth reference audit reports matching each test scenario.
 
 [^mckinsey-trade]: Casanova, D., Dierker, D., Jensen, B., Hausmann, L., & Stoffels, J. (2022, November 29). The multi-billion-dollar paper jam: Unlocking trade by digitalizing documentation. McKinsey & Company. https://www.mckinsey.com/industries/logistics/our-insights/the-multi-billion-dollar-paper-jam-unlocking-trade-by-digitalizing-documentation
 

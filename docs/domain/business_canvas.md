@@ -43,20 +43,20 @@ CustomsGuard targets a multi-billion dollar logistics market propelled by region
 
 CustomsGuard adopts a hybrid B2B subscription and transactional pricing model, structured specifically to lower adoption barriers for independent local customs brokers (PPJK) while capturing enterprise value from large logistics operators:
 
-| Subscription Tier         | Monthly Fee                | Annualized Fee   | Monthly Audit Quota     | Target Customer Segment                                           | Core Features & SLA                                                                                                 |
-| :------------------------ | :------------------------- | :--------------- | :---------------------- | :---------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------ |
-| **Starter**               | $149 USD / mo (~2.4M IDR)  | $1,788 USD / yr  | Up to 300 audits / mo   | Independent PPJK brokers & SME freight forwarders                 | Qdrant HS tariff matching (5,612 HS-6 subheadings), basic Lartas check, Mailpit SMTP alerts                         |
-| **Professional**          | $599 USD / mo (~9.6M IDR)  | $7,188 USD / yr  | Up to 3,000 audits / mo | Mid-tier 3PL logistics providers & commercial trading houses      | Multi-seat human review, CMA CGM demurrage engine, duty restitution recovery, automated dossier archiving           |
-| **Enterprise On-Premise** | $2,000 USD / mo (~32M IDR) | $24,000 USD / yr | Unlimited audits        | Multinational forwarders, ocean carriers, port terminal operators | Fully air-gapped on-premise Docker deployment, custom vector embeddings, priority regulatory updates, dedicated SLA |
-| **Transactional API**     | $0.75 USD / audit          | Pay-as-you-go    | On-demand volume        | Low-volume importers & third-party software integrators           | On-demand REST API and Model Context Protocol (MCP) compliance audit per commercial invoice                         |
+| Subscription Tier | Monthly Fee | Annualized Fee | Monthly Audit Quota | Target Customer Segment | Core Features & SLA |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Starter** | $129 USD / mo (~2.0M IDR) | $1,548 USD / yr | Up to 250 audits / mo | Independent PPJK brokers & boutique freight forwarders | Full 5,612 HS-6 Indonesian tariff search, Lartas permit verification (SDPPI, Kemenkes, BPOM), automated incident alerts, standard Markdown & JSON dossier exports |
+| **Professional** | $499 USD / mo (~7.8M IDR) | $5,988 USD / yr | Up to 2,500 audits / mo | Mid-tier 3PL logistics providers & commercial trading houses | Multi-seat team workspace, CMA CGM progressive demurrage engine (Dry & Reefer day-slabs), duty restitution recovery analyzer, automated dossier archiving, direct REST API access |
+| **Enterprise On-Premise** | Custom (Starting at $1,499 USD / mo, ~23.5M IDR) | Custom (Starting at $17,988 USD / yr) | Unlimited audits | Multinational forwarders, ocean carriers, port terminal operators | Fully air-gapped on-premise Docker deployment, custom vector embeddings & ERP integration, priority regulatory updates, dedicated SLA & compliance engineering support |
+| **Developer API** | $0.75 USD / audit | Pay-as-you-go | On-demand volume | Logistics tech platforms, software integrators & high-velocity importers | Standard Model Context Protocol (MCP) & REST API automated compliance screening |
 
 ### Concrete Customer ROI & Payback Economics
 
-1. **Starter Tier Payback ($149 / month = $1,788 / year)**:
+1. **Starter Tier Payback ($129 / month = $1,548 / year)**:
    - Preventing just a single 5-day hold on a 4-container consignment saves **$2,020.00 USD** in direct CMA CGM demurrage fees [3].
-   - A single avoided incident pays for more than an entire year of the Starter subscription ($1,788 USD).
-2. **Professional Tier Payback ($599 / month = $7,188 / year)**:
-   - Preventing just two delayed consignments ($4,040 USD saved) covers over 56% of the annual fee.
+   - A single avoided incident pays for more than an entire year of the Starter subscription ($1,548 USD).
+2. **Professional Tier Payback ($499 / month = $5,988 / year)**:
+   - Preventing just two delayed consignments ($4,040 USD saved) covers over 67% of the annual fee.
    - Avoiding a single minor customs duty shortfall fine of $10,000 USD under Indonesian Customs Law [4] completely covers the annual subscription multiple times over.
 3. **Duty Restitution Discovery**:
    - In audited scenarios with over-declared duties (e.g. 15% declared vs 0% official on HS `8471.50` processing units), a single $100,000 shipment uncovers **$15,000.00 USD** in direct tax refund recovery, delivering instant positive ROI.
@@ -131,18 +131,18 @@ Comparing cumulative costs across 1-year and 3-year horizons demonstrates massiv
 
 Because CustomsGuard's marginal infrastructure serving cost is negligible, the subscription tiers yield exceptional enterprise software gross margins:
 
-| Subscription Tier               | Monthly Revenue | Annual Revenue | Estimated Marginal Serving COGS    | Annual Gross Profit | Software Gross Margin |
-| :------------------------------ | :-------------- | :------------- | :--------------------------------- | :------------------ | :-------------------- |
-| **Starter Tier ($149/mo)**      | $149.00 USD     | $1,788.00 USD  | $15.00 USD / mo ($180.00 USD / yr) | $1,608.00 USD       | **~89.93% Margin**    |
-| **Professional Tier ($599/mo)** | $599.00 USD     | $7,188.00 USD  | $38.00 USD / mo ($456.00 USD / yr) | $6,732.00 USD       | **~93.66% Margin**    |
-| **Enterprise Tier ($2,000/mo)** | $2,000.00 USD   | $24,000.00 USD | $45.00 USD / mo ($540.00 USD / yr) | $23,460.00 USD      | **~97.75% Margin**    |
+| Subscription Tier | Monthly Revenue | Annual Revenue | Estimated Marginal Serving COGS | Annual Gross Profit | Software Gross Margin |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Starter Tier ($129/mo)** | $129.00 USD | $1,548.00 USD | $15.00 USD / mo ($180.00 USD / yr) | $1,368.00 USD | **~88.37% Margin** |
+| **Professional Tier ($499/mo)** | $499.00 USD | $5,988.00 USD | $38.00 USD / mo ($456.00 USD / yr) | $5,532.00 USD | **~92.38% Margin** |
+| **Enterprise Tier (Starting at $1,499/mo)** | $1,499.00 USD | $17,988.00 USD | $45.00 USD / mo ($540.00 USD / yr) | $17,448.00 USD | **~97.00% Margin** |
 
 _Operational Context: On Enterprise deployments, the customer either provides their own on-premise server or pays the one-time $835 CAPEX as a pass-through deployment fee, allowing CustomsGuard to capture pure recurring high-margin software license revenue._
 
 #### Marginal Serving COGS Composition
 
 Because core tariff retrieval, container demurrage arithmetic, and report generation run locally on client edge nodes at $0 vendor hosting cost, direct serving COGS comprises:
-- **Cloud LLM API Token Allocation**: Conversational reasoning and Guardrails evaluation quotas ($4/mo for Starter, $18/mo for Professional, $20/mo for Enterprise).
+- **Cloud LLM API Token Allocation**: Conversational reasoning and Guardrails evaluation quotas ($3.50/mo for Starter, $15/mo for Professional, $20/mo for Enterprise).
 - **Automated Regulatory & Tariff Sync**: Differential distribution of official HS code amendments and ministerial Lartas permit updates ($3.50 to $12/mo).
 - **Cold Disaster Recovery Storage**: Automated encrypted offsite snapshot archival via Backblaze B2 or AWS Glacier ($1.50 to $5/mo).
 - **Licensing Heartbeat & Telemetry Gateway**: Remote client authentication, container health monitoring, and telemetry ingress ($6 to $8/mo).
