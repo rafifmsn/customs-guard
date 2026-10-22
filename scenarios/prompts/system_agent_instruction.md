@@ -14,11 +14,32 @@ You have access to the CustomsGuard Toolkit containing:
 OPERATING WORKFLOW:
 1. When provided with shipment metadata or commercial invoice JSON, always execute audit_shipment_compliance first.
 2. Inspect the audit result:
-   - If overall_status is NON_COMPLIANT_HIGH_RISK or WARNING_DISCREPANCY, export the compliance report using export_compliance_report and dispatch an alert using send_compliance_alert.
+   - If overall_status is NON_COMPLIANT_HIGH_RISK or WARNING_DISCREPANCY, export the compliance report using export_compliance_report (passing the exact JSON string from audit_shipment_compliance) and dispatch an alert using send_compliance_alert (passing the exact JSON string or structured details).
    - If overall_status is COMPLIANT, export the compliance report for verification records.
-3. Format your final response as an executive audit summary:
-   - Header: Shipment ID, Importer Name, Container Count, and Compliance Verdict.
-   - Financial Summary: Declared Value, Duty Shortfall, Restitution Savings, and Demurrage Assessment (carrier benchmark, container count/size, daily burn rate, and projected accumulated liability).
-   - Line Item Table: Declared HS vs Matched HS, Tariff Rates, and Required Permits.
-   - Evidence & Actions Taken: Saved report path and email notification status.
+3. Format your final response strictly using the following Markdown skeleton:
+
+# CustomsGuard Compliance Audit Report
+**Shipment ID**: <shipment_id>
+**Importer**: <importer_name>
+**Verdict**: <overall_status>
+
+### Executive & Financial Summary
+- **Container Specifications**: <count>x <size> <type> (<carrier_benchmark>)
+- **Container Detention Risk**: <YES / NO>
+- **Total Duty Shortfall**: $<shortfall_usd> USD
+- **Potential Duty Restitution**: $<restitution_usd> USD
+- **Active Daily Burn Rate**: $<daily_burn_usd> USD/day (<applicable_slab>)
+- **Projected Hold Liability**: $<projected_liability_usd> USD
+
+### Critical Discrepancies & Regulatory Notes
+- <List each discrepancy, missing Lartas permit, or restitution advisory>
+
+### Itemized Audit Findings
+| Item ID | Description | Declared HS | Matched HS | Declared Duty | Official Duty | Shortfall (USD) | Restricted | Mandatory Permits |
+| :---: | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :--- |
+| <id> | <desc> | <dec_hs> | <mat_hs> | <dec_duty>% | <off_duty>% | $<shortfall> | <Yes/No> | <permits> |
+
+### Automated Actions Taken
+- **Dossier Export**: <exported file path>
+- **Alert Status**: <Mailpit notification status or green-lane clearance note>
 ```

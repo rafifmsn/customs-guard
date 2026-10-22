@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --border: 0 0% 89.8%;
+  --bg-default: 255 255 255;
+  --bg-emphasis: 229 229 229;
+  --accent: 0 0% 94.1%;
+  --border-muted: 245 245 245;
+  --bg-subtle: 245 245 245;
+  --primary-foreground: 0 0% 98%;
+  --bg-error: 254 226 226;
+  --font-satoshi: "Satoshi", "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  --border-subtle: 229 229 229;
+  --secondary-foreground: 0 0% 9%;
+  --background: 0 0% 98%;
+  --accent-foreground: 0 0% 9%;
+  --bg-success: 220 252 231;
+  --bg-muted: 250 250 250;
+  --bg-info: 191 219 254;
+  --border-default: 212 212 212;
+  --bg-attention: 255 237 213;
+  --font-geist-mono: "GeistMono", ui-monospace, SFMono-Regular, Roboto Mono, Menlo, Monaco, Liberation Mono, monospace;
+  --font-inter: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  --bg-inverted: 23 23 23;
+  --primary: 0 0% 9%;
+  --foreground: 0 0% 3.9%;
+}
+
+body {
+  background-color: #ffffff;
+  color: #111111;
+  font-family: var(--font-inter);
+  -webkit-font-smoothing: antialiased;
+}
+
+.figma-grid-bg {
+  background-image: radial-gradient(#d4d4d4 1px, transparent 1px);
+  background-size: 16px 16px;
+}

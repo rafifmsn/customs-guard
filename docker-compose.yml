@@ -67,3 +67,51 @@ services:
       qdrant:
         condition: service_started
     restart: always
+
+  # Centralized FastAPI Controller & Bounded Bob CLI Worker Pool
+  customsguard-api:
+    build:
+      context: .
+      dockerfile: api/Dockerfile
+    container_name: customsguard_api
+    ports:
+      - "${API_PORT:-8000}:8000"
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    environment:
+      - BOB_API_KEY=${BOB_API_KEY:-}
+      - LANGFLOW_FLOW_ID=${LANGFLOW_FLOW_ID:-}
+    volumes:
+      - ./data/reports:/app/reports
+      - ./data/seed:/app/data/seed
+      - ./scripts:/app/scripts
+      - ./api:/app/api
+    depends_on:
+      - qdrant
+      - mailpit
+    restart: always
+
+  # Native Streamlit Compliance Dashboard
+  customsguard-ui:
+    build:
+      context: .
+      dockerfile: ui/Dockerfile
+    container_name: customsguard_ui
+    ports:
+      - "${UI_PORT:-8501}:8501"
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    environment:
+      - CUSTOMSGUARD_API_URL=http://customsguard-api:8000
+    volumes:
+      - ./.streamlit:/app/.streamlit
+      - ./data/reports:/app/reports
+      - ./data/seed:/app/data/seed
+      - ./scripts:/app/scripts
+      - ./api:/app/api
+      - ./ui:/app/ui
+    depends_on:
+      - customsguard-api
+    restart: always

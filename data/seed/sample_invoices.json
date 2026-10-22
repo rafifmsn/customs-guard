@@ -52,6 +52,32 @@
     "notes": "Test Case: High risk tariff shortfall and missing Kemenkes medical distribution license (9018.12 requires 5% duty and Izin Edar)."
   },
   {
+    "shipment_id": "SHP-2026-0099",
+    "invoice_number": "INV-2026-SRV-990",
+    "carrier": "CMA CGM",
+    "importer_name": "PT Cloud Data Raya",
+    "exporter_name": "Supermicro Enterprise Systems Inc",
+    "country_of_origin": "US",
+    "destination_port": "Tanjung Priok, Jakarta (IDTPP)",
+    "container_count": 1,
+    "container_size": "40",
+    "container_type": "DRY",
+    "days_held_projected": 5,
+    "currency": "USD",
+    "items": [
+      {
+        "item_id": 1,
+        "declared_description": "Enterprise Processing Server Rack Unit",
+        "declared_hs_code": "8471.50",
+        "quantity": 10,
+        "unit_price": 10000.0,
+        "total_value": 100000.0,
+        "declared_duty_rate": 15.0
+      }
+    ],
+    "notes": "Test Case: Duty overpayment restitution opportunity (15.0% declared duty vs 0.0% official MFN rate on HS 8471.50)."
+  },
+  {
     "shipment_id": "SHP-2026-0105",
     "invoice_number": "INV-2026-SRV-810",
     "carrier": "CMA CGM",

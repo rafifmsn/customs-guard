@@ -43,6 +43,11 @@ def test_export_compliance_report(export_tool, tmp_path):
     assert "# CustomsGuard Compliance Audit Report" in md_content
     assert shipment_id in md_content
     assert "NON_COMPLIANT_HIGH_RISK" in md_content
+    assert "### Executive Summary" in md_content
+    assert "### Critical Discrepancies & Regulatory Violations" in md_content
+    assert "### Itemized Audit Findings" in md_content
+    assert "### Automated Actions Taken" in md_content
+    assert "```json" not in md_content
 
     # Also verify companion JSON report exists
     json_path = os.path.join(os.path.dirname(exported_path), "audit_report.json")

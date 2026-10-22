@@ -7,8 +7,19 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from typing import List
 from langchain_core.tools import BaseTool, Tool, tool
-from langflow.custom import Component
-from langflow.io import Output
+
+try:
+  from langflow.custom import Component
+  from langflow.io import Output
+except ImportError:
+
+  class Component:
+    pass
+
+  class Output:
+
+    def __init__(self, **kwargs):
+      self.__dict__.update(kwargs)
 
 
 # CMA CGM Indonesia Merged Import Demurrage & Detention Tariff (Effective July 1, 2026)
@@ -126,6 +137,255 @@ def calculate_cma_cgm_demurrage(
   }
 
 
+def format_markdown_dossier(
+    shipment_id: str,
+    audit_summary_json: str,
+    generated_at: str,
+    md_path: str = "",
+) -> str:
+  """Formats a structured, human-readable Markdown compliance dossier from audit JSON."""
+  try:
+    data = json.loads(audit_summary_json)
+    if not isinstance(data, dict):
+      raise ValueError("Payload is not a JSON object")
+  except Exception:
+    return (
+        "# CustomsGuard Compliance Audit Report\n\n"
+        f"**Shipment ID**: {shipment_id}  \n"
+        f"**Generated At**: {generated_at}  \n\n"
+        f"```json\n{audit_summary_json}\n```\n"
+    )
+
+  verdict = data.get("overall_status", "UNKNOWN")
+  importer = data.get("importer") or data.get("importer_name") or "UNKNOWN"
+  destination_port = data.get(
+      "destination_port", "Tanjung Priok, Jakarta (IDTPP)"
+  )
+  container_count = data.get("container_count", 1)
+  detention_risk = bool(data.get("container_detention_risk", False))
+  shortfall = float(data.get("total_duty_shortfall_usd", 0.0))
+  restitution = float(data.get("total_restitution_usd", 0.0))
+  daily_demurrage = float(data.get("estimated_demurrage_per_day_usd", 0.0))
+
+  demurrage = data.get("demurrage_assessment") or {}
+  carrier_benchmark = demurrage.get(
+      "benchmark_carrier", "CMA CGM Indonesia (Merged Import D&D Tariff)"
+  )
+  container_size = demurrage.get("container_size", "40ft")
+  container_type = demurrage.get("container_type", "Standard Dry")
+  free_days = demurrage.get("free_days_allowed", 5)
+  detention_days = demurrage.get(
+      "detention_days", 5 if detention_risk else 0
+  )
+  try:
+    count_num = max(1, int(container_count))
+  except (ValueError, TypeError):
+    count_num = 1
+  daily_per_container = float(
+      demurrage.get(
+          "daily_rate_per_container_usd",
+          daily_demurrage / count_num if detention_risk else 0.0,
+      )
+  )
+  projected_liability = float(
+      demurrage.get(
+          "projected_cumulative_liability_usd",
+          daily_demurrage * detention_days,
+      )
+  )
+  applicable_slab = demurrage.get(
+      "applicable_slab",
+      "Slab 1"
+      if detention_risk
+      else f"Within free time allowance ({free_days} free days)",
+  )
+
+  critical_notes = data.get("critical_notes") or []
+  findings = data.get("findings") or []
+
+  lines = [
+      "# CustomsGuard Compliance Audit Report",
+      "",
+      f"**Shipment ID**: {shipment_id}  ",
+      f"**Generated At**: {generated_at}  ",
+      f"**Verdict**: {verdict}",
+      "",
+      "### Executive Summary",
+      "",
+      f"- **Importer**: {importer}",
+      f"- **Destination Port**: {destination_port}",
+      f"- **Container Count**: {container_count} ({container_size} {container_type})",
+      f"- **Container Detention Risk**: {'YES' if detention_risk else 'NO'}",
+      f"- **Total Duty Shortfall**: ${shortfall:,.2f} USD",
+      f"- **Potential Duty Restitution Savings**: ${restitution:,.2f} USD",
+      f"- **Carrier Benchmark**: {carrier_benchmark}",
+      f"- **Free Time Allowed**: {free_days} Days Free",
+      f"- **Estimated Daily Demurrage**: ${daily_demurrage:,.2f} USD / day (${daily_per_container:,.2f}/day per container, {applicable_slab})",
+      f"- **Projected {detention_days}-Day Hold Liability**: ${projected_liability:,.2f} USD",
+      "",
+      "### Critical Discrepancies & Regulatory Violations",
+      "",
+  ]
+
+  if critical_notes:
+    for idx, note in enumerate(critical_notes, start=1):
+      lines.append(f"{idx}. {note}")
+  elif verdict != "COMPLIANT":
+    lines.append(
+        f"1. Compliance status flagged as `{verdict}` with total duty shortfall of ${shortfall:,.2f} USD."
+    )
+  else:
+    lines.append(
+        "1. Classification, tariff duty rate, and regulatory import requirements verified with zero discrepancies."
+    )
+
+  lines.extend([
+      "",
+      "### Itemized Audit Findings",
+      "",
+      "| Item ID | Declared Description | Declared HS | Matched HS | Declared Duty | Official Duty | Shortfall (USD) | Restricted | Mandatory Permits |",
+      "| :---: | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :--- |",
+  ])
+
+  if findings:
+    for item in findings:
+      item_id = item.get("item_id", 1)
+      desc = item.get("declared_description", "-")
+      dec_hs = item.get("declared_hs", "-")
+      mat_hs = item.get("matched_hs", "-")
+      dec_duty = float(item.get("declared_duty", 0.0))
+      off_duty = float(item.get("official_duty", 0.0))
+      item_shortfall = float(item.get("duty_shortfall_usd", 0.0))
+      is_restricted = "Yes" if item.get("restricted") else "No"
+      permits_list = item.get("required_permits") or []
+      permits_str = ", ".join(permits_list) if permits_list else "None"
+      lines.append(
+          f"| {item_id} | {desc} | {dec_hs} | {mat_hs} | {dec_duty:.1f}% | {off_duty:.1f}% | ${item_shortfall:,.2f} | {is_restricted} | {permits_str} |"
+      )
+  else:
+    lines.append(
+        f"| 1 | Summary Audit Declaration | - | - | - | - | ${shortfall:,.2f} | {'Yes' if detention_risk else 'No'} | {'Required' if detention_risk else 'None'} |"
+    )
+
+  lines.extend([
+      "",
+      "### Automated Actions Taken",
+      "",
+  ])
+  if md_path:
+    lines.append(f"- Audit dossier generated on local disk at `{md_path}`.")
+  else:
+    lines.append("- Audit dossier generated on local disk.")
+
+  if verdict != "COMPLIANT" or detention_risk:
+    lines.append(
+        "- Urgent detention alert email queued in Mailpit (`http://localhost:8025`)."
+    )
+  elif restitution > 0:
+    lines.append(
+        "- Tariff restitution opportunity recorded; clearance recommended with refund application."
+    )
+  else:
+    lines.append("- Fast-track green lane release recommended.")
+
+  return "\n".join(lines) + "\n"
+
+
+def format_compliance_alert_body(
+    shipment_id: str, verdict: str, alert_details: str
+) -> str:
+  """Formats a deterministic, structured plain-text email alert body for Mailpit."""
+  importer = "Not specified"
+  container_specs = "1x 40ft Standard Dry (Default)"
+  shortfall_str = "See details below"
+  daily_burn_str = "See details below"
+  projected_str = "See details below"
+  notes_lines = []
+
+  parsed = None
+  if isinstance(alert_details, dict):
+    parsed = alert_details
+  elif isinstance(alert_details, str):
+    stripped = alert_details.strip()
+    if stripped.startswith("{") and stripped.endswith("}"):
+      try:
+        candidate = json.loads(stripped)
+        if isinstance(candidate, dict):
+          parsed = candidate
+      except Exception:
+        parsed = None
+
+  if parsed is not None:
+    importer = (
+        parsed.get("importer") or parsed.get("importer_name") or "UNKNOWN"
+    )
+    demurrage = parsed.get("demurrage_assessment") or {}
+    c_count = (
+        parsed.get("container_count") or demurrage.get("container_count") or 1
+    )
+    c_size = demurrage.get("container_size", "40ft")
+    c_type = demurrage.get("container_type", "Standard Dry")
+    slab = demurrage.get("applicable_slab", "Active Slab")
+    container_specs = f"{c_count}x {c_size} {c_type} ({slab})"
+
+    shortfall_val = float(parsed.get("total_duty_shortfall_usd", 0.0))
+    shortfall_str = f"${shortfall_val:,.2f} USD"
+
+    daily_burn_val = float(
+        parsed.get("estimated_demurrage_per_day_usd")
+        or demurrage.get("daily_burn_rate_total_usd")
+        or 0.0
+    )
+    daily_burn_str = f"${daily_burn_val:,.2f} USD / day"
+
+    projected_val = float(
+        demurrage.get("projected_cumulative_liability_usd", 0.0)
+    )
+    projected_str = f"${projected_val:,.2f} USD"
+
+    raw_notes = parsed.get("critical_notes") or []
+    if raw_notes:
+      notes_lines = [f"- {n}" for n in raw_notes]
+    else:
+      notes_lines = [f"- Audit flagged status: {verdict}"]
+  else:
+    details_text = str(alert_details or "").strip()
+    if details_text:
+      for line in details_text.splitlines():
+        clean = line.strip()
+        if clean:
+          notes_lines.append(clean if clean.startswith("-") else f"- {clean}")
+    else:
+      notes_lines = [f"- Audit flagged status: {verdict}"]
+
+  formatted_notes = "\n".join(notes_lines)
+  return (
+      "====================================================================\n"
+      "CUSTOMSGUARD AUTONOMOUS COMPLIANCE & DETENTION ALERT\n"
+      "====================================================================\n\n"
+      "SHIPMENT OVERVIEW\n"
+      "-----------------\n"
+      f"Shipment ID             : {shipment_id}\n"
+      f"Official Verdict        : {verdict}\n"
+      f"Importer                : {importer}\n"
+      f"Container Specifications: {container_specs}\n\n"
+      "FINANCIAL & DEMURRAGE EXPOSURE\n"
+      "------------------------------\n"
+      f"Total Duty Shortfall    : {shortfall_str}\n"
+      f"CMA CGM Daily Burn Rate : {daily_burn_str}\n"
+      f"Projected Hold Liability: {projected_str}\n\n"
+      "CRITICAL DISCREPANCY NOTES\n"
+      "--------------------------\n"
+      f"{formatted_notes}\n\n"
+      "RECOMMENDED ACTION\n"
+      "------------------\n"
+      "Hold cargo release pending human trade compliance verification and\n"
+      "mandatory import license (Lartas) clearance.\n\n"
+      "Preview in Mailpit: http://localhost:8025\n"
+      "====================================================================\n"
+  )
+
+
 class CustomsGuardToolkitComponent(Component):
   display_name = "CustomsGuard Tools"
   description = "Suite of customs compliance audit, report export, and Mailpit alerting tools."
@@ -162,6 +422,7 @@ class CustomsGuardToolkitComponent(Component):
       findings = []
       overall_status = "COMPLIANT"
       total_duty_shortfall = 0.0
+      total_restitution_usd = 0.0
       container_detention_risk = False
       critical_notes = []
 
@@ -258,6 +519,7 @@ class CustomsGuardToolkitComponent(Component):
 
         code_diff = declared_hs != matched_code
         duty_diff = matched_duty - declared_duty
+        restitution_usd = 0.0
 
         # Feature C: Distinct handling for duty shortfall vs duty overpayment restitution
         if duty_diff > 0:
@@ -266,6 +528,8 @@ class CustomsGuardToolkitComponent(Component):
         elif duty_diff < 0:
           shortfall = 0.0
           overpayment = (abs(duty_diff) / 100.0) * total_val
+          restitution_usd = overpayment
+          total_restitution_usd += overpayment
           item_id = item.get("item_id", 1)
           critical_notes.append(
               f"Potential duty overpayment on item {item_id}: "
@@ -297,6 +561,7 @@ class CustomsGuardToolkitComponent(Component):
             "declared_duty": declared_duty,
             "official_duty": matched_duty,
             "duty_shortfall_usd": shortfall,
+            "restitution_usd": restitution_usd,
             "restricted": restricted,
             "required_permits": permits,
         })
@@ -325,10 +590,15 @@ class CustomsGuardToolkitComponent(Component):
       result = {
           "shipment_id": data.get("shipment_id", "SHP-UNKNOWN"),
           "importer": data.get("importer_name", "UNKNOWN"),
+          "carrier": data.get("carrier", "CMA CGM"),
+          "destination_port": data.get(
+              "destination_port", "Tanjung Priok, Jakarta (IDTPP)"
+          ),
           "container_count": container_count,
           "overall_status": overall_status,
           "container_detention_risk": container_detention_risk,
           "total_duty_shortfall_usd": total_duty_shortfall,
+          "total_restitution_usd": total_restitution_usd,
           "estimated_demurrage_per_day_usd": daily_demurrage,
           "demurrage_assessment": demurrage_assessment,
           "critical_notes": critical_notes,
@@ -356,13 +626,15 @@ class CustomsGuardToolkitComponent(Component):
         f.write(audit_summary_json)
 
       md_path = os.path.join(target_dir, "audit_report.md")
+      generated_at = datetime.datetime.now().isoformat()
+      md_content = format_markdown_dossier(
+          shipment_id=shipment_id,
+          audit_summary_json=audit_summary_json,
+          generated_at=generated_at,
+          md_path=md_path,
+      )
       with open(md_path, "w", encoding="utf-8") as f:
-        f.write("# CustomsGuard Compliance Audit Report\n\n")
-        f.write(f"**Shipment ID**: {shipment_id}  \n")
-        f.write(
-            f"**Generated At**: {datetime.datetime.now().isoformat()}  \n\n"
-        )
-        f.write(f"```json\n{audit_summary_json}\n```\n")
+        f.write(md_content)
 
       return f"Audit report successfully exported to: {md_path}"
 
@@ -384,12 +656,10 @@ class CustomsGuardToolkitComponent(Component):
       msg["From"] = sender
       msg["To"] = receiver
 
-      body = (
-          "CustomsGuard Compliance Notification\n"
-          f"Shipment: {shipment_id}\n"
-          f"Verdict: {verdict}\n\n"
-          f"Details:\n{alert_details}\n\n"
-          "Preview in Mailpit: http://localhost:8025\n"
+      body = format_compliance_alert_body(
+          shipment_id=shipment_id,
+          verdict=verdict,
+          alert_details=alert_details,
       )
       msg.attach(MIMEText(body, "plain"))
 

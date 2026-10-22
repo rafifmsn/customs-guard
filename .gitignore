@@ -17,3 +17,9 @@ __pycache__/
 # OS files
 .DS_Store
 Thumbs.db
+
+# Next.js Static Landing Build Artifacts
+web-landing/node_modules/
+web-landing/.next/
+web-landing/out/
+

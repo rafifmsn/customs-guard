@@ -36,6 +36,8 @@ def test_send_compliance_alert_success(alert_tool):
         assert sender == "alerts@customsguard.local"
         assert recipients == ["compliance-officer@customsguard.local"]
         assert f"Subject: [CustomsGuard Alert] {verdict}: Shipment {shipment_id}" in msg_string
+        assert "CUSTOMSGUARD AUTONOMOUS COMPLIANCE & DETENTION ALERT" in msg_string
+        assert "FINANCIAL & DEMURRAGE EXPOSURE" in msg_string
         assert "http://localhost:8025" in msg_string
 
     assert "Alert email queued in Mailpit" in result
