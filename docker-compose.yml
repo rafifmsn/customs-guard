@@ -82,7 +82,12 @@ services:
     environment:
       - BOB_API_KEY=${BOB_API_KEY:-}
       - LANGFLOW_FLOW_ID=${LANGFLOW_FLOW_ID:-}
+      - LANGFLOW_AUDIT_FLOW_ID=${LANGFLOW_AUDIT_FLOW_ID:-}
+      - LANGFLOW_ASSISTANT_FLOW_ID=${LANGFLOW_ASSISTANT_FLOW_ID:-}
+      - LANGFLOW_BOT_API_KEY=${LANGFLOW_BOT_API_KEY:-}
+      - LANGFLOW_API_KEY=${LANGFLOW_API_KEY:-}
     volumes:
+      - ./.env:/app/.env
       - ./data/reports:/app/reports
       - ./data/seed:/app/data/seed
       - ./scripts:/app/scripts

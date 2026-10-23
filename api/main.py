@@ -8,7 +8,7 @@ import signal
 import socket
 import time
 import urllib.request
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 from fastapi import FastAPI, HTTPException
 
@@ -49,7 +49,7 @@ app = FastAPI(
 )
 
 
-def _get_toolkit_map() -> Dict[str, object]:
+def _get_toolkit_map() -> Dict[str, Any]:
     component = CustomsGuardToolkitComponent()
     tools = component.build_tools()
     return {t.name: t for t in tools}
@@ -126,10 +126,11 @@ def _build_executive_narrative(audit: AuditResult) -> str:
 
 
 def _get_langflow_api_key() -> Optional[str]:
-    """Resolves LANGFLOW_API_KEY from environment, .env file, or .bob/mcp.json."""
-    env_key = os.environ.get("LANGFLOW_API_KEY")
-    if env_key:
-        return env_key
+    """Resolves Langflow API key from LANGFLOW_BOT_API_KEY, LANGFLOW_API_KEY, .env, or .bob/mcp.json."""
+    for env_var in ["LANGFLOW_BOT_API_KEY", "LANGFLOW_API_KEY"]:
+        env_key = os.environ.get(env_var)
+        if env_key:
+            return env_key
 
     env_path = os.path.join(BASE_DIR, ".env")
     if os.path.isfile(env_path):
@@ -137,7 +138,7 @@ def _get_langflow_api_key() -> Optional[str]:
             with open(env_path, "r", encoding="utf-8") as f:
                 for line in f:
                     clean = line.strip()
-                    if clean.startswith("LANGFLOW_API_KEY="):
+                    if clean.startswith("LANGFLOW_BOT_API_KEY=") or clean.startswith("LANGFLOW_API_KEY="):
                         val = clean.split("=", 1)[1].strip().strip('"').strip("'")
                         if val:
                             return val
@@ -168,7 +169,8 @@ def _try_langflow_narrative(invoice_dict: dict, fallback_narrative: str) -> str:
     import uuid
 
     flow_id = (
-        os.environ.get("LANGFLOW_FLOW_ID")
+        os.environ.get("LANGFLOW_AUDIT_FLOW_ID")
+        or os.environ.get("LANGFLOW_FLOW_ID")
         or "d79a75e5-63f9-4da4-ac36-9c7d7d1b9e1b"
     )
     api_key = _get_langflow_api_key()
@@ -225,6 +227,102 @@ def _try_langflow_narrative(invoice_dict: dict, fallback_narrative: str) -> str:
         except Exception:
             continue
     return fallback_narrative
+
+
+def _try_langflow_assistant(prompt: str, timeout_seconds: float = 30.0) -> Optional[str]:
+    """Queries dedicated Langflow Regulatory Assistant flow with augmented context."""
+    import uuid
+
+    flow_id = (
+        os.environ.get("LANGFLOW_ASSISTANT_FLOW_ID")
+        or "5ca6e9b6-937c-4ab3-a95e-f4d3a5ff9818"
+    )
+    api_key = _get_langflow_api_key()
+    if not api_key:
+        return None
+
+    headers = {"Content-Type": "application/json", "x-api-key": api_key}
+    augmented_prompt = prompt
+
+    # Retrieve relevant tariff records from local database if relevant keywords present
+    q_lower = prompt.lower()
+    matched_records = []
+    if os.path.isfile(TARIFF_DB_PATH):
+        try:
+            with open(TARIFF_DB_PATH, "r", encoding="utf-8") as f:
+                tariffs = json.load(f)
+            for entry in tariffs:
+                hs = str(entry.get("hs_code", "")).lower()
+                desc = str(entry.get("search_text", "")).lower()
+                if (hs and hs in q_lower) or any(
+                    w in desc
+                    for w in q_lower.split()
+                    if len(w) >= 4
+                    and w not in {"what", "which", "import", "indonesia", "tariff", "rate"}
+                ):
+                    matched_records.append(entry)
+                    if len(matched_records) >= 3:
+                        break
+        except Exception:
+            pass
+
+    if matched_records:
+        context_snippets = []
+        for r in matched_records:
+            context_snippets.append(
+                f"- HS {r.get('hs_code')}: {r.get('description')} (MFN Duty: {r.get('official_mfn_duty', 0.0)}%, "
+                f"Lartas Restricted: {'YES' if r.get('restricted') else 'NO'}, "
+                f"Required Permits: {', '.join(r.get('required_permits', [])) or 'None'})"
+            )
+        augmented_prompt = (
+            f"{prompt}\n\n"
+            f"[Official Indonesian Customs Knowledge Grounding]:\n"
+            + "\n".join(context_snippets)
+        )
+
+    connect_timeout = float(timeout_seconds)
+    for host in ["langflow", "localhost"]:
+        # 1. Primary: Langflow v1 chat run endpoint with session_id
+        v1_url = f"http://{host}:7860/api/v1/run/{flow_id}"
+        v1_payload = json.dumps(
+            {
+                "output_type": "chat",
+                "input_type": "chat",
+                "input_value": augmented_prompt,
+                "session_id": str(uuid.uuid4()),
+            }
+        ).encode("utf-8")
+        try:
+            req = urllib.request.Request(v1_url, data=v1_payload, headers=headers)
+            with urllib.request.urlopen(req, timeout=connect_timeout) as resp:
+                data = json.loads(resp.read().decode("utf-8"))
+                outputs = data.get("outputs", [])
+                if outputs:
+                    text = (
+                        outputs[0]
+                        .get("outputs", [{}])[0]
+                        .get("results", {})
+                        .get("message", {})
+                        .get("text")
+                    )
+                    if text:
+                        return str(text)
+        except Exception:
+            pass
+
+        # 2. Fallback: Langflow v2 workflows endpoint
+        v2_url = f"http://{host}:7860/api/v2/workflows"
+        v2_payload = json.dumps({"flow_id": flow_id, "input_value": augmented_prompt}).encode("utf-8")
+        try:
+            req = urllib.request.Request(v2_url, data=v2_payload, headers=headers)
+            with urllib.request.urlopen(req, timeout=connect_timeout) as resp:
+                data = json.loads(resp.read().decode("utf-8"))
+                v2_text = data.get("output", {}).get("text")
+                if v2_text:
+                    return str(v2_text)
+        except Exception:
+            continue
+    return None
 
 
 def _terminate_process_group(proc: asyncio.subprocess.Process) -> None:
@@ -620,7 +718,15 @@ async def ask_assistant(query: AssistantQuery) -> AssistantResponse:
                 start_new_session=True,
             )
         except FileNotFoundError:
+            lf_ans = _try_langflow_assistant(query.prompt, float(query.timeout_seconds))
             elapsed_ms = int((time.monotonic() - start_ts) * 1000)
+            if lf_ans:
+                return AssistantResponse(
+                    status="online",
+                    engine="langflow-regulatory-agent",
+                    answer=lf_ans,
+                    duration_ms=elapsed_ms,
+                )
             return AssistantResponse(
                 status="fallback",
                 engine="local-tariff-rag-fallback",

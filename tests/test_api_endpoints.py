@@ -176,12 +176,33 @@ def test_assistant_endpoint_timeout_kills_process_group():
     assert 88882 in called_pids
 
 
-def test_assistant_endpoint_local_rag_fallback():
-    """Verify /api/v1/assistant falls back to local tariff RAG & CMA CGM engine if bob CLI is absent."""
+def test_assistant_endpoint_langflow_agent_online():
+    """Verify /api/v1/assistant routes to Langflow regulatory agent when online."""
     with patch(
         "asyncio.create_subprocess_exec",
         new=AsyncMock(side_effect=FileNotFoundError("bob not found")),
+    ), patch(
+        "api.main._try_langflow_assistant",
+        return_value="HS 8517.11 requires SDPPI Type Approval certification.",
     ):
+        resp = client.post(
+            "/api/v1/assistant",
+            json={"prompt": "What permits are needed for HS 8517.11?"},
+        )
+
+    assert resp.status_code == 200
+    data = resp.json()
+    assert data["status"] == "online"
+    assert data["engine"] == "langflow-regulatory-agent"
+    assert "SDPPI" in data["answer"]
+
+
+def test_assistant_endpoint_local_rag_fallback():
+    """Verify /api/v1/assistant falls back to local tariff RAG & CMA CGM engine if bob CLI is absent and Langflow is unreachable."""
+    with patch(
+        "asyncio.create_subprocess_exec",
+        new=AsyncMock(side_effect=FileNotFoundError("bob not found")),
+    ), patch("api.main._try_langflow_assistant", return_value=None):
         resp = client.post(
             "/api/v1/assistant",
             json={"prompt": "Explain CMA CGM demurrage slabs and HS 8517.11 permits"},
