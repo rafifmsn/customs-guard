@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://cg.rafifmsn.com/sitemap.xml
+

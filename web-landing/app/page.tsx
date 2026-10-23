@@ -421,47 +421,44 @@ Preview in Mailpit: http://localhost:8025
   }, [monthlyManifests]);
 
   return (
-    <div className="min-h-screen bg-[#ffffff] text-[#111111]">
+    <div className="min-h-screen bg-[#121212] text-[#F8FAFC]">
       {/* Sticky Top Navigation (Dub Feature-Stack Macrostructure) */}
-      <header className="sticky top-0 z-50 border-b border-[#e5e5e5] bg-[#ffffff]/90 backdrop-blur-md">
+      <header className="sticky top-0 z-50 border-b border-[#2A2A35] bg-[#0B0B0F]/90 backdrop-blur-md">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-          <div className="flex items-center gap-3">
-            {/* FIGMA PLACEHOLDER: Brand Mark (Swap with final 32x32 Figma SVG) */}
-            <span className="font-display text-lg font-bold tracking-tight text-[#111111]">
-              CustomsGuard
-            </span>
-          </div>
+          <a href="#" className="flex items-center gap-3 focus:outline-none">
+            <img src="/logo.svg" alt="CustomsGuard" className="h-3.5 w-auto" />
+          </a>
 
-          <nav className="hidden items-center gap-8 text-sm text-[#404040] md:flex">
-            <a href="#bottleneck" className="transition hover:text-[#111111]">
+          <nav className="hidden items-center gap-8 text-sm text-[#94A3B8] md:flex">
+            <a href="#bottleneck" className="transition hover:text-[#F8FAFC]">
               Problem
             </a>
             <a
               href="#scenario-explorer"
-              className="transition hover:text-[#111111]"
+              className="transition hover:text-[#F8FAFC]"
             >
               Interactive Demo
             </a>
-            <a href="#architecture" className="transition hover:text-[#111111]">
+            <a href="#architecture" className="transition hover:text-[#F8FAFC]">
               Architecture
             </a>
-            <a href="#pricing" className="transition hover:text-[#111111]">
+            <a href="#pricing" className="transition hover:text-[#F8FAFC]">
               Pricing
             </a>
           </nav>
 
           <div className="flex items-center gap-3">
             <a
-              href="http://localhost:8501"
+              href="https://github.com/rafifmsn/customs-guard/blob/main/docs/API_REFERENCE.md"
               target="_blank"
               rel="noreferrer"
-              className="hidden rounded-full border border-[#e5e5e5] bg-[#ffffff] px-4 py-2 text-sm font-medium text-[#111111] transition hover:border-[#a3a3a3] sm:inline-block"
+              className="hidden rounded-full border border-[#2A2A35] bg-[#16161E] px-4 py-2 text-sm font-medium text-[#F8FAFC] transition hover:border-[#A78BFA] sm:inline-block"
             >
               API Reference
             </a>
             <a
-              href="#scenario-explorer"
-              className="rounded-full bg-[#111111] px-4 py-2 text-sm font-medium text-[#ffffff] transition hover:bg-[#262626]"
+              href="https://cgd.rafifmsn.com"
+              className="rounded-full bg-[#A78BFA] px-4 py-2 text-sm font-semibold text-[#0B0B0F] transition hover:bg-[#C4B5FD]"
             >
               Dashboard
             </a>
@@ -472,11 +469,11 @@ Preview in Mailpit: http://localhost:8025
       {/* Hero Section & Feature-Stack Gateway */}
       <section className="pt-16 pb-20">
         <div className="mx-auto max-w-5xl px-6 text-center">
-          <h1 className="mx-auto max-w-4xl font-display text-4xl font-medium leading-[1.15] tracking-tight text-[#111111] sm:text-5xl text-balance">
+          <h1 className="mx-auto max-w-4xl font-display text-4xl font-medium leading-[1.15] tracking-tight text-[#F8FAFC] sm:text-5xl text-balance">
             Eliminate customs Red-Lane holds before cargo reaches port
           </h1>
 
-          <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-[#404040]">
+          <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-[#94A3B8]">
             CustomsGuard audits commercial shipping declarations against 5,612
             official Indonesian HS-6 subheadings, verifies mandatory Lartas
             ministry permits, and models progressive CMA CGM container detention
@@ -486,14 +483,16 @@ Preview in Mailpit: http://localhost:8025
           {/* Dual Pill CTAs */}
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
             <a
-              href="#scenario-explorer"
-              className="rounded-full bg-[#111111] px-6 py-3 text-sm font-medium text-[#ffffff] transition hover:bg-[#262626]"
+              href="https://cgd.rafifmsn.com"
+              className="rounded-full bg-[#A78BFA] px-6 py-3 text-sm font-semibold text-[#0B0B0F] transition hover:bg-[#C4B5FD]"
             >
               Dashboard
             </a>
             <a
-              href="#architecture"
-              className="rounded-full border border-[#d4d4d4] bg-[#ffffff] px-6 py-3 text-sm font-medium text-[#111111] transition hover:border-[#111111]"
+              href="https://github.com/rafifmsn/customs-guard/blob/main/docs/API_REFERENCE.md"
+              target="_blank"
+              rel="noreferrer"
+              className="rounded-full border border-[#2A2A35] bg-[#1A1A22] px-6 py-3 text-sm font-medium text-[#F8FAFC] transition hover:border-[#A78BFA]"
             >
               API Reference
             </a>
@@ -501,88 +500,63 @@ Preview in Mailpit: http://localhost:8025
 
           {/* Dub Signature: 3 Accented Feature Pills Gateway */}
           <div className="mt-12 flex flex-wrap items-center justify-center gap-3">
-            <div className="inline-flex items-center gap-2.5 rounded-full border border-[#e5e5e5] bg-[#ffffff] px-4 py-2 text-xs font-medium text-[#111111] shadow-sm">
+            <div className="inline-flex items-center gap-2.5 rounded-full border border-[#2A2A35] bg-[#1A1A22] px-4 py-2 text-xs font-medium text-[#F8FAFC] shadow-sm">
               <span
                 className="h-2.5 w-2.5 rounded-full"
                 style={{ backgroundColor: "#ec8434" }}
               />
               <span>Autonomous Tariff RAG (5,612 HS-6)</span>
             </div>
-            <div className="inline-flex items-center gap-2.5 rounded-full border border-[#e5e5e5] bg-[#ffffff] px-4 py-2 text-xs font-medium text-[#111111] shadow-sm">
+            <div className="inline-flex items-center gap-2.5 rounded-full border border-[#2A2A35] bg-[#1A1A22] px-4 py-2 text-xs font-medium text-[#F8FAFC] shadow-sm">
               <span
                 className="h-2.5 w-2.5 rounded-full"
                 style={{ backgroundColor: "#86c1a1" }}
               />
               <span>CMA CGM Demurrage Engine (July 2026 Tariff)</span>
             </div>
-            <div className="inline-flex items-center gap-2.5 rounded-full border border-[#e5e5e5] bg-[#ffffff] px-4 py-2 text-xs font-medium text-[#111111] shadow-sm">
+            <div className="inline-flex items-center gap-2.5 rounded-full border border-[#2A2A35] bg-[#1A1A22] px-4 py-2 text-xs font-medium text-[#F8FAFC] shadow-sm">
               <span
                 className="h-2.5 w-2.5 rounded-full"
-                style={{ backgroundColor: "#c095e6" }}
+                style={{ backgroundColor: "#A78BFA" }}
               />
               <span>Lartas Permit Guard (SDPPI, Kemenkes, BPOM)</span>
             </div>
           </div>
 
-          {/* Main Application Showcase Container with Labeled Figma Placeholder */}
-          <div className="mt-8 overflow-hidden rounded-2xl border border-[#e5e5e5] bg-[#fafafa] p-3 shadow-sm">
-            <div className="overflow-hidden rounded-xl border border-[#e5e5e5] bg-[#ffffff]">
-              <div className="flex items-center justify-between border-b border-[#e5e5e5] bg-[#fafafa] px-4 py-2.5 text-xs text-[#404040]">
-                <div className="flex items-center gap-2">
-                  <span className="h-2.5 w-2.5 rounded-full bg-[#e5e5e5]" />
-                  <span className="h-2.5 w-2.5 rounded-full bg-[#e5e5e5]" />
-                  <span className="h-2.5 w-2.5 rounded-full bg-[#e5e5e5]" />
-                  <span className="ml-2 font-mono text-[11px] text-[#404040]">
-                    customsguard-ui (:8501) + customsguard-api (:8000)
-                  </span>
-                </div>
-                <span className="font-mono text-[11px] text-[#737373]">
-                  FIGMA ASSET FRAME: HERO DASHBOARD SHOWCASE (16:9)
-                </span>
-              </div>
+          {/* Main Application Showcase Container with Interactive Video Play Trigger */}
+          <div className="mt-8 overflow-hidden rounded-2xl border border-[#2A2A35] bg-[#16161E] p-3 shadow-sm">
+            <div className="overflow-hidden rounded-xl border border-[#2A2A35] bg-[#0B0B0F]">
+              <a
+                href="https://www.youtube.com/watch?v=demo"
+                target="_blank"
+                rel="noreferrer"
+                className="group relative block aspect-[16/9] w-full overflow-hidden bg-[#0B0B0F] cursor-pointer"
+                aria-label="CustomsGuard Autonomous Compliance Engine Walkthrough"
+              >
+                {/* Background Dashboard Mockup Poster */}
+                <img
+                  src="https://placehold.co/1920x1080/16161E/94A3B8?text=CustomsGuard+Compliance+Engine+Walkthrough"
+                  alt="CustomsGuard Application Walkthrough"
+                  className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02] opacity-85 group-hover:opacity-100"
+                />
 
-              <div className="figma-grid-bg relative flex aspect-[16/8] flex-col items-center justify-center p-8 text-center">
-                <div className="max-w-xl rounded-xl border border-dashed border-[#a3a3a3] bg-[#ffffff]/95 p-6 shadow-sm">
-                  <p className="font-mono text-xs font-semibold uppercase tracking-wider text-[#ec8434]">
-                    Figma Visual Placeholder Frame (1440 x 720)
-                  </p>
-                  <p className="mt-2 font-display text-lg font-medium text-[#111111]">
-                    CustomsGuard Split-Channel Compliance Workspace Preview
-                  </p>
-                  <p className="mt-1 text-xs leading-relaxed text-[#404040]">
-                    Swap this wireframe container with your exported Figma Hero
-                    PNG/WebP capture (`public/assets/hero-dashboard.webp`). Live
-                    deterministic metrics and scenario controls are interactive
-                    right below.
-                  </p>
-                  <div className="mt-4 grid grid-cols-3 gap-3 border-t border-[#e5e5e5] pt-4 text-left font-mono text-xs">
-                    <div className="rounded-lg border border-[#e5e5e5] bg-[#fafafa] p-2.5">
-                      <div className="text-[10px] text-[#737373]">
-                        ACTIVE DATASET
-                      </div>
-                      <div className="mt-0.5 font-semibold text-[#111111]">
-                        5,612 HS-6
-                      </div>
-                    </div>
-                    <div className="rounded-lg border border-[#e5e5e5] bg-[#fafafa] p-2.5">
-                      <div className="text-[10px] text-[#737373]">
-                        LARTAS RESTRICTED
-                      </div>
-                      <div className="mt-0.5 font-semibold text-[#111111]">
-                        546 Codes (9.73%)
-                      </div>
-                    </div>
-                    <div className="rounded-lg border border-[#e5e5e5] bg-[#fafafa] p-2.5">
-                      <div className="text-[10px] text-[#737373]">
-                        AUDIT LATENCY
-                      </div>
-                      <div className="mt-0.5 font-semibold text-[#15803d]">
-                        &lt; 50 ms RAG
-                      </div>
-                    </div>
+                {/* Subtle Vignette Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0B0B0F]/80 via-transparent to-[#0B0B0F]/30 transition-opacity duration-300 group-hover:opacity-60" />
+
+                {/* Centered Circular Play Button Badge */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="flex size-14 md:size-20 items-center justify-center rounded-full border border-[#2A2A35] bg-[#0B0B0F]/80 backdrop-blur-md shadow-2xl transition-all duration-300 ease-out group-hover:scale-110 group-hover:border-[#A78BFA] group-hover:shadow-[0_0_30px_rgba(167,139,250,0.35)] group-hover:bg-[#1A1A22]/90">
+                    <svg
+                      className="size-6 md:size-8 text-[#F8FAFC] transition-colors duration-300 group-hover:text-[#A78BFA]"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
                   </div>
                 </div>
-              </div>
+              </a>
             </div>
           </div>
         </div>
@@ -592,13 +566,13 @@ Preview in Mailpit: http://localhost:8025
       <section id="bottleneck" className="py-20">
         <div className="mx-auto max-w-7xl px-6">
           <div className="max-w-3xl">
-            <p className="font-mono text-xs font-medium uppercase tracking-wider text-[#ec8434]">
+            <p className="font-mono text-xs font-medium uppercase tracking-wider text-[#A78BFA]">
               Indonesian Cross-Border Bottleneck
             </p>
-            <h2 className="mt-2 font-display text-3xl font-medium tracking-tight text-[#111111] sm:text-4xl text-balance">
+            <h2 className="mt-2 font-display text-3xl font-medium tracking-tight text-[#F8FAFC] sm:text-4xl text-balance">
               Why manual manifest verification fails at port scale
             </h2>
-            <p className="mt-3 text-base leading-relaxed text-[#404040]">
+            <p className="mt-3 text-base leading-relaxed text-[#94A3B8]">
               Indonesian import declarations are audited by the Directorate
               General of Customs and Excise (DJBC) against 5,612 Harmonized
               System subheadings. A single misclassified line item or overlooked
@@ -608,54 +582,54 @@ Preview in Mailpit: http://localhost:8025
           </div>
 
           <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            <div className="rounded-xl border border-[#e5e5e5] bg-[#fafafa] p-6">
-              <div className="font-mono text-xs text-[#737373]">
+            <div className="rounded-xl border border-[#2A2A35] bg-[#1A1A22] p-6">
+              <div className="font-mono text-xs text-[#64748B]">
                 WTO / UNCTAD ITC MACMAP
               </div>
-              <div className="mt-2 font-display text-3xl font-medium text-[#111111]">
+              <div className="mt-2 font-display text-3xl font-medium text-[#F8FAFC]">
                 5,612 HS-6
               </div>
-              <p className="mt-2 text-sm leading-relaxed text-[#404040]">
+              <p className="mt-2 text-sm leading-relaxed text-[#94A3B8]">
                 Standardized 6-digit Indonesian tariff subheadings indexed
                 locally inside Qdrant for deterministic sub-second retrieval.
               </p>
             </div>
 
-            <div className="rounded-xl border border-[#e5e5e5] bg-[#fafafa] p-6">
-              <div className="font-mono text-xs text-[#737373]">
+            <div className="rounded-xl border border-[#2A2A35] bg-[#1A1A22] p-6">
+              <div className="font-mono text-xs text-[#64748B]">
                 MANDATORY LARTAS PERMITS
               </div>
-              <div className="mt-2 font-display text-3xl font-medium text-[#111111]">
+              <div className="mt-2 font-display text-3xl font-medium text-[#F8FAFC]">
                 9.73% Restricted
               </div>
-              <p className="mt-2 text-sm leading-relaxed text-[#404040]">
+              <p className="mt-2 text-sm leading-relaxed text-[#94A3B8]">
                 546 high-scrutiny tariff codes require pre-arrival approvals
                 from SDPPI Kemkominfo, Kemenkes RI, or BPOM.
               </p>
             </div>
 
-            <div className="rounded-xl border border-[#e5e5e5] bg-[#fafafa] p-6">
-              <div className="font-mono text-xs text-[#737373]">
+            <div className="rounded-xl border border-[#2A2A35] bg-[#1A1A22] p-6">
+              <div className="font-mono text-xs text-[#64748B]">
                 CUSTOMS LAW NO. 17/2006
               </div>
-              <div className="mt-2 font-display text-3xl font-medium text-[#c2410c]">
+              <div className="mt-2 font-display text-3xl font-medium text-[#F87171]">
                 100% - 1,000%
               </div>
-              <p className="mt-2 text-sm leading-relaxed text-[#404040]">
+              <p className="mt-2 text-sm leading-relaxed text-[#94A3B8]">
                 Statutory administrative penalty surcharges assessed under
                 Article 82(5) on import duty shortfalls caused by
                 misdeclaration.
               </p>
             </div>
 
-            <div className="rounded-xl border border-[#e5e5e5] bg-[#fafafa] p-6">
-              <div className="font-mono text-xs text-[#737373]">
+            <div className="rounded-xl border border-[#2A2A35] bg-[#1A1A22] p-6">
+              <div className="font-mono text-xs text-[#64748B]">
                 ON-PREMISE DOCKER STACK
               </div>
-              <div className="mt-2 font-display text-3xl font-medium text-[#15803d]">
+              <div className="mt-2 font-display text-3xl font-medium text-[#34D399]">
                 ~87% Lower Cost
               </div>
-              <p className="mt-2 text-sm leading-relaxed text-[#404040]">
+              <p className="mt-2 text-sm leading-relaxed text-[#94A3B8]">
                 Self-hosted local execution eliminates recurring cloud SaaS
                 per-page OCR fees while keeping commercial invoices inside your
                 perimeter.
@@ -666,17 +640,17 @@ Preview in Mailpit: http://localhost:8025
       </section>
 
       {/* Section 3: Interactive 1-Click Scenario Explorer */}
-      <section id="scenario-explorer" className="bg-[#fafafa] py-20">
+      <section id="scenario-explorer" className="py-20">
         <div className="mx-auto max-w-7xl px-6">
           <div className="flex flex-col justify-between gap-4 lg:flex-row lg:items-end">
             <div className="max-w-3xl">
-              <p className="font-mono text-xs font-medium uppercase tracking-wider text-[#111111]">
+              <p className="font-mono text-xs font-medium uppercase tracking-wider text-[#A78BFA]">
                 Interactive 1-Click Scenario Explorer
               </p>
-              <h2 className="mt-2 font-display text-3xl font-medium tracking-tight text-[#111111] sm:text-4xl text-balance">
+              <h2 className="mt-2 font-display text-3xl font-medium tracking-tight text-[#F8FAFC] sm:text-4xl text-balance">
                 Deterministic Tariff Audit & CMA CGM Demurrage Simulator
               </h2>
-              <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[#404040]">
+              <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[#94A3B8]">
                 Select any of the 4 canonical shipment manifests below and
                 adjust container equipment or port hold duration to compute
                 real-time CMA CGM Indonesia (Effective July 1, 2026) progressive
@@ -696,8 +670,8 @@ Preview in Mailpit: http://localhost:8025
                   onClick={() => handleSelectScenario(idx)}
                   className={`flex flex-col justify-between rounded-xl border p-4 text-left transition ${
                     isSelected
-                      ? "border-[#111111] bg-[#111111] text-[#ffffff] shadow-sm"
-                      : "border-[#e5e5e5] bg-[#ffffff] text-[#111111] hover:border-[#a3a3a3]"
+                      ? "border-[#A78BFA] bg-[#1A1A22] text-[#F8FAFC] shadow-[0_0_15px_rgba(167,139,250,0.15)] ring-1 ring-[#A78BFA]"
+                      : "border-[#2A2A35] bg-[#16161E] text-[#F8FAFC] hover:border-[#3E3E4E] hover:bg-[#1A1A22]"
                   }`}
                 >
                   <div className="flex items-center justify-between gap-2">
@@ -708,11 +682,11 @@ Preview in Mailpit: http://localhost:8025
                       className={`rounded-full px-2 py-0.5 font-mono text-[10px] font-medium ${
                         scen.detention_risk
                           ? isSelected
-                            ? "bg-[#ec8434] text-[#111111]"
-                            : "bg-[#ffedd5] text-[#c2410c]"
+                            ? "border border-[#EF4444]/40 bg-[#EF4444]/20 text-[#F87171]"
+                            : "bg-[#EF4444]/10 text-[#F87171]"
                           : isSelected
-                            ? "bg-[#86c1a1] text-[#111111]"
-                            : "bg-[#dcfce7] text-[#15803d]"
+                            ? "border border-[#10B981]/40 bg-[#10B981]/20 text-[#34D399]"
+                            : "bg-[#10B981]/10 text-[#34D399]"
                       }`}
                     >
                       {scen.verdict}
@@ -721,7 +695,7 @@ Preview in Mailpit: http://localhost:8025
                   <div className="mt-3 text-sm font-medium leading-snug">
                     {scen.pillLabel}
                   </div>
-                  <div className="mt-2 text-xs opacity-75">
+                  <div className="mt-2 text-xs text-[#94A3B8]">
                     {scen.importer_name}
                   </div>
                 </button>
@@ -730,12 +704,12 @@ Preview in Mailpit: http://localhost:8025
           </div>
 
           {/* Interactive Container & Demurrage Controls */}
-          <div className="mt-6 rounded-2xl border border-[#e5e5e5] bg-[#ffffff] p-6">
+          <div className="mt-6 rounded-2xl border border-[#2A2A35] bg-[#1A1A22] p-6">
             <div className="grid grid-cols-1 gap-6 md:grid-cols-4">
               <div>
-                <div className="flex items-center justify-between text-xs font-medium text-[#111111]">
+                <div className="flex items-center justify-between text-xs font-medium text-[#F8FAFC]">
                   <span>Container Count</span>
-                  <span className="font-mono text-xs font-semibold">
+                  <span className="font-mono text-xs font-semibold text-[#A78BFA]">
                     {containerCount} container
                   </span>
                 </div>
@@ -745,9 +719,9 @@ Preview in Mailpit: http://localhost:8025
                   max={10}
                   value={containerCount}
                   onChange={(e) => setContainerCount(Number(e.target.value))}
-                  className="mt-3 w-full accent-[#111111]"
+                  className="mt-3 w-full accent-[#A78BFA]"
                 />
-                <div className="mt-1 flex justify-between font-mono text-[10px] text-[#737373]">
+                <div className="mt-1 flex justify-between font-mono text-[10px] text-[#64748B]">
                   <span>1</span>
                   <span>5</span>
                   <span>10</span>
@@ -755,7 +729,7 @@ Preview in Mailpit: http://localhost:8025
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-[#111111]">
+                <label className="block text-xs font-medium text-[#F8FAFC]">
                   Container Size (CMA CGM Schedule)
                 </label>
                 <div className="mt-2 grid grid-cols-3 gap-2">
@@ -766,8 +740,8 @@ Preview in Mailpit: http://localhost:8025
                       onClick={() => setContainerSize(sz)}
                       className={`rounded-lg border py-2 font-mono text-xs font-medium transition ${
                         containerSize === sz
-                          ? "border-[#111111] bg-[#111111] text-[#ffffff]"
-                          : "border-[#e5e5e5] bg-[#fafafa] text-[#111111] hover:border-[#a3a3a3]"
+                          ? "border-[#A78BFA] bg-[#A78BFA] text-[#0B0B0F] font-semibold"
+                          : "border-[#2A2A35] bg-[#16161E] text-[#94A3B8] hover:border-[#3E3E4E] hover:text-[#F8FAFC]"
                       }`}
                     >
                       {sz}ft
@@ -777,7 +751,7 @@ Preview in Mailpit: http://localhost:8025
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-[#111111]">
+                <label className="block text-xs font-medium text-[#F8FAFC]">
                   Equipment Type
                 </label>
                 <div className="mt-2 grid grid-cols-2 gap-2">
@@ -793,8 +767,8 @@ Preview in Mailpit: http://localhost:8025
                       onClick={() => setContainerType(eq.key)}
                       className={`rounded-lg border px-2 py-2 font-mono text-xs font-medium transition ${
                         containerType === eq.key
-                          ? "border-[#111111] bg-[#111111] text-[#ffffff]"
-                          : "border-[#e5e5e5] bg-[#fafafa] text-[#111111] hover:border-[#a3a3a3]"
+                          ? "border-[#A78BFA] bg-[#A78BFA] text-[#0B0B0F] font-semibold"
+                          : "border-[#2A2A35] bg-[#16161E] text-[#94A3B8] hover:border-[#3E3E4E] hover:text-[#F8FAFC]"
                       }`}
                     >
                       {eq.label}
@@ -804,9 +778,9 @@ Preview in Mailpit: http://localhost:8025
               </div>
 
               <div>
-                <div className="flex items-center justify-between text-xs font-medium text-[#111111]">
+                <div className="flex items-center justify-between text-xs font-medium text-[#F8FAFC]">
                   <span>Projected Port Hold Duration</span>
-                  <span className="font-mono text-xs font-semibold">
+                  <span className="font-mono text-xs font-semibold text-[#A78BFA]">
                     {daysProjected} days
                   </span>
                 </div>
@@ -816,9 +790,9 @@ Preview in Mailpit: http://localhost:8025
                   max={25}
                   value={daysProjected}
                   onChange={(e) => setDaysProjected(Number(e.target.value))}
-                  className="mt-3 w-full accent-[#111111]"
+                  className="mt-3 w-full accent-[#A78BFA]"
                 />
-                <div className="mt-1 flex justify-between font-mono text-[10px] text-[#737373]">
+                <div className="mt-1 flex justify-between font-mono text-[10px] text-[#64748B]">
                   <span>Day 1</span>
                   <span>Day 12</span>
                   <span>Day 25</span>
@@ -828,87 +802,87 @@ Preview in Mailpit: http://localhost:8025
 
             {/* Real-Time Computed Financial & Demurrage Cards */}
             <div className="mt-6 grid grid-cols-1 gap-4 pt-2 sm:grid-cols-2 lg:grid-cols-5">
-              <div className="rounded-xl border border-[#e5e5e5] bg-[#fafafa] p-4">
-                <div className="font-mono text-[11px] text-[#737373]">
+              <div className="rounded-xl border border-[#2A2A35] bg-[#16161E] p-4">
+                <div className="font-mono text-[11px] text-[#64748B]">
                   OFFICIAL VERDICT
                 </div>
                 <div
                   className={`mt-1 font-mono text-sm font-semibold truncate ${
                     activeScenario.detention_risk
-                      ? "text-[#c2410c]"
-                      : "text-[#15803d]"
+                      ? "text-[#F87171]"
+                      : "text-[#34D399]"
                   }`}
                 >
                   {activeScenario.verdict}
                 </div>
-                <div className="mt-1 text-xs text-[#404040]">
+                <div className="mt-1 text-xs text-[#94A3B8]">
                   {activeScenario.detention_risk
                     ? "Red-Lane Hold Triggered"
                     : "Green-Lane Clearance"}
                 </div>
               </div>
 
-              <div className="rounded-xl border border-[#e5e5e5] bg-[#fafafa] p-4">
-                <div className="font-mono text-[11px] text-[#737373]">
+              <div className="rounded-xl border border-[#2A2A35] bg-[#16161E] p-4">
+                <div className="font-mono text-[11px] text-[#64748B]">
                   DUTY SHORTFALL
                 </div>
-                <div className="mt-1 font-mono text-xl font-semibold text-[#111111]">
+                <div className="mt-1 font-mono text-xl font-semibold text-[#F8FAFC]">
                   $
                   {financialTotals.shortfall.toLocaleString("en-US", {
                     minimumFractionDigits: 2,
                   })}
                 </div>
-                <div className="mt-1 text-xs text-[#404040]">
+                <div className="mt-1 text-xs text-[#94A3B8]">
                   {financialTotals.shortfall > 0
                     ? "Subject to Art. 82(5) Fine"
                     : "Zero Underpayment"}
                 </div>
               </div>
 
-              <div className="rounded-xl border border-[#e5e5e5] bg-[#fafafa] p-4">
-                <div className="font-mono text-[11px] text-[#737373]">
+              <div className="rounded-xl border border-[#2A2A35] bg-[#16161E] p-4">
+                <div className="font-mono text-[11px] text-[#64748B]">
                   DUTY RESTITUTION
                 </div>
-                <div className="mt-1 font-mono text-xl font-semibold text-[#15803d]">
+                <div className="mt-1 font-mono text-xl font-semibold text-[#34D399]">
                   $
                   {financialTotals.restitution.toLocaleString("en-US", {
                     minimumFractionDigits: 2,
                   })}
                 </div>
-                <div className="mt-1 text-xs text-[#404040]">
+                <div className="mt-1 text-xs text-[#94A3B8]">
                   {financialTotals.restitution > 0
                     ? "Eligible for Tax Refund"
                     : "No Overpayment"}
                 </div>
               </div>
 
-              <div className="rounded-xl border border-[#e5e5e5] bg-[#fafafa] p-4">
-                <div className="font-mono text-[11px] text-[#737373]">
+              <div className="rounded-xl border border-[#2A2A35] bg-[#16161E] p-4">
+                <div className="font-mono text-[11px] text-[#64748B]">
                   CMA CGM DAILY BURN
                 </div>
-                <div className="mt-1 font-mono text-xl font-semibold text-[#111111]">
+                <div className="mt-1 font-mono text-xl font-semibold text-[#F8FAFC]">
                   $
                   {demurrage.dailyBurnTotal.toLocaleString("en-US", {
                     minimumFractionDigits: 2,
                   })}
                   /d
                 </div>
-                <div className="mt-1 truncate text-xs text-[#404040]">
+                <div className="mt-1 truncate text-xs text-[#94A3B8]">
                   {demurrage.activeSlabLabel}
                 </div>
               </div>
 
-              <div className="rounded-xl border border-[#e5e5e5] bg-[#fafafa] p-4">
-                <div className="font-mono text-[11px] text-[#737373]">
+              <div className="rounded-xl border border-[#2A2A35] bg-[#16161E] p-4">
+                <div className="font-mono text-[11px] text-[#64748B]">
                   PROJECTED HOLD ({daysProjected}D)
                 </div>
-                <div className="mt-1 font-mono text-xl font-semibold text-[#c2410c]">
+                <div className="mt-1 font-mono text-xl font-semibold text-[#F87171]">
                   $
                   {demurrage.cumulativeLiability.toLocaleString("en-US", {
                     minimumFractionDigits: 2,
                   })}
                 </div>
-                <div className="mt-1 text-xs text-[#404040]">
+                <div className="mt-1 text-xs text-[#94A3B8]">
                   {demurrage.detentionDays} billable detention days
                 </div>
               </div>
@@ -917,26 +891,32 @@ Preview in Mailpit: http://localhost:8025
             {/* Itemized Findings Table & Dossier / Mailpit Preview */}
             <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-12">
               <div className="lg:col-span-7">
-                <div className="rounded-xl border border-[#e5e5e5] bg-[#ffffff] p-4">
+                <div className="rounded-xl border border-[#2A2A35] bg-[#16161E] p-4">
                   <div className="flex items-center justify-between">
-                    <h3 className="text-sm font-medium text-[#111111]">
+                    <h3 className="text-sm font-medium text-[#F8FAFC]">
                       Lartas Permit Comparison
                     </h3>
-                    <span className="hidden md:block font-mono text-xs text-[#737373]">
+                    <span className="hidden md:block font-mono text-xs text-[#64748B]">
                       Port: {activeScenario.destination_port}
                     </span>
                   </div>
                   <div className="mt-3 overflow-x-auto">
-                    <table className="w-full border-collapse text-left text-xs">
+                    <table className="w-full min-w-[640px] border-collapse text-left text-xs">
                       <thead>
-                        <tr className="border-b border-[#e5e5e5] bg-[#f5f5f5] font-mono text-[11px] text-[#404040]">
-                          <th className="py-2 px-3">Commodity</th>
-                          <th className="py-2 px-3">Declared HS</th>
-                          <th className="py-2 px-3">Official HS</th>
-                          <th className="py-2 px-3">
+                        <tr className="border-b border-[#2A2A35] bg-[#121212] font-mono text-[11px] text-[#94A3B8]">
+                          <th className="py-2.5 px-3 whitespace-nowrap">
+                            Commodity
+                          </th>
+                          <th className="py-2.5 px-3 whitespace-nowrap">
+                            Declared HS
+                          </th>
+                          <th className="py-2.5 px-3 whitespace-nowrap">
+                            Official HS
+                          </th>
+                          <th className="py-2.5 px-3 whitespace-nowrap">
                             Declared / Official Duty
                           </th>
-                          <th className="py-2 px-3">
+                          <th className="py-2.5 px-3 whitespace-nowrap">
                             Mandatory Lartas Permits
                           </th>
                         </tr>
@@ -945,28 +925,28 @@ Preview in Mailpit: http://localhost:8025
                         {activeScenario.items.map((item) => (
                           <tr
                             key={item.item_id}
-                            className="border-b border-[#e5e5e5]"
+                            className="border-b border-[#2A2A35]"
                           >
-                            <td className="py-3 px-3 font-medium text-[#111111]">
+                            <td className="py-3 px-3 font-medium text-[#F8FAFC] truncate">
                               {item.declared_description}
                             </td>
-                            <td className="py-3 px-3 font-mono text-[#c2410c]">
+                            <td className="py-3 px-3 font-mono text-[#F87171] whitespace-nowrap">
                               {item.declared_hs}
                             </td>
-                            <td className="py-3 px-3 font-mono font-semibold text-[#111111]">
+                            <td className="py-3 px-3 font-mono font-semibold text-[#34D399] whitespace-nowrap">
                               {item.matched_hs}
                             </td>
-                            <td className="py-3 px-3 font-mono">
+                            <td className="py-3 px-3 font-mono text-[#E2E8F0] whitespace-nowrap">
                               {item.declared_duty.toFixed(1)}% /{" "}
                               {item.official_duty.toFixed(1)}%
                             </td>
-                            <td className="py-3 px-3">
+                            <td className="py-3 px-3 whitespace-nowrap">
                               {item.required_permits.length > 0 ? (
-                                <span className="inline-block rounded bg-[#fef2f2] px-2 py-0.5 font-mono text-[11px] text-[#c2410c]">
+                                <span className="inline-block rounded border border-[#EF4444]/30 bg-[#EF4444]/15 px-2 py-0.5 font-mono text-[11px] text-[#F87171]">
                                   {item.required_permits.join(", ")}
                                 </span>
                               ) : (
-                                <span className="font-mono text-[11px] text-[#15803d]">
+                                <span className="font-mono text-[11px] text-[#34D399]">
                                   None (Unrestricted)
                                 </span>
                               )}
@@ -976,17 +956,17 @@ Preview in Mailpit: http://localhost:8025
                       </tbody>
                     </table>
                   </div>
-                  <p className="mt-3 text-xs leading-relaxed text-[#404040]">
-                    <strong className="text-[#111111]">Audit Advisory:</strong>{" "}
+                  <p className="mt-3 text-xs leading-relaxed text-[#94A3B8]">
+                    <strong className="text-[#F8FAFC]">Audit Advisory:</strong>{" "}
                     {activeScenario.summary_note}
                   </p>
                 </div>
               </div>
 
               <div className="lg:col-span-5">
-                <div className="flex h-full flex-col rounded-xl border border-[#e5e5e5] bg-[#fafafa] p-4">
+                <div className="flex h-full flex-col rounded-xl border border-[#2A2A35] bg-[#16161E] p-4">
                   <div className="flex flex-col items-start gap-y-2 md:flex-row md:items-center md:justify-between pb-2">
-                    <span className="text-sm font-medium text-[#111111]">
+                    <span className="text-sm font-medium text-[#F8FAFC]">
                       Automated Reporting
                     </span>
                     <div className="flex gap-1.5">
@@ -995,8 +975,8 @@ Preview in Mailpit: http://localhost:8025
                         onClick={() => setEvidenceTab("dossier")}
                         className={`rounded-md px-2.5 py-1 font-mono text-[11px] transition ${
                           evidenceTab === "dossier"
-                            ? "bg-[#111111] text-[#ffffff]"
-                            : "bg-[#ffffff] text-[#404040] border border-[#e5e5e5]"
+                            ? "bg-[#A78BFA] text-[#0B0B0F] font-semibold"
+                            : "bg-[#121212] text-[#94A3B8] border border-[#2A2A35] hover:text-[#F8FAFC]"
                         }`}
                       >
                         Markdown Dossier
@@ -1006,15 +986,15 @@ Preview in Mailpit: http://localhost:8025
                         onClick={() => setEvidenceTab("mailpit")}
                         className={`rounded-md px-2.5 py-1 font-mono text-[11px] transition ${
                           evidenceTab === "mailpit"
-                            ? "bg-[#111111] text-[#ffffff]"
-                            : "bg-[#ffffff] text-[#404040] border border-[#e5e5e5]"
+                            ? "bg-[#A78BFA] text-[#0B0B0F] font-semibold"
+                            : "bg-[#121212] text-[#94A3B8] border border-[#2A2A35] hover:text-[#F8FAFC]"
                         }`}
                       >
                         Mail SMTP
                       </button>
                     </div>
                   </div>
-                  <pre className="mt-3 max-h-60 flex-1 overflow-auto rounded-lg border border-[#e5e5e5] bg-[#ffffff] p-3 font-mono text-[11px] leading-relaxed text-[#111111]">
+                  <pre className="mt-3 max-h-60 flex-1 overflow-auto rounded-lg border border-[#2A2A35] bg-[#0B0B0F] p-3 font-mono text-[11px] leading-relaxed text-[#E2E8F0]">
                     {evidenceTab === "dossier"
                       ? generatedMarkdownDossier
                       : generatedMailpitPreview}
@@ -1030,13 +1010,13 @@ Preview in Mailpit: http://localhost:8025
       <section id="architecture" className="py-20">
         <div className="mx-auto max-w-7xl px-6">
           <div className="max-w-3xl">
-            <p className="font-mono text-xs font-medium uppercase tracking-wider text-[#86c1a1]">
+            <p className="font-mono text-xs font-medium uppercase tracking-wider text-[#A78BFA]">
               Split-Channel On-Premise Topology
             </p>
-            <h2 className="mt-2 font-display text-3xl font-medium tracking-tight text-[#111111] sm:text-4xl text-balance">
+            <h2 className="mt-2 font-display text-3xl font-medium tracking-tight text-[#F8FAFC] sm:text-4xl text-balance">
               Air-gapped commercial privacy with deterministic execution
             </h2>
-            <p className="mt-3 text-base leading-relaxed text-[#404040]">
+            <p className="mt-3 text-base leading-relaxed text-[#94A3B8]">
               Commercial invoices contain sensitive supplier pricing, HS
               classifications, and importer tax identifiers. CustomsGuard runs
               inside a self-contained 6-service Docker stack where deterministic
@@ -1045,27 +1025,17 @@ Preview in Mailpit: http://localhost:8025
             </p>
           </div>
 
-          {/* Labeled Figma Architecture Diagram Placeholder Frame */}
-          <div className="mt-10 rounded-2xl border border-dashed border-[#a3a3a3] bg-[#fafafa] p-6">
-            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#e5e5e5] pb-3">
-              <span className="font-mono text-xs font-semibold text-[#111111]">
-                FIGMA ASSET PLACEHOLDER: SPLIT-CHANNEL ARCHITECTURE DIAGRAM
-                (21:9 SVG/WEBP)
-              </span>
-              <span className="font-mono text-xs text-[#737373]">
-                Target path: public/assets/architecture-topology.svg
-              </span>
-            </div>
-            <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-6">
+          <div className="mt-10 rounded-2xl border border-dashed border-[#3E3E4E] bg-[#1A1A22] p-6">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-6">
               {[
                 {
-                  name: "customsguard-ui",
+                  name: "streamlit",
                   port: ":8501",
                   stack: "Streamlit",
                   desc: "Declarative compliance workspace, scenario loader, and dossier archive.",
                 },
                 {
-                  name: "customsguard-api",
+                  name: "fastapi",
                   port: ":8000",
                   stack: "FastAPI + Asyncio",
                   desc: "Centralized REST controller, Swagger UI, and bounded Bob CLI worker pool.",
@@ -1097,20 +1067,20 @@ Preview in Mailpit: http://localhost:8025
               ].map((svc) => (
                 <div
                   key={svc.name}
-                  className="rounded-xl border border-[#e5e5e5] bg-[#ffffff] p-4 shadow-sm"
+                  className="rounded-xl border border-[#2A2A35] bg-[#16161E] p-4 shadow-sm hover:border-[#A78BFA]/50 transition"
                 >
                   <div className="flex items-center justify-between font-mono text-xs">
-                    <span className="font-semibold text-[#111111]">
+                    <span className="font-semibold text-[#F8FAFC]">
                       {svc.name}
                     </span>
-                    <span className="rounded bg-[#f5f5f5] px-1.5 py-0.5 text-[10px] text-[#404040]">
+                    <span className="rounded bg-[#2A2A35] px-1.5 py-0.5 text-[10px] text-[#94A3B8]">
                       {svc.port}
                     </span>
                   </div>
-                  <div className="mt-1 font-mono text-[11px] text-[#ec8434]">
+                  <div className="mt-1 font-mono text-[11px] text-[#A78BFA]">
                     {svc.stack}
                   </div>
-                  <p className="mt-2 text-xs leading-relaxed text-[#404040]">
+                  <p className="mt-2 text-xs leading-relaxed text-[#94A3B8]">
                     {svc.desc}
                   </p>
                 </div>
@@ -1124,13 +1094,13 @@ Preview in Mailpit: http://localhost:8025
       <section id="pricing" className="py-20">
         <div className="mx-auto max-w-7xl px-6">
           <div className="text-center">
-            <p className="font-mono text-xs font-medium uppercase tracking-wider text-[#aa65a0]">
+            <p className="font-mono text-xs font-medium uppercase tracking-wider text-[#A78BFA]">
               Commercial Viability & ROI
             </p>
-            <h2 className="mt-2 font-display text-3xl font-medium tracking-tight text-[#111111] sm:text-4xl text-balance">
+            <h2 className="mt-2 font-display text-3xl font-medium tracking-tight text-[#F8FAFC] sm:text-4xl text-balance">
               Single prevented Red-Lane hold pays for an entire year
             </h2>
-            <p className="mx-auto mt-3 max-w-2xl text-base leading-relaxed text-[#404040]">
+            <p className="mx-auto mt-3 max-w-2xl text-base leading-relaxed text-[#94A3B8]">
               Transparent commercial tiers built for Indonesian customs brokers
               (PPJK), freight forwarders, and enterprise import compliance
               teams.
@@ -1138,12 +1108,12 @@ Preview in Mailpit: http://localhost:8025
           </div>
 
           {/* Interactive Payback Calculator */}
-          <div className="mx-auto mt-10 max-w-4xl rounded-2xl border border-[#e5e5e5] bg-[#fafafa] p-6">
+          <div className="mx-auto mt-10 max-w-4xl rounded-2xl border border-[#2A2A35] bg-[#1A1A22] p-6">
             <div>
-              <div className="text-sm font-medium text-[#111111] pb-2">
+              <div className="text-sm font-medium text-[#F8FAFC] pb-2">
                 Interactive Monthly ROI & Demurrage Savings Estimator
               </div>
-              <div className="text-xs text-[#404040]">
+              <div className="text-xs text-[#94A3B8]">
                 Adjust your monthly import manifest volume to estimate prevented
                 CMA CGM detention holds and duty restitution recovery.
               </div>
@@ -1155,45 +1125,45 @@ Preview in Mailpit: http://localhost:8025
               step={20}
               value={monthlyManifests}
               onChange={(e) => setMonthlyManifests(Number(e.target.value))}
-              className="mt-4 w-full accent-[#111111]"
+              className="mt-4 w-full accent-[#A78BFA]"
             />
-            <div className="text-xs text-[#404040]">
+            <div className="text-xs text-[#A78BFA] font-semibold mt-1">
               {monthlyManifests} manifests / month
             </div>
             <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
-              <div className="rounded-xl border border-[#e5e5e5] bg-[#ffffff] p-4">
-                <div className="font-mono text-[11px] text-[#737373]">
+              <div className="rounded-xl border border-[#2A2A35] bg-[#16161E] p-4">
+                <div className="font-mono text-[11px] text-[#64748B]">
                   EST. PREVENTED RED-LANE HOLDS
                 </div>
-                <div className="mt-1 font-mono text-2xl font-semibold text-[#111111]">
+                <div className="mt-1 font-mono text-2xl font-semibold text-[#F8FAFC]">
                   {roiMetrics.preventedHoldsPerMonth} holds / mo
                 </div>
-                <div className="mt-1 text-xs text-[#404040]">
+                <div className="mt-1 text-xs text-[#94A3B8]">
                   ~$
                   {roiMetrics.demurrageSaved.toLocaleString("en-US")} CMA CGM
                   demurrage avoided
                 </div>
               </div>
-              <div className="rounded-xl border border-[#e5e5e5] bg-[#ffffff] p-4">
-                <div className="font-mono text-[11px] text-[#737373]">
+              <div className="rounded-xl border border-[#2A2A35] bg-[#16161E] p-4">
+                <div className="font-mono text-[11px] text-[#64748B]">
                   EST. DUTY RESTITUTION RECOVERY
                 </div>
-                <div className="mt-1 font-mono text-2xl font-semibold text-[#15803d]">
+                <div className="mt-1 font-mono text-2xl font-semibold text-[#34D399]">
                   ${roiMetrics.restitutionRecovered.toLocaleString("en-US")} /
                   mo
                 </div>
-                <div className="mt-1 text-xs text-[#404040]">
+                <div className="mt-1 text-xs text-[#94A3B8]">
                   Overpaid MFN tariff refund discovery
                 </div>
               </div>
-              <div className="rounded-xl border border-[#e5e5e5] bg-[#ffffff] p-4">
-                <div className="font-mono text-[11px] text-[#737373]">
+              <div className="rounded-xl border border-[#2A2A35] bg-[#16161E] p-4">
+                <div className="font-mono text-[11px] text-[#64748B]">
                   NET MONTHLY COMPLIANCE VALUE
                 </div>
-                <div className="mt-1 font-mono text-2xl font-semibold text-[#ec8434]">
+                <div className="mt-1 font-mono text-2xl font-semibold text-[#A78BFA]">
                   ${roiMetrics.totalMonthlyValue.toLocaleString("en-US")} / mo
                 </div>
-                <div className="mt-1 text-xs text-[#404040]">
+                <div className="mt-1 text-xs text-[#94A3B8]">
                   &gt;15x payback vs Professional tier
                 </div>
               </div>
@@ -1202,21 +1172,21 @@ Preview in Mailpit: http://localhost:8025
 
           {/* 4 Commercial Tiers */}
           <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-            <div className="flex flex-col justify-between rounded-2xl border border-[#e5e5e5] bg-[#ffffff] p-6">
+            <div className="flex flex-col justify-between rounded-2xl border border-[#2A2A35] bg-[#1A1A22] p-6">
               <div>
-                <div className="font-mono text-xs font-semibold uppercase text-[#737373]">
+                <div className="font-mono text-xs font-semibold uppercase text-[#64748B]">
                   Starter
                 </div>
                 <div className="mt-3 flex items-baseline gap-1">
-                  <span className="font-display text-3xl font-medium text-[#111111]">
+                  <span className="font-display text-3xl font-medium text-[#F8FAFC]">
                     $129
                   </span>
-                  <span className="text-xs text-[#737373]">
+                  <span className="text-xs text-[#64748B]">
                     /mo (~2.0M IDR)
                   </span>
                 </div>
-                <p className="mt-1 text-xs text-[#737373]">Billed annually</p>
-                <ul className="mt-6 space-y-2.5 text-xs text-[#404040]">
+                <p className="mt-1 text-xs text-[#64748B]">Billed annually</p>
+                <ul className="mt-6 space-y-2.5 text-xs text-[#94A3B8]">
                   <li>Up to 250 shipment audits / month</li>
                   <li>Full 5,612 Indonesian HS-6 search</li>
                   <li>Lartas permit verification (SDPPI, Kemenkes, BPOM)</li>
@@ -1225,33 +1195,33 @@ Preview in Mailpit: http://localhost:8025
                 </ul>
               </div>
               <a
-                href="http://localhost:8501"
-                className="mt-8 block rounded-full border border-[#e5e5e5] bg-[#fafafa] py-2.5 text-center text-xs font-medium text-[#111111] transition hover:border-[#111111]"
+                href="https://cgd.rafifmsn.com"
+                className="mt-8 block rounded-full border border-[#2A2A35] bg-[#16161E] py-2.5 text-center text-xs font-medium text-[#F8FAFC] transition hover:border-[#A78BFA]"
               >
                 Try Free for 14 Days
               </a>
             </div>
 
-            <div className="flex flex-col justify-between rounded-2xl border-2 border-[#111111] bg-[#ffffff] p-6 shadow-sm">
+            <div className="flex flex-col justify-between rounded-2xl border-2 border-[#A78BFA] bg-[#1A1A22] p-6 shadow-[0_0_25px_rgba(167,139,250,0.15)]">
               <div>
                 <div className="flex items-center justify-between">
-                  <span className="font-mono text-xs font-semibold uppercase text-[#111111]">
+                  <span className="font-mono text-xs font-semibold uppercase text-[#A78BFA]">
                     Professional
                   </span>
-                  <span className="rounded-full bg-[#111111] px-2.5 py-0.5 font-mono text-[10px] text-[#ffffff]">
+                  <span className="rounded-full bg-[#A78BFA] px-2.5 py-0.5 font-mono text-[10px] font-bold text-[#0B0B0F]">
                     Most Popular
                   </span>
                 </div>
                 <div className="mt-3 flex items-baseline gap-1">
-                  <span className="font-display text-3xl font-medium text-[#111111]">
+                  <span className="font-display text-3xl font-medium text-[#F8FAFC]">
                     $499
                   </span>
-                  <span className="text-xs text-[#737373]">
+                  <span className="text-xs text-[#64748B]">
                     /mo (~7.8M IDR)
                   </span>
                 </div>
-                <p className="mt-1 text-xs text-[#737373]">Billed annually</p>
-                <ul className="mt-6 space-y-2.5 text-xs text-[#404040]">
+                <p className="mt-1 text-xs text-[#64748B]">Billed annually</p>
+                <ul className="mt-6 space-y-2.5 text-xs text-[#E2E8F0]">
                   <li>Up to 2,500 shipment audits / month</li>
                   <li>CMA CGM progressive day-slab demurrage engine</li>
                   <li>Duty overpayment restitution analyzer</li>
@@ -1260,30 +1230,30 @@ Preview in Mailpit: http://localhost:8025
                 </ul>
               </div>
               <a
-                href="http://localhost:8501"
-                className="mt-8 block rounded-full bg-[#111111] py-2.5 text-center text-xs font-medium text-[#ffffff] transition hover:bg-[#262626]"
+                href="https://cgd.rafifmsn.com"
+                className="mt-8 block rounded-full bg-[#A78BFA] py-2.5 text-center text-xs font-semibold text-[#0B0B0F] transition hover:bg-[#C4B5FD]"
               >
                 Try Free for 14 Days
               </a>
             </div>
 
-            <div className="flex flex-col justify-between rounded-2xl border border-[#e5e5e5] bg-[#ffffff] p-6">
+            <div className="flex flex-col justify-between rounded-2xl border border-[#2A2A35] bg-[#1A1A22] p-6">
               <div>
-                <div className="font-mono text-xs font-semibold uppercase text-[#737373]">
+                <div className="font-mono text-xs font-semibold uppercase text-[#64748B]">
                   Enterprise On-Premise
                 </div>
                 <div className="mt-3 flex items-baseline gap-1">
-                  <span className="font-display text-3xl font-medium text-[#111111]">
+                  <span className="font-display text-3xl font-medium text-[#F8FAFC]">
                     $1,499
                   </span>
-                  <span className="text-xs text-[#737373]">
+                  <span className="text-xs text-[#64748B]">
                     /mo (~23.5M IDR)
                   </span>
                 </div>
-                <p className="mt-1 text-xs text-[#737373]">
+                <p className="mt-1 text-xs text-[#64748B]">
                   Custom air-gapped deployment
                 </p>
-                <ul className="mt-6 space-y-2.5 text-xs text-[#404040]">
+                <ul className="mt-6 space-y-2.5 text-xs text-[#94A3B8]">
                   <li>Unlimited commercial manifest audits</li>
                   <li>Air-gapped on-premise Docker appliance</li>
                   <li>Custom vector embeddings & CEISA / ERP integration</li>
@@ -1292,26 +1262,26 @@ Preview in Mailpit: http://localhost:8025
                 </ul>
               </div>
               <a
-                href="http://localhost:8000/docs"
-                className="mt-8 block rounded-full border border-[#e5e5e5] bg-[#fafafa] py-2.5 text-center text-xs font-medium text-[#111111] transition hover:border-[#111111]"
+                href="https://cgd.rafifmsn.com"
+                className="mt-8 block rounded-full border border-[#2A2A35] bg-[#16161E] py-2.5 text-center text-xs font-medium text-[#F8FAFC] transition hover:border-[#A78BFA]"
               >
                 Contact Sales
               </a>
             </div>
 
-            <div className="flex flex-col justify-between rounded-2xl border border-[#e5e5e5] bg-[#ffffff] p-6">
+            <div className="flex flex-col justify-between rounded-2xl border border-[#2A2A35] bg-[#1A1A22] p-6">
               <div>
-                <div className="font-mono text-xs font-semibold uppercase text-[#737373]">
+                <div className="font-mono text-xs font-semibold uppercase text-[#64748B]">
                   Developer API
                 </div>
                 <div className="mt-3 flex items-baseline gap-1">
-                  <span className="font-display text-3xl font-medium text-[#111111]">
+                  <span className="font-display text-3xl font-medium text-[#F8FAFC]">
                     $0.75
                   </span>
-                  <span className="text-xs text-[#737373]">/ audit</span>
+                  <span className="text-xs text-[#64748B]">/ audit</span>
                 </div>
-                <p className="mt-1 text-xs text-[#737373]">Pay-as-you-go</p>
-                <ul className="mt-6 space-y-2.5 text-xs text-[#404040]">
+                <p className="mt-1 text-xs text-[#64748B]">Pay-as-you-go</p>
+                <ul className="mt-6 space-y-2.5 text-xs text-[#94A3B8]">
                   <li>Standard Model Context Protocol (MCP) tool</li>
                   <li>Programmatic FastAPI `/api/v1/audit` webhook</li>
                   <li>Machine-readable JSON + Markdown dossier response</li>
@@ -1319,8 +1289,8 @@ Preview in Mailpit: http://localhost:8025
                 </ul>
               </div>
               <a
-                href="http://localhost:8000/docs"
-                className="mt-8 block rounded-full border border-[#e5e5e5] bg-[#fafafa] py-2.5 text-center text-xs font-medium text-[#111111] transition hover:border-[#111111]"
+                href="https://cgd.rafifmsn.com"
+                className="mt-8 block rounded-full border border-[#2A2A35] bg-[#16161E] py-2.5 text-center text-xs font-medium text-[#F8FAFC] transition hover:border-[#A78BFA]"
               >
                 Get an API Key
               </a>
@@ -1330,20 +1300,69 @@ Preview in Mailpit: http://localhost:8025
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-[#e5e5e5] bg-[#fafafa] py-12">
-        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-6 text-xs text-[#737373] sm:flex-row">
-          <div className="flex items-center gap-2">
-            <span className="font-display font-medium text-[#111111]">
-              CustomsGuard
-            </span>
-            <span>·</span>
-            <span>
-              Autonomous Indonesian Trade Compliance & Tariff Discrepancy Engine
-            </span>
+      <footer className="border-t border-[#2A2A35] bg-[#0B0B0F] py-12">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+            {/* Left side: Logo & Brand description */}
+            <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center">
+              <a href="#" className="flex items-center">
+                <img
+                  src="/logo.svg"
+                  alt="CustomsGuard"
+                  className="h-3 w-auto"
+                />
+              </a>
+              <span className="hidden text-[#2A2A35] sm:inline">|</span>
+              <span className="text-xs text-[#94A3B8]">
+                Autonomous Indonesian Trade Compliance & Tariff Discrepancy
+                Engine
+              </span>
+            </div>
+
+            {/* Right side: Navigation anchors */}
+            <div className="flex flex-wrap items-center gap-6 font-mono text-xs text-[#94A3B8]">
+              <a
+                href="https://rmsn.notion.site/CustomsGuard-402ecf518bfa80f88309efb2ecc8cb3f?source=copy_link"
+                onClick={(e) => {
+                  e.preventDefault();
+                  alert(
+                    "CustomsGuard operates strictly on-premise within your air-gapped Docker perimeter. Commercial invoices and shipment data remain confidential inside your infrastructure.",
+                  );
+                }}
+                className="transition hover:text-[#A78BFA]"
+              >
+                Privacy
+              </a>
+              <a
+                href="https://rmsn.notion.site/CustomsGuard-402ecf518bfa80f88309efb2ecc8cb3f?source=copy_link"
+                onClick={(e) => {
+                  e.preventDefault();
+                  alert(
+                    "CustomsGuard provides advisory customs audit intelligence. Final cargo release authorizations remain with certified trade compliance officers and PPJK brokers.",
+                  );
+                }}
+                className="transition hover:text-[#A78BFA]"
+              >
+                Terms of Service
+              </a>
+              <a
+                href="mailto:rafif@rafifmsn.com"
+                className="transition hover:text-[#A78BFA]"
+              >
+                Contact
+              </a>
+            </div>
           </div>
-          <div className="font-mono">
-            WTO/UNCTAD ITC MAcMap (5,612 HS-6) · CMA CGM July 2026 Tariff ·
-            Air-Gapped Docker Stack
+
+          {/* Bottom metadata strip */}
+          <div className="mt-8 flex flex-col items-start justify-between gap-3 border-t border-[#2A2A35]/60 pt-6 font-mono text-[11px] text-[#64748B] sm:flex-row sm:items-center">
+            <span>
+              WTO/UNCTAD ITC MAcMap (5,612 HS-6) · CMA CGM July 2026 Tariff ·
+              Air-Gapped Docker Stack
+            </span>
+            <span>
+              © {new Date().getFullYear()} CustomsGuard. All rights reserved.
+            </span>
           </div>
         </div>
       </footer>
