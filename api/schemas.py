@@ -1,4 +1,4 @@
-"""Strict Pydantic v2 data contracts for the CustomsGuard v2 REST API."""
+"""Strict Pydantic data contracts for the CustomsGuard REST API."""
 
 from typing import List, Optional
 from pydantic import BaseModel, Field

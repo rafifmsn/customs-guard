@@ -66,11 +66,12 @@ flowchart TD
 
 > [!NOTE]
 > **Dual Execution Channels**:
+>
 > 1. **Deterministic Operator Channel (Streamlit & FastAPI)**:
-> Direct REST calls (`POST /api/v1/audit`) bypass remote LLM inference loops.
-> They execute tariff vector lookups, demurrage calculations, Markdown dossier exports, and Mailpit SMTP dispatches deterministically in under 50ms.
+>    Direct REST calls (`POST /api/v1/audit`) bypass remote LLM inference loops.
+>    They execute tariff vector lookups, demurrage calculations, Markdown dossier exports, and Mailpit SMTP dispatches deterministically in under 50ms.
 > 2. **Autonomous Agent Channel (IBM Bob & Langflow)**:
-> Interactive prompts and Bob MCP requests route to Langflow (`:7860`) where the LLM (`gpt-4o-mini`) reasons across multi-turn queries, invokes the toolkit, and generates conversational synthesis.
+>    Interactive prompts and Bob MCP requests route to Langflow (`:7860`) where the LLM reasons across multi-turn queries, invokes the toolkit, and generates conversational synthesis.
 
 - **IBM Bob**: Desktop conversational interface and CLI orchestrator.
 - **Model Context Protocol (MCP)**: Standardized protocol exposing the Langflow workflow as a callable client tool.
@@ -160,17 +161,20 @@ BOB_API_KEY="your_api_key_here" bob run --trust "Audit shipment SHP-2026-0042 us
 ## Documentation & Scenarios Directory
 
 ### Domain & Business Strategy
+
 - [`docs/domain/problem_solution.md`](./docs/domain/problem_solution.md): Deep analysis of customs bottlenecks, demurrage costs, and our AI solution.
 - [`docs/domain/business_canvas.md`](./docs/domain/business_canvas.md): Business model canvas, ROI model, demurrage savings, and ~87% tech cost reduction.
 - [`docs/domain/macmap.xlsx`](./docs/domain/macmap.xlsx): Official WTO/UNCTAD International Trade Centre (ITC) Market Access Map (MAcMap) tariff schedule for Indonesia.
 
 ### Technical Architecture & Setup
+
 - [`docs/technical/architecture.md`](./docs/technical/architecture.md): Langflow canvas topology, node specifications, guardrails, and data contracts.
 - [`docs/technical/design_decisions.md`](./docs/technical/design_decisions.md): Rationale behind flexible agent reasoning, permit verification, and enterprise roadmap.
 - [`docs/technical/mcp_setup.md`](./docs/technical/mcp_setup.md): Step-by-step connection guide for IBM Bob and Langflow MCP proxy.
 - [`langflow/CustomsGuard.json`](./langflow/CustomsGuard.json): Pre-configured Langflow visual pipeline export (Agent, CustomsGuard Tools, Guardrails).
 
 ### Prompts, Test Fixtures & Reference Outputs
+
 - [`scenarios/prompts/`](./scenarios/prompts/): Modular prompts for high-risk audits, demurrage scaling, and duty restitution.
 - [`data/seed/sample_invoices.json`](./data/seed/sample_invoices.json): Scenario invoice payloads with carrier, container metadata, and declared commodities.
 - [`scenarios/expected-outputs/`](./scenarios/expected-outputs/): Ground-truth reference audit reports matching each test scenario.

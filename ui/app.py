@@ -1,4 +1,4 @@
-"""CustomsGuard v2 Native Streamlit Compliance Dashboard.
+"""CustomsGuard Native Streamlit Compliance Dashboard.
 
 Zero custom CSS injection. Configured declaratively via .streamlit/config.toml
 (Dark theme with #0B0B0F sidebar and #A78BFA purple accent).
@@ -311,9 +311,7 @@ def ensure_session_defaults() -> None:
         )
         st.session_state["active_invoice"] = json.loads(json.dumps(default_inv))
     if "last_audit_response" not in st.session_state:
-        st.session_state["last_audit_response"] = execute_audit_request(
-            st.session_state["active_invoice"]
-        )
+        st.session_state["last_audit_response"] = None
 
 
 def page_audit_workspace() -> None:
@@ -351,9 +349,7 @@ def page_audit_workspace() -> None:
                 st.session_state["active_invoice"] = json.loads(
                     json.dumps(samples[idx])
                 )
-                st.session_state["last_audit_response"] = execute_audit_request(
-                    st.session_state["active_invoice"]
-                )
+                st.session_state["last_audit_response"] = None
                 st.rerun()
 
         uploaded_file = st.file_uploader(
@@ -367,6 +363,7 @@ def page_audit_workspace() -> None:
                     uploaded_data = uploaded_data[0]
                 if isinstance(uploaded_data, dict):
                     st.session_state["active_invoice"] = uploaded_data
+                    st.session_state["last_audit_response"] = None
             except Exception as exc:
                 st.error(f"Invalid JSON file: {exc}")
 
@@ -485,7 +482,17 @@ def page_audit_workspace() -> None:
                 state="complete",
             )
 
-    resp_data = st.session_state["last_audit_response"]
+    resp_data = st.session_state.get("last_audit_response")
+    if not resp_data or "audit" not in resp_data:
+        with st.container(border=True):
+            st.markdown("**:material/fact_check: Audit Pending**")
+            st.write(
+                "Manifest parameters and line items are loaded. Click "
+                "**Run Autonomous Compliance Audit** above to audit tariff classifications, "
+                "calculate CMA CGM demurrage exposure, and verify mandatory ministry import permits."
+            )
+        return
+
     audit = resp_data["audit"]
     dem = audit["demurrage_assessment"]
 
@@ -581,15 +588,24 @@ def page_audit_workspace() -> None:
 
 def page_demurrage_matrix() -> None:
     ensure_session_defaults()
-    resp_data = st.session_state["last_audit_response"]
-    audit = resp_data["audit"]
-    dem = audit["demurrage_assessment"]
-
     st.title("CMA CGM Progressive Demurrage Matrix")
     st.write(
         "Official CMA CGM Indonesia Merged Import Demurrage & Detention Tariff Schedule "
         "(Effective July 1, 2026) evaluated for the active shipment."
     )
+
+    resp_data = st.session_state.get("last_audit_response")
+    if not resp_data or "audit" not in resp_data:
+        with st.container(border=True):
+            st.markdown("**:material/info: No Active Audit**")
+            st.write(
+                "No shipment has been audited yet. Please go to the **Audit Workspace** "
+                "and click **Run Autonomous Compliance Audit** to calculate demurrage liabilities."
+            )
+        return
+
+    audit = resp_data["audit"]
+    dem = audit["demurrage_assessment"]
 
     col1, col2 = st.columns(2)
     with col1:
@@ -776,7 +792,7 @@ def page_bob_assistant() -> None:
 
 def render_app() -> None:
     st.set_page_config(
-        page_title="CustomsGuard v2 | Autonomous Trade Compliance",
+        page_title="CustomsGuard | Autonomous Trade Compliance",
         layout="centered",
         initial_sidebar_state="expanded",
     )
@@ -811,14 +827,20 @@ def render_app() -> None:
 
     with st.sidebar:
         health = fetch_health()
-        active_audit = st.session_state.get("last_audit_response", {}).get("audit", {})
-        active_shp = active_audit.get("shipment_id", "SHP-2026-0042")
-        active_status = format_short_verdict(
-            active_audit.get("overall_status", "NON_COMPLIANT_HIGH_RISK")
-        )
+        resp_data = st.session_state.get("last_audit_response")
+        active_inv = st.session_state.get("active_invoice", {})
+        if resp_data and "audit" in resp_data:
+            active_audit = resp_data["audit"]
+            active_shp = active_audit.get("shipment_id", "SHP-2026-0042")
+            active_status = format_short_verdict(
+                active_audit.get("overall_status", "PENDING AUDIT")
+            )
+        else:
+            active_shp = str(active_inv.get("shipment_id", "SHP-2026-0042"))
+            active_status = "PENDING AUDIT"
 
         with st.container(border=True):
-            st.markdown("**:material/shield: CustomsGuard v2**")
+            st.markdown("**:material/shield: CustomsGuard**")
             st.caption(
                 f"Manifest: `{active_shp}`  \n"
                 f"Status: `{active_status}`"

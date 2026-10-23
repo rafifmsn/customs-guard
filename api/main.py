@@ -1,4 +1,4 @@
-"""CustomsGuard v2 Centralized FastAPI Controller."""
+"""CustomsGuard Centralized FastAPI Controller."""
 
 import asyncio
 import datetime
@@ -36,7 +36,7 @@ MAX_CONCURRENT_BOB_WORKERS = 2
 BOB_SEMAPHORE = asyncio.Semaphore(MAX_CONCURRENT_BOB_WORKERS)
 
 app = FastAPI(
-    title="CustomsGuard v2 Autonomous Trade Compliance API",
+    title="CustomsGuard Autonomous Trade Compliance API",
     description=(
         "Centralized REST controller for Indonesian HS-6 tariff discrepancy auditing, "
         "Lartas regulatory permit verification, CMA CGM Indonesia progressive demurrage modeling, "

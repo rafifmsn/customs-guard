@@ -1,4 +1,4 @@
-"""Automated endpoint tests for the CustomsGuard v2 FastAPI backend."""
+"""Automated endpoint tests for the CustomsGuard FastAPI backend."""
 
 import asyncio
 import json
@@ -19,7 +19,7 @@ def test_openapi_schema_generated():
     resp = client.get("/openapi.json")
     assert resp.status_code == 200
     schema = resp.json()
-    assert schema["info"]["title"] == "CustomsGuard v2 Autonomous Trade Compliance API"
+    assert schema["info"]["title"] == "CustomsGuard Autonomous Trade Compliance API"
     paths = schema["paths"]
     assert "/api/v1/health" in paths
     assert "/api/v1/audit" in paths

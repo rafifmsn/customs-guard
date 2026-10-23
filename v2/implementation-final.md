@@ -1,4 +1,4 @@
-# CustomsGuard v2: Architecture & Implementation Specification
+# CustomsGuard: Architecture & Implementation Specification
 
 ## 1. Executive Context & Philosophy
 
@@ -9,6 +9,7 @@ The core engineering philosophy for v2 is **clean, deterministic, and zero-bloat
 Every architectural choice prioritizes maintainability, predictable execution, and strict separation between deterministic math and probabilistic LLM synthesis.
 
 ### Legacy Preservation Mandate
+
 Do not delete or break the existing setup.
 The legacy workflow where IBM Bob Desktop or CLI connects directly to Langflow via Model Context Protocol (`.bob/mcp.json`) and invokes the `$audit-shipment` skill must remain 100% functional.
 All existing unit and integration tests in `tests/`, seed data in `data/seed/`, and benchmark scenarios in `scenarios/` must be preserved.
@@ -58,14 +59,14 @@ In v2, we decouple the system into a split-channel architecture:
 
 ### Local Docker Services Matrix
 
-| Service Name | Tech Stack | Exposed Ports | Core Responsibility |
-| :--- | :--- | :--- | :--- |
-| `customsguard-ui` | Python 3.11, Streamlit | `:8501` | Executive compliance dashboard, audit workspace, dossier downloads, Bob Q&A tab |
-| `customsguard-api` | Python 3.11, FastAPI, Asyncio | `:8000` | Centralized REST controller, deterministic audit orchestration, bounded Bob CLI pool |
-| `langflow` | Langflow Engine | `:7860` | Hosts Pipeline A (Core Audit REST + legacy MCP) and Pipeline B (Assistant MCP) |
-| `qdrant` | Qdrant Vector DB | `:6333`, `:6334` | Stores 5,612 Indonesian HS-6 subheading vectors and Lartas metadata |
-| `mailpit` | Mock SMTP & Web UI | `:1025`, `:8025` | Captures real-time detention alert emails for compliance review |
-| `postgres` | PostgreSQL 16 Alpine | `:5432` | Persists Langflow state and workflow definitions |
+| Service Name       | Tech Stack                    | Exposed Ports    | Core Responsibility                                                                  |
+| :----------------- | :---------------------------- | :--------------- | :----------------------------------------------------------------------------------- |
+| `customsguard-ui`  | Python 3.11, Streamlit        | `:8501`          | Executive compliance dashboard, audit workspace, dossier downloads, Bob Q&A tab      |
+| `customsguard-api` | Python 3.11, FastAPI, Asyncio | `:8000`          | Centralized REST controller, deterministic audit orchestration, bounded Bob CLI pool |
+| `langflow`         | Langflow Engine               | `:7860`          | Hosts Pipeline A (Core Audit REST + legacy MCP) and Pipeline B (Assistant MCP)       |
+| `qdrant`           | Qdrant Vector DB              | `:6333`, `:6334` | Stores 5,612 Indonesian HS-6 subheading vectors and Lartas metadata                  |
+| `mailpit`          | Mock SMTP & Web UI            | `:1025`, `:8025` | Captures real-time detention alert emails for compliance review                      |
+| `postgres`         | PostgreSQL 16 Alpine          | `:5432`          | Persists Langflow state and workflow definitions                                     |
 
 ---
 
@@ -74,8 +75,9 @@ In v2, we decouple the system into a split-channel architecture:
 Before building the new services, address three specific output quality gaps in the existing toolkit (`scripts/customs_components.py`) and agent prompt (`scenarios/prompts/system_agent_instruction.md`):
 
 ### 4.1 Upgrade `export_compliance_report` (True Markdown Dossier vs JSON)
+
 - **Current Issue**: `export_compliance_report` writes `audit_report.json`, and then generates `audit_report.md` by simply wrapping the raw JSON string inside a fenced code block.
-This makes the Markdown file redundant.
+  This makes the Markdown file redundant.
 - **Required Fix**: Keep `audit_report.json` as the machine-readable payload for APIs and automated pipelines, and upgrade `audit_report.md` to generate a structured, human-readable executive dossier matching the layout in `scenarios/expected-outputs/01_high_risk_dossier.md`.
 - **Target Markdown Structure**:
   - Header with `# CustomsGuard Compliance Audit Report`, `Shipment ID`, `Generated At`, and `Verdict`.
@@ -86,15 +88,17 @@ This makes the Markdown file redundant.
 - **Backward Compatibility**: Ensure all assertions in `tests/test_report_exporter.py` continue to pass (`# CustomsGuard Compliance Audit Report`, `shipment_id`, and `overall_status` present in `audit_report.md`, plus companion `audit_report.json` on disk).
 
 ### 4.2 Upgrade `send_compliance_alert` (Deterministic Email Formatting)
+
 - **Current Issue**: `send_compliance_alert(shipment_id, verdict, alert_details)` relies on whatever unstructured text the LLM passes into `alert_details`, causing inconsistent email layouts in Mailpit.
 - **Required Fix**: Standardize the email body generator so that whenever `alert_details` is passed (whether as a JSON string, dictionary summary, or raw text), the function formats a clean, structured notification block displaying the Shipment ID, Official Verdict, Container Specifications, Duty Shortfall, CMA CGM Daily Burn Rate, Critical Discrepancy Notes, and Mailpit preview link.
-Ensure existing unit tests in `tests/test_alert_system.py` continue to pass.
+  Ensure existing unit tests in `tests/test_alert_system.py` continue to pass.
 
 ### 4.3 Standardize Agent Conversational Output & Decouple UI Rendering
+
 - **Current Issue**: In Langflow (`Chat Input -> Agent -> Guardrails -> Chat Output`), the LLM generates freeform text that fluctuates in structure across runs.
 - **Dual Fix**:
   1. **Deterministic UI Rendering**: The FastAPI `/api/v1/audit` endpoint and Streamlit dashboard must never rely on regex-parsing the LLM's conversational prose to populate UI metrics or tables.
-  Instead, execute or extract the deterministic dictionary from `audit_shipment_compliance` (and saved `audit_report.json`) to render exact numbers, tables, and demurrage tiers in Streamlit, while displaying the Langflow Agent + Guardrails response below as the executive synthesis commentary.
+     Instead, execute or extract the deterministic dictionary from `audit_shipment_compliance` (and saved `audit_report.json`) to render exact numbers, tables, and demurrage tiers in Streamlit, while displaying the Langflow Agent + Guardrails response below as the executive synthesis commentary.
   2. **Few-Shot Prompt Skeleton**: Update `scenarios/prompts/system_agent_instruction.md` (and the corresponding Agent prompt in `langflow/CustomsGuard.json` if updated) to include a concise, explicit Markdown output skeleton so conversational responses in IBM Bob and Langflow remain visually consistent without restricting tool-calling reliability.
 
 ---
@@ -102,6 +106,7 @@ Ensure existing unit tests in `tests/test_alert_system.py` continue to pass.
 ## 5. Service Specifications
 
 ### 5.1 Centralized Backend API (`customsguard-api` in `api/`)
+
 Why FastAPI is used here: Streamlit re-executes its entire script on every user interaction.
 Running multi-minute subprocess calls or heavy network orchestration directly inside Streamlit causes UI lockups and cancelled runs when users switch tabs.
 FastAPI isolates all state and process management behind clean REST endpoints without adding heavy message brokers like Celery or Redis.
@@ -123,11 +128,12 @@ FastAPI isolates all state and process management behind clean REST endpoints wi
     - Manages the IBM Bob CLI (`bob run --trust "<prompt>"`) for ad-hoc trade compliance Q&A.
     - **Stateless One-Shot Execution**: Each request is an independent query with no persistent PTY shell or session memory.
     - **Bounded Concurrency Pool**: Use an `asyncio.Semaphore` (max 2 to 3 concurrent processes).
-    If full, queue briefly or return a clean busy status.
+      If full, queue briefly or return a clean busy status.
     - **Hard Timeout & Process Group Cleanup**: Enforce a strict configurable timeout (default **180 to 300 seconds**).
-    Spawn the CLI inside its own process group (`start_new_session=True`) so that if a timeout or cancellation occurs, the runner immediately sends `SIGTERM` / `SIGKILL` to the entire process group (`os.killpg`), guaranteeing zero zombie processes or memory leaks.
+      Spawn the CLI inside its own process group (`start_new_session=True`) so that if a timeout or cancellation occurs, the runner immediately sends `SIGTERM` / `SIGKILL` to the entire process group (`os.killpg`), guaranteeing zero zombie processes or memory leaks.
 
 ### 5.2 Enterprise Streamlit Dashboard (`customsguard-ui` in `ui/`)
+
 - **Zero Custom CSS Bloat**:
   Do not inject raw `<style>` blocks or `unsafe_allow_html=True` CSS hacks.
   Consult `v2/streamlit-theme.md` and configure `.streamlit/config.toml` declaratively using `[theme]` options (`primaryColor`, `backgroundColor`, `secondaryBackgroundColor`, `textColor`, `font`, `baseFontSize`, `borderRadius`, `borderColor`, and `[theme.sidebar]`).
@@ -150,6 +156,7 @@ FastAPI isolates all state and process management behind clean REST endpoints wi
      - A clean one-shot Q&A input box calling `POST /api/v1/assistant` wrapped in an `st.status` spinner to query HS classifications, Lartas permit triggers, or tariff rules.
 
 ### 5.3 Dual Langflow Pipelines (`langflow/`)
+
 - **Pipeline A (Core Audit Pipeline)**:
   Retains `langflow/CustomsGuard.json` compatibility so both direct REST calls (`/api/v1/run/{flow_id}`) and legacy IBM Bob MCP calls (`customsguard` tool) execute seamlessly through the Agent and Guardrails nodes.
 - **Pipeline B (Knowledge & Tariff Assistant MCP)**:
@@ -163,6 +170,7 @@ Build a standalone **Next.js (App Router, `output: 'export'`)** single-page appl
 It must compile to pure static HTML/CSS/JS with zero runtime dependency on the local Docker stack.
 
 ### 6.1 Visual Direction & `inspo` MCP Reference (`dub-co`)
+
 - Use the `inspo` MCP server (`get_screen` and `get_design_system` with slug `dub-co`, corresponding to `https://inspomcp.dev/screens/dub-co`) as the primary design reference.
 - **Design System Characteristics**:
   - **Aesthetic**: Minimalist, high-craft digital architecture with stark geometric structure, generous whitespace, crisp `1px` subtle borders, and light mode (`#ffffff` background, `#111111` primary text).
@@ -170,21 +178,22 @@ It must compile to pure static HTML/CSS/JS with zero runtime dependency on the l
   - **Macrostructure (`feature-stack`)**:
     - Top sticky navigation bar with left logo, center anchor links (Problem, Architecture, Interactive Demo, ROI, Docs), and right CTA pills.
     - Centered Hero with high-contrast sentence-case headline, 2-line subhead framing the Indonesian customs compliance bottleneck, and dual pill CTAs ("Try Interactive Demo" filled black pill + "Read Architecture Docs" ghost pill).
-    - **Feature Pill Gateway**: 3 distinct accented feature pills bridging the hero text and the main application showcase container below the fold (e.g., *Autonomous Tariff RAG*, *CMA CGM Demurrage Engine*, *Lartas Permit Guard*).
+    - **Feature Pill Gateway**: 3 distinct accented feature pills bridging the hero text and the main application showcase container below the fold (e.g., _Autonomous Tariff RAG_, _CMA CGM Demurrage Engine_, _Lartas Permit Guard_).
 - **Figma Visual Placeholders**:
   The user will design final custom logos, hero PNG/GIF captures, and custom illustrations in Figma later.
   Build clean, well-proportioned, clearly labeled SVG/CSS placeholder frames (with exact aspect ratios and subtle grid/wireframe styling) for the brand logo, hero dashboard showcase, and architecture diagram so custom Figma assets can be swapped in effortlessly.
 
 ### 6.2 Page Sections & 1-Click Scenario Explorer
+
 1. **Hero & Feature-Stack Frame**: Headline, CTAs, 3 feature pills, and main dashboard preview container.
 2. **Domain Bottleneck & Value Metrics**: Highlight the 5,612 HS-6 subheadings, 9.73% Lartas permit traps (546 restricted codes), 100% to 1,000% statutory underpayment fines, and ~87% infrastructure cost reduction of self-hosted Docker vs cloud SaaS.
 3. **Interactive 1-Click Scenario Explorer (No Drag-and-Drop Bloat)**:
    - Do not build fragile client-side PDF drag-and-drop parsers.
    - Instead, provide 4 interactive scenario selector pills corresponding to the ground-truth cases in `data/seed/sample_invoices.json` and `scenarios/expected-outputs/`:
-     1. *High-Risk Red Lane Hold (Missing SDPPI Telecom Permit)*
-     2. *Multi-Container Demurrage Bleed (CMA CGM Reefers / Dry Slabs)*
-     3. *Duty Restitution Discovery (15% Declared vs 0% Official MFN)*
-     4. *Compliant Green-Lane Manifest*
+     1. _High-Risk Red Lane Hold (Missing SDPPI Telecom Permit)_
+     2. _Multi-Container Demurrage Bleed (CMA CGM Reefers / Dry Slabs)_
+     3. _Duty Restitution Discovery (15% Declared vs 0% Official MFN)_
+     4. _Compliant Green-Lane Manifest_
    - Include interactive sliders/toggles for container count (1 to 10), container size (`20ft`, `40ft`, `45ft`), equipment type (`Standard Dry`, `Reefer`), and projected hold duration (1 to 25 days) that compute the exact CMA CGM progressive day-slab math client-side in real time.
    - Selecting a scenario immediately renders the structured liability comparison cards, itemized tariff table, formatted Markdown dossier preview, and simulated Mailpit alert preview.
 4. **Air-Gapped Security & Architecture Showcase**: Visual breakdown of the local Docker stack (Streamlit, FastAPI, Langflow, Qdrant, Guardrails, Mailpit) ensuring zero sensitive commercial invoice data leaves the enterprise perimeter.
@@ -225,6 +234,7 @@ It must compile to pure static HTML/CSS/JS with zero runtime dependency on the l
 ## 8. Execution Sequence for the Implementing Agent
 
 ### Phase 1: Core Toolkit & Prompt Refinements
+
 1. Inspect `scripts/customs_components.py` and `scenarios/prompts/system_agent_instruction.md`.
 2. Upgrade `export_compliance_report` to output the rich human-readable Markdown dossier alongside `audit_report.json`.
 3. Upgrade `send_compliance_alert` to format deterministic, structured email bodies.
@@ -232,21 +242,24 @@ It must compile to pure static HTML/CSS/JS with zero runtime dependency on the l
 5. Run `uv run pytest` to verify all existing unit tests pass.
 
 ### Phase 2: Centralized FastAPI Backend (`api/`)
+
 1. Create the FastAPI application exposing `/api/v1/health`, `/api/v1/audit`, `/api/v1/reports`, and `/api/v1/assistant`.
 2. Implement the bounded `asyncio` subprocess pool for IBM Bob CLI with process-group isolation (`start_new_session=True`), 180s to 300s timeout enforcement, and `os.killpg` cleanup.
 3. Add comprehensive API tests in `tests/test_api_endpoints.py` validating audit execution, report listing, and subprocess timeout handling.
 
 ### Phase 3: Native Streamlit Compliance Dashboard (`ui/`)
+
 1. Configure `.streamlit/config.toml` following `v2/streamlit-theme.md` (zero custom CSS injection).
 2. Build the Streamlit dashboard (`ui/app.py`) connecting to the FastAPI backend with views for the Invoice Audit Workspace, Financial & Demurrage Breakdown, Dossier Archive & Downloads, and Bob Compliance Assistant.
 
 ### Phase 4: Docker Compose Integration & Verification
+
 1. Register `customsguard-api` and `customsguard-ui` in `docker-compose.yml` with shared volume mounts (`./data/reports`, `./data/seed`, `./scripts`).
 2. Verify full test suite passes via `uv run pytest`.
 
 ### Phase 5: Next.js Static Landing Page (`web-landing/`)
+
 1. Query the `inspo` MCP server (`get_screen` / `get_design_system` for `dub-co`) to load exact layout composition and design tokens.
 2. Scaffold `web-landing/` using Next.js App Router (`output: 'export'`) and Tailwind CSS.
 3. Implement the `dub-co` inspired layout with clearly marked Figma asset placeholders and the client-side 1-Click Scenario Explorer with real-time CMA CGM demurrage calculations.
 4. Run `npm run build` inside `web-landing/` to verify clean static export generation.
-

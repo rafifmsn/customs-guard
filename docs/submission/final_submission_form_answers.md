@@ -71,7 +71,7 @@ CustomsGuard menjadi solusi yang jauh lebih unggul karena:
 
 IBM Langflow digunakan sebagai mesin eksekusi workflow visual dan orkestrasi tools:
 
-Workflow yang dibuat: Alur visual yang menghubungkan Chat Input, Agent LLM (gpt-4o-mini), Custom Toolkit Component, Guardrails, dan Chat Output.
+Workflow yang dibuat: Alur visual yang menghubungkan Chat Input, Agent LLM, Custom Toolkit Component, Guardrails, dan Chat Output.
 Node/Component yang digunakan:
 
 - `Chat Input`: Menerima payload invoice komersial.

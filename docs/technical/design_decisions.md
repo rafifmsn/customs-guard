@@ -79,26 +79,27 @@ The engine models the carrier's Merged Import Demurrage & Detention clock across
 
 #### Standard Dry Containers (5 Free Days)
 
-| Day Slab | 20ft Container | 40ft Container | 45ft Container |
-| :--- | :--- | :--- | :--- |
-| **Days 1 to 5** | Free ($0.00) | Free ($0.00) | Free ($0.00) |
-| **Days 6 to 10** | $66.00 / day | $101.00 / day | $141.00 / day |
-| **Days 11 to 15** | $86.00 / day | $121.00 / day | $171.00 / day |
-| **Days 16 to 20** | $96.00 / day | $151.00 / day | $181.00 / day |
-| **Days 21+** | $106.00 / day | $161.00 / day | $191.00 / day |
+| Day Slab          | 20ft Container | 40ft Container | 45ft Container |
+| :---------------- | :------------- | :------------- | :------------- |
+| **Days 1 to 5**   | Free ($0.00)   | Free ($0.00)   | Free ($0.00)   |
+| **Days 6 to 10**  | $66.00 / day   | $101.00 / day  | $141.00 / day  |
+| **Days 11 to 15** | $86.00 / day   | $121.00 / day  | $171.00 / day  |
+| **Days 16 to 20** | $96.00 / day   | $151.00 / day  | $181.00 / day  |
+| **Days 21+**      | $106.00 / day  | $161.00 / day  | $191.00 / day  |
 
 #### Reefer Containers (3 Free Days)
 
-| Day Slab | 20ft Container | 40ft Container |
-| :--- | :--- | :--- |
-| **Days 1 to 3** | Free ($0.00) | Free ($0.00) |
-| **Days 4 to 5** | $89.00 / day | $141.00 / day |
-| **Days 6 to 7** | $126.00 / day | $176.00 / day |
-| **Days 8+** | $130.00 / day | $180.00 / day |
+| Day Slab        | 20ft Container | 40ft Container |
+| :-------------- | :------------- | :------------- |
+| **Days 1 to 3** | Free ($0.00)   | Free ($0.00)   |
+| **Days 4 to 5** | $89.00 / day   | $141.00 / day  |
+| **Days 6 to 7** | $126.00 / day  | $176.00 / day  |
+| **Days 8+**     | $130.00 / day  | $180.00 / day  |
 
 ### Calculation Mechanics & Sizing Defaults
 
 The engine evaluates container dimensions (20ft, 40ft, 45ft) and equipment types (Standard Dry vs Reefer):
+
 - **Active Daily Burn Rate**:
   Calculated as the active slab rate per container multiplied by the total container count.
 - **Projected Cumulative Hold Liability**:
@@ -123,7 +124,7 @@ Profiling end-to-end execution of the conversational audit pipeline (`bob run --
    - Local dossier disk serialization and Mailpit SMTP socket delivery: ~50 to 100 ms.
 2. **Conversational Multi-Turn LLM Layer (~40 to 44 s)**:
    - Node.js environment initialization and MCP streamable HTTP handshake: ~3 to 5 seconds.
-   - Langflow flow execution (Job 1: ~13.3 seconds, Job 2: ~15.1 seconds): Consumed almost entirely by external network roundtrips to cloud LLM APIs (`gpt-4o-mini`) across agent reasoning and Guardrails content-safety evaluations.
+   - Langflow flow execution (Job 1: ~13.3 seconds, Job 2: ~15.1 seconds): Consumed almost entirely by external network roundtrips to cloud LLM APIs across agent reasoning and Guardrails content-safety evaluations.
 
 ### Local Inference & Framework Optimization Roadmap
 

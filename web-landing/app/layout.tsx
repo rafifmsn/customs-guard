@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "CustomsGuard v2 | Autonomous Trade Compliance & Tariff Discrepancy Engine",
+  title:
+    "CustomsGuard | Autonomous Trade Compliance & Tariff Discrepancy Engine",
   description:
     "Air-gapped Indonesian customs tariff RAG across 5,612 HS-6 subheadings, Lartas permit verification, and CMA CGM Indonesia progressive demurrage modeling.",
 };
