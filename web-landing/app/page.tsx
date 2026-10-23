@@ -423,7 +423,7 @@ Preview in Mailpit: http://localhost:8025
   return (
     <div className="min-h-screen bg-[#121212] text-[#F8FAFC]">
       {/* Sticky Top Navigation (Dub Feature-Stack Macrostructure) */}
-      <header className="sticky top-0 z-50 border-b border-[#2A2A35] bg-[#0B0B0F]/90 backdrop-blur-md">
+      <header className="sticky top-0 z-50 border-b border-[#2A2A35] bg-[#0B0B0F]/60 backdrop-blur-md">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
           <a href="#" className="flex items-center gap-3 focus:outline-none">
             <img src="/logo.svg" alt="CustomsGuard" className="h-3.5 w-auto" />

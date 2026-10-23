@@ -37,8 +37,8 @@ This guide details how to expose CustomsGuard flows as MCP tools in Langflow and
 ```json
 {
   "mcpServers": {
-    "lf-starter_project": {
-      "command": "/home/rafif/.local/bin/uvx",
+    "lf-ibmsb": {
+      "command": "uvx",
       "args": [
         "--with",
         "mcp<2.0.0",

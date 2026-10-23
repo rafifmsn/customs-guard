@@ -1,76 +1,75 @@
 # CustomsGuard Technical Architecture & Pipeline Specification
 
-This document provides a technical specification of the CustomsGuard system topology, Langflow canvas pipeline, safety guardrails layer, and Model Context Protocol (MCP) interface with IBM Bob.
+This document provides a technical specification of the CustomsGuard system topology, dual-channel execution architecture, Langflow canvas pipelines, and Model Context Protocol (MCP) interface with IBM Bob.
 
 ## 1. System Topology Overview
 
-CustomsGuard combines an autonomous execution engine running in local Docker containers with IBM Bob as the conversational orchestrator:
+CustomsGuard combines an autonomous agent execution engine with a sub-50ms deterministic audit controller in local Docker containers:
 
 ```mermaid
 flowchart LR
-    A["IBM Bob Client (Desktop / CLI)"] -- "MCP (Streamable HTTP)" --> B["Langflow Server (:7860)"]
-    B --> C["CustomsGuard Agent"]
-    C --> D["CustomsGuard Toolkit"]
-    D --> E["Qdrant Vector DB (:6333)"]
-    D --> F["Local Report Storage (:./data/reports)"]
-    D --> G["Mailpit SMTP Server (:1025)"]
-    C --> H["Safety Guardrails Node"]
-    H -- "Pass" --> I["Clean Executive Verdict"]
-    H -- "Fail" --> J["Security Intervention Alert"]
+    subgraph Clients ["Front-End & Client Layer"]
+        direction TB
+        UI["Streamlit Workspace<br/><code>:8501</code>"]
+        WEB["Next.js Showcase<br/><code>:3000</code>"]
+        BOB["IBM Bob (CLI / Desktop)"]
+    end
+
+    subgraph Controllers ["Execution & Gateway Layer"]
+        direction TB
+        API["FastAPI Gateway<br/><code>:8000</code>"]
+        LF["Langflow Engine & MCP<br/><code>:7860</code>"]
+    end
+
+    subgraph Infrastructure ["Local Container Infrastructure"]
+        direction TB
+        QD["Qdrant Vector DB<br/><code>:6333</code> (5,612 HS-6)"]
+        MP["Mailpit SMTP & UI<br/><code>:1025 / :8025</code>"]
+        PG["PostgreSQL 16<br/><code>:5432</code> (Workflow State)"]
+        FS["Reports Archive<br/><code>./data/reports</code>"]
+    end
+
+    UI -->|REST API| API
+    WEB -.->|Live Link| UI
+    BOB -->|MCP Protocol| LF
+
+    API --> QD
+    API --> MP
+    API --> FS
+    API -.->|Agent Sync| LF
+
+    LF --> PG
+    LF --> QD
+    LF --> MP
+    LF --> FS
 ```
 
-## 2. Langflow Visual Canvas Specification
+## 2. Langflow Visual Canvas Pipelines
 
-The Langflow visual canvas integrates six core nodes designed for deterministic execution and enterprise safety:
+CustomsGuard provides two pre-configured visual pipeline definitions in `./langflow/`:
 
-### Node 1: Chat Input
+### Pipeline A: Primary Autonomous Audit Flow (`CustomsGuard.json`)
 
-- **Type**: Input Component.
-- **Function**: Accepts raw commercial invoice JSON strings or trade shipment metadata from IBM Bob.
-- **Schema**: Contains `shipment_id`, `importer_name`, `container_count`, and line `items` array.
+The primary compliance flow automates invoice verification, regulatory permit checks, and evidence generation:
 
-### Node 2: CustomsGuard Tools (Custom Toolkit Component)
+1. **Node 1 (Chat Input)**: Accepts raw commercial invoice JSON strings or trade shipment metadata.
+2. **Node 2 (CustomsGuard Tools)**: Custom Python component ([`scripts/customs_components.py`](../../scripts/customs_components.py)) exposing `audit_shipment_compliance`, `export_compliance_report`, and `send_compliance_alert`.
+3. **Node 3 (Agent Orchestrator)**: Autonomous LLM agent driven by [`scenarios/prompts/system_agent_instruction.md`](../../scenarios/prompts/system_agent_instruction.md).
+4. **Node 4 (Safety Guardrails)**: Verifies that outputs do not leak internal tokens or passwords, redacts Personally Identifiable Information (PII), and protects against prompt injections.
+5. **Node 5 & 6 (Chat Output)**: Separate pass and fail routes delivering structured executive audit findings or security policy notices.
 
-- **Type**: Custom Python Component (`CustomsGuardToolkitComponent`).
-- **Source Code**: [`scripts/customs_components.py`](../../scripts/customs_components.py).
-- **Exposed Tools**:
-  1. `audit_shipment_compliance`: Queries 5,612 Indonesian HS-6 codes in Qdrant, detects tariff discrepancies, checks Lartas permits, calculates duty shortfalls, and evaluates container detention risk.
-  2. `export_compliance_report`: Generates timestamped Markdown and JSON dossiers on local storage.
-  3. `send_compliance_alert`: Dispatches urgent SMTP alerts to Mailpit (`localhost:1025`).
+### Pipeline B: Regulatory Knowledge Assistant (`CustomsGuard Bot.json`)
 
-### Node 3: Agent Orchestrator
+A dedicated conversational pipeline grounded in official Indonesian customs regulations and Lartas ministry schedules:
 
-- **Type**: Autonomous Agent Component (`Agent`).
-- **Language Model**: `openai/gpt-4o-mini` (configured via OpenRouter / Model Providers).
-- **Instructions**: Defined in [`scenarios/prompts/system_agent_instruction.md`](../../scenarios/prompts/system_agent_instruction.md).
-- **Behavior**: Evaluates discrepancies, decides when to export reports, and triggers alerts on high-risk violations.
-
-### Node 4: Safety Guardrails Node
-
-- **Type**: Safety Verification Component (`Guardrails`).
-- **Input**: Connected from Agent `Response`.
-- **Checking Method**: `AI checks`.
-- **Language Model**: `openai/gpt-4o-mini`.
-- **Active Guardrail Policies**:
-  - `PII`: Sanitizes individual tax IDs (NPWP), commercial bank accounts, and private phone numbers.
-  - `Tokens/Passwords`: Prevents leakage of backend SMTP credentials or API keys.
-  - `Prompt Injection`: Neutralizes adversarial instructions embedded in invoice descriptions.
-  - `Jailbreak`: Prevents evasion of customs compliance audit rules.
-
-### Node 5: Chat Output (Pass Path)
-
-- Connected to Guardrails `Pass` output handle.
-- Formats and delivers the final executive audit summary, item findings table, and actions taken to the compliance officer.
-
-### Node 6: Chat Output (Fail Path)
-
-- Connected to Guardrails `Fail` output handle.
-- Displays policy violation notices or blocked payload warnings when input content violates safety guidelines.
+1. **Chat Input & History**: Tracks multi-turn conversational context for compliance inquiries.
+2. **Tariff Vector Retrieval**: Embeds and matches queries against 5,612 Indonesian HS-6 subheadings in Qdrant.
+3. **Synthesis Engine**: Answers importer questions regarding mandatory ministry permits (SDPPI, Kemenkes, BPOM) and MFN duty schedules.
 
 ## 3. Model Context Protocol (MCP) Interface
 
-CustomsGuard exposes its complete pipeline as a standardized Model Context Protocol (MCP) tool using the Streamable HTTP transport.
-For complete step-by-step connection instructions and active client configuration, refer to [`docs/technical/mcp_setup.md`](./mcp_setup.md) and [`.bob/mcp.json`](../../.bob/mcp.json).
+CustomsGuard exposes its complete audit pipeline as an MCP tool using the Streamable HTTP transport.
+Client setup details are documented in [`docs/technical/mcp_setup.md`](./mcp_setup.md) and [`.bob/mcp.json`](../../.bob/mcp.json).
 
 ### Tool Specification
 
@@ -80,17 +79,22 @@ For complete step-by-step connection instructions and active client configuratio
   - `input_value`: Serialized JSON invoice string or natural-language audit instruction.
   - `session_id`: Optional identifier to persist compliance state across multi-turn sessions.
 
-### Execution Flow
+### Execution Sequence
 
-1. Bob receives the user audit command (e.g. `$audit-shipment SHP-2026-0042` or pasted invoice payload).
-2. Bob makes an MCP tool call to `customsguard` hosted on the Langflow server.
-3. Langflow executes the visual pipeline, querying Qdrant tariffs, generating audit reports, and queuing Mailpit alerts.
-4. Langflow passes the synthesized audit through the Guardrails safety filter.
-5. Bob receives the sanitized verdict stream and renders the executive summary to the compliance officer.
+1. IBM Bob receives an audit instruction (e.g., `$audit-shipment SHP-2026-0042` or pasted invoice payload).
+2. Bob executes the `customsguard` MCP tool hosted on Langflow (`:7860`).
+3. Langflow runs the visual pipeline, querying Qdrant tariffs, calculating demurrage liabilities, exporting dossiers, and dispatching Mailpit alerts.
+4. Langflow passes the synthesized audit through the AI Safety Guardrails node.
+5. Bob receives the sanitized response and renders the executive summary to the compliance officer.
 
-## 4. Centralized REST Controller & Swagger Documentation
+## 4. Front-End Interfaces & Centralized REST Gateway
 
-In the v2 architecture, a centralized FastAPI controller (`customsguard-api`) operates on port `:8000`.
-It exposes REST endpoints for invoice auditing, dossier report listing, and bounded IBM Bob CLI subprocess execution.
-Interactive API documentation and OpenAPI schemas are generated programmatically from Pydantic models at `http://localhost:8000/docs` (Swagger UI) and `http://localhost:8000/redoc` (ReDoc).
-This provides an interactive testing environment with zero static documentation maintenance debt.
+CustomsGuard provides two web-based user interfaces and a high-speed REST controller:
+
+- **Streamlit Operator Workspace (`:8501`)**:
+  Declarative interactive interface in [`ui/app.py`](../../ui/app.py) for loading canonical scenarios, tuning container parameters, running live audits, and reviewing archived dossiers.
+- **Next.js Landing Showcase (`:3000`)**:
+  Modern dark-themed marketing and interactive demo showcase in [`web-landing/`](../../web-landing/) presenting problem context, feature highlights, and interactive audit scenarios.
+- **FastAPI Controller (`:8000`)**:
+  Centralized gateway in [`api/main.py`](../../api/main.py) serving sub-50ms deterministic audit endpoints (`/api/v1/audit`), stack health checks (`/api/v1/health`), dossier archives (`/api/v1/reports`), and Swagger UI documentation at `http://localhost:8000/docs`.
+  For full schema details, see [`docs/technical/api_reference.md`](./api_reference.md).

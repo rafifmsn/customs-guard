@@ -1,10 +1,9 @@
 # CustomsGuard API & MCP Reference
 
 CustomsGuard exposes two complementary programmatic integration channels:
+
 1. **Langflow Execution & MCP Server (`:7860`)**: Direct access to the autonomous `customsguard` agent workflow and the `CustomsGuard Bot` regulatory assistant via the Model Context Protocol (MCP) and Langflow REST endpoints.
 2. **FastAPI Deterministic Gateway (`:8000`)**: Sub-50ms deterministic vector auditing, progressive CMA CGM demurrage modeling, and compliance dossier archiving.
-
----
 
 ## Part I: Langflow Execution & MCP Endpoints (`:7860`)
 
@@ -141,8 +140,6 @@ curl -X POST "http://localhost:7860/api/v1/run/5ca6e9b6-937c-4ab3-a95e-f4d3a5ff9
   ]
 }
 ```
-
----
 
 ## Part II: FastAPI Deterministic Gateway Endpoints (`:8000`)
 
@@ -329,8 +326,6 @@ Query Indonesian import regulations, Lartas permit schedules, or carrier tariff 
   "backend_used": "langflow_agent"
 }
 ```
-
----
 
 ## Error Handling
 

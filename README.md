@@ -30,55 +30,42 @@ CustomsGuard transforms this manual routine into a deterministic, sub-5-second a
 CustomsGuard operates via a **split-channel architecture** that separates instant deterministic auditing from conversational agent reasoning:
 
 ```mermaid
-flowchart TD
-    subgraph UI_Layer ["Front-End & Client Layer"]
-        A["Streamlit Web UI (:8501)"]
-        B["Next.js Landing Showcase (:3000)"]
-        C["IBM Bob Desktop / CLI"]
+flowchart LR
+    subgraph Clients ["Front-End & Client Layer"]
+        direction TB
+        WEB["Next.js Landing<br/><code>:3000</code>"]
+        BOB["IBM Bob CLI / Desktop"]
     end
 
-    subgraph Deterministic_Path ["FastAPI Deterministic Engine (:8000)"]
-        D["FastAPI Controller"]
-        E["CustomsGuard Toolkit"]
+    subgraph Appliance ["CustomsGuard Container Appliance"]
+        direction LR
+        ST["streamlit<br/><code>:8501</code><br/>Compliance Workspace"]
+        API["fastapi<br/><code>:8000</code><br/>REST Controller"]
+        LF["langflow<br/><code>:7860</code><br/>Langflow & MCP"]
+        QD["qdrant<br/><code>:6333</code><br/>Tariff Vector DB"]
+        MP["mailpit<br/><code>:1025/:8025</code><br/>Mock SMTP & UI"]
+        PG["postgres<br/><code>:5432</code><br/>PostgreSQL 16"]
+
+        ST -->|Direct REST| API
+        API -->|Vector Lookup| QD
+        API -->|Dispatch Alert| MP
+        API -.->|Agent Sync| LF
+        LF -->|State Sync| PG
+        LF -->|Tariff RAG| QD
+        LF -->|Email Alerts| MP
     end
 
-    subgraph Agent_Path ["Autonomous Agent Engine (:7860)"]
-        F["Langflow Workflow / MCP (:7860)"]
-        G["LLM Agent & Guardrails"]
-    end
-
-    subgraph Storage_Services ["Local Infrastructure"]
-        H["Qdrant DB (5,612 HS Tariffs)"]
-        I["Local Reports Archive (./data/reports)"]
-        J["Mailpit SMTP (:1025 / :8025)"]
-    end
-
-    A -- "Direct REST API" --> D
-    D --> E
-    E --> H
-    E --> I
-    E --> J
-
-    C -- "MCP Protocol" --> F
-    F --> G
-    G --> E
+    BOB -->|MCP Protocol| LF
+    WEB -.->|Live Workspace| ST
 ```
 
-> [!NOTE]
-> **Dual Execution Channels**:
->
-> 1. **Deterministic Operator Channel (Streamlit & FastAPI)**:
->    Direct REST calls (`POST /api/v1/audit`) bypass remote LLM inference loops.
->    They execute tariff vector lookups, demurrage calculations, Markdown dossier exports, and Mailpit SMTP dispatches deterministically in under 50ms.
-> 2. **Autonomous Agent Channel (IBM Bob & Langflow)**:
->    Interactive prompts and Bob MCP requests route to Langflow (`:7860`) where the LLM reasons across multi-turn queries, invokes the toolkit, and generates conversational synthesis.
+**Dual Execution Channels**:
 
-- **IBM Bob**: Desktop conversational interface and CLI orchestrator.
-- **Model Context Protocol (MCP)**: Standardized protocol exposing the Langflow workflow as a callable client tool.
-- **Langflow Execution Engine**: Visual pipeline coordinating LLM reasoning, toolkit execution, and guardrails.
-- **Qdrant Vector Database**: Local vector and full-text index seeded with 5,612 Indonesian HS codes, official duties, and permit tags.
-- **Safety Guardrails**: Sanitizes Personally Identifiable Information (PII), blocks prompt injections in invoice descriptions, and prevents token leaks.
-- **Mailpit SMTP**: Local mail server for simulated real-time container detention alert dispatching.
+1. **Deterministic Operator Channel (Streamlit & FastAPI)**:
+   Direct REST calls (`POST /api/v1/audit`) bypass remote LLM inference loops.
+   They execute tariff vector lookups, demurrage calculations, Markdown dossier exports, and Mailpit SMTP dispatches deterministically in under 50ms.
+2. **Autonomous Agent Channel (IBM Bob & Langflow)**:
+   Interactive prompts and Bob MCP requests route to Langflow (`:7860`) where the LLM reasons across multi-turn queries, invokes the toolkit, and generates conversational synthesis.
 
 ## Core Capabilities
 
@@ -107,17 +94,22 @@ docker compose up -d
 
 Service endpoints:
 
-- **CustomsGuard Dashboard**: `http://localhost:8501`
+- **CustomsGuard Operator Dashboard**: `http://localhost:8501`
+- **Next.js Landing Showcase**: `http://localhost:3000`
 - **FastAPI Controller & Swagger UI**: `http://localhost:8000/docs`
-- **Langflow Canvas**: `http://localhost:7860` (Username: `admin`, Password: `admin123`)
+- **Langflow Canvas & MCP**: `http://localhost:7860`
 - **Mailpit Web UI**: `http://localhost:8025`
 - **Qdrant REST API**: `http://localhost:6333`
 - **PostgreSQL**: `localhost:5432`
 
-### 3. Import Workflow Template
+### 3. Import Workflow Templates
 
-The complete pipeline definition is exported in [`langflow/CustomsGuard.json`](./langflow/CustomsGuard.json).
-On a fresh environment, navigate to `http://localhost:7860`, go to **My Projects** -> **Import**, and upload `langflow/CustomsGuard.json` to load the canvas with all agent nodes, custom tools, and guardrails pre-configured.
+CustomsGuard includes two pre-configured Langflow pipeline templates in `./langflow/`:
+
+- [`langflow/CustomsGuard.json`](./langflow/CustomsGuard.json): Primary Autonomous Compliance Audit & MCP Tool Flow (6-node topology with CustomsGuard Toolkit and AI Safety Guardrails).
+- [`langflow/CustomsGuard Bot.json`](./langflow/CustomsGuard%20Bot.json): Dedicated Regulatory Knowledge Assistant Flow for conversational HS tariff and Lartas inquiries.
+
+On a fresh environment, navigate to `http://localhost:7860`, go to **My Projects** -> **Import**, and upload both JSON flow templates to load the canvases with all agent nodes, custom tools, and guardrails pre-configured.
 
 ### 4. Seed the Customs Tariff Database
 
@@ -172,7 +164,8 @@ BOB_API_KEY="your_api_key_here" bob run --trust "Audit shipment SHP-2026-0042 us
 - [`docs/technical/architecture.md`](./docs/technical/architecture.md): Langflow canvas topology, node specifications, guardrails, and data contracts.
 - [`docs/technical/design_decisions.md`](./docs/technical/design_decisions.md): Rationale behind flexible agent reasoning, permit verification, and enterprise roadmap.
 - [`docs/technical/mcp_setup.md`](./docs/technical/mcp_setup.md): Step-by-step connection guide for IBM Bob and Langflow MCP proxy.
-- [`langflow/CustomsGuard.json`](./langflow/CustomsGuard.json): Pre-configured Langflow visual pipeline export (Agent, CustomsGuard Tools, Guardrails).
+- [`langflow/CustomsGuard.json`](./langflow/CustomsGuard.json): Pre-configured Langflow visual pipeline export (Audit & MCP Flow).
+- [`langflow/CustomsGuard Bot.json`](./langflow/CustomsGuard%20Bot.json): Pre-configured Langflow visual pipeline export (Regulatory Knowledge Assistant Flow).
 
 ### Prompts, Test Fixtures & Reference Outputs
 

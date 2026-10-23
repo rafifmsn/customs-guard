@@ -10,6 +10,7 @@ import os
 import sys
 import urllib.request
 from typing import Any, Dict, List, Optional
+from pathlib import Path
 
 import streamlit as st
 
@@ -790,8 +791,12 @@ def page_bob_assistant() -> None:
 
 
 def render_app() -> None:
+    current_dir = Path(__file__).parent
+    icon_path = current_dir / "icon.png"
+
     st.set_page_config(
         page_title="CustomsGuard | Autonomous Trade Compliance",
+        page_icon=str(icon_path),
         layout="centered",
         initial_sidebar_state="expanded",
     )
