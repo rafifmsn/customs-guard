@@ -8,9 +8,9 @@ _IBM SkillsBuild x Hacktiv8 National Hackathon 2026 (Productivity & Smart Busine
 
 CustomsGuard is an autonomous enterprise AI agent designed to audit commercial shipping invoices, eliminate port container detentions, detect customs tariff discrepancies, and protect cross-border businesses from regulatory penalties.
 
-<video src="https://github.com/user-attachments/assets/bacb2242-b02d-41cb-ada0-c51904311d83" controls width="100%"></video>
+<video src="https://github.com/user-attachments/assets/1dc1310a-240b-4a38-bdef-00af51e4a578" controls width="100%"></video>
 
-> 🎬 **Demo Walkthrough**: [Click here to view or download the demo video](https://github.com/user-attachments/assets/bacb2242-b02d-41cb-ada0-c51904311d83).
+> 🎬 **Demo Walkthrough**: [YouTube](https://youtu.be/At2xb9baTYQ) | [Github (Download)](https://github.com/user-attachments/assets/1dc1310a-240b-4a38-bdef-00af51e4a578).
 
 ## The Problem & Strategic Context
 

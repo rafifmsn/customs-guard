@@ -740,7 +740,7 @@ def page_bob_assistant() -> None:
     }
 
     with st.container(border=True):
-        st.markdown("**:material/help_center: Regulatory Query Console**")
+        st.markdown("**:material/help: Regulatory Query Console**")
         chosen_q_pill = st.pills(
             "Quick Regulatory Topics",
             options=list(preset_questions.keys()),
@@ -804,19 +804,24 @@ def render_app() -> None:
     st.markdown(
         """
         <style>
-        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
 
-        /* Target application text containers, but exclude icon fonts */
-        .stApp :not(span[data-testid="stIconMaterial"]):not([class*="material-icons"]) {
+        /* Apply DM Sans globally across all text and application containers */
+        html, body, [class*="css"], .stApp {
             font-family: 'DM Sans', sans-serif;
         }
 
-        /* Specifically style sidebar navigation items while leaving icons alone */
-        [data-testid="stSidebarNavItems"] span:not([data-testid="stIconMaterial"]), 
-        [data-testid="stSidebarNavItems"] div:not([data-testid="stIconMaterial"]),
-        [data-testid="stSidebarNavItems"] p,
-        [data-testid="stSidebarNavLinks"] span:not([data-testid="stIconMaterial"]) {
-            font-family: 'DM Sans', sans-serif;
+        /* Protect all Material Symbols icons across status containers, markdown, and navigation */
+        span[data-testid*="Icon"],
+        span[data-testid*="stIcon"],
+        span[data-testid*="stExpanderIcon"],
+        [data-testid*="Icon"],
+        [class*="material-symbols"],
+        [class*="material-icons"],
+        span[translate="no"] {
+            font-family: "Material Symbols Rounded" !important;
+            font-feature-settings: 'liga' !important;
+            -webkit-font-feature-settings: 'liga' !important;
         }
         </style>
         """,

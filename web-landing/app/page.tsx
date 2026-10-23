@@ -527,7 +527,7 @@ Preview in Mailpit: http://localhost:8025
           <div className="mt-8 overflow-hidden rounded-2xl border border-[#2A2A35] bg-[#16161E] p-3 shadow-sm">
             <div className="overflow-hidden rounded-xl border border-[#2A2A35] bg-[#0B0B0F]">
               <a
-                href="https://www.youtube.com/watch?v=demo"
+                href="https://youtu.be/At2xb9baTYQ"
                 target="_blank"
                 rel="noreferrer"
                 className="group relative block aspect-[16/9] w-full overflow-hidden bg-[#0B0B0F] cursor-pointer"
