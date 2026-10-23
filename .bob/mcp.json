@@ -1,7 +1,7 @@
 {
   "mcpServers": {
     "lf-ibmsb": {
-      "command": "/home/rafif/.local/bin/uvx",
+      "command": "uvx",
       "args": [
         "--with",
         "mcp<2.0.0",

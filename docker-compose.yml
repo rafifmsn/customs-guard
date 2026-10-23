@@ -1,6 +1,14 @@
+x-logging: &default-logging
+  logging:
+    driver: "json-file"
+    options:
+      max-size: "10m"
+      max-file: "3"
+
 services:
   # PostgreSQL Database for Langflow State and Workflows
   postgres:
+    <<: *default-logging
     image: postgres:16-alpine
     container_name: customs_postgres
     environment:
@@ -22,6 +30,7 @@ services:
 
   # Qdrant Vector Database for HS Code Semantic Search
   qdrant:
+    <<: *default-logging
     image: qdrant/qdrant:v1.11.0
     container_name: customs_qdrant
     ports:
@@ -33,15 +42,20 @@ services:
 
   # Mailpit Mock SMTP & Preview Web UI
   mailpit:
+    <<: *default-logging
     image: axllent/mailpit:latest
     container_name: customs_mailpit
     ports:
       - "${MAILPIT_SMTP_PORT:-1025}:1025"
       - "${MAILPIT_WEB_PORT:-8025}:8025"
+    networks:
+      - default
+      - caddy_proxy
     restart: always
 
   # Langflow Execution Backend & MCP Provider
   langflow:
+    <<: *default-logging
     image: langflowai/langflow:latest
     container_name: customs_langflow
     ports:
@@ -52,7 +66,7 @@ services:
     environment:
       - LANGFLOW_DATABASE_URL=postgresql://${POSTGRES_USER:-langflow_user}:${POSTGRES_PASSWORD:-langflow_password_2026}@postgres:5432/${POSTGRES_DB:-langflow_db}
       - LANGFLOW_SECRET_KEY=${LANGFLOW_SECRET_KEY:-jeBQaQR-7HgWIxbm3TZSCvydh1Uu2eWbQHkdpY0RqEc=}
-      - LANGFLOW_AUTO_LOGIN=true
+      - LANGFLOW_AUTO_LOGIN=${LANGFLOW_AUTO_LOGIN:-false}
       - LANGFLOW_SUPERUSER=${LANGFLOW_SUPERUSER:-admin}
       - LANGFLOW_SUPERUSER_PASSWORD=${LANGFLOW_SUPERUSER_PASSWORD:-admin123}
       - LANGFLOW_DO_NOT_TRACK=true
@@ -61,6 +75,9 @@ services:
       - ./data/reports:/app/reports
       - ./data/seed:/app/seed
       - ./scripts:/app/scripts
+    networks:
+      - default
+      - caddy_proxy
     depends_on:
       postgres:
         condition: service_healthy
@@ -70,6 +87,7 @@ services:
 
   # Centralized FastAPI Controller & Bounded Bob CLI Worker Pool
   customsguard-api:
+    <<: *default-logging
     build:
       context: .
       dockerfile: api/Dockerfile
@@ -99,6 +117,7 @@ services:
 
   # Native Streamlit Compliance Dashboard
   customsguard-ui:
+    <<: *default-logging
     build:
       context: .
       dockerfile: ui/Dockerfile
@@ -117,6 +136,14 @@ services:
       - ./scripts:/app/scripts
       - ./api:/app/api
       - ./ui:/app/ui
+    networks:
+      - default
+      - caddy_proxy
     depends_on:
       - customsguard-api
     restart: always
+
+networks:
+  default:
+  caddy_proxy:
+    external: true

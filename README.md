@@ -168,6 +168,7 @@ BOB_API_KEY="your_api_key_here" bob run --trust "Audit shipment SHP-2026-0042 us
 
 ### Technical Architecture & Setup
 
+- [`docs/technical/api_reference.md`](./docs/technical/api_reference.md): REST API and Model Context Protocol (MCP) reference for Langflow and FastAPI endpoints.
 - [`docs/technical/architecture.md`](./docs/technical/architecture.md): Langflow canvas topology, node specifications, guardrails, and data contracts.
 - [`docs/technical/design_decisions.md`](./docs/technical/design_decisions.md): Rationale behind flexible agent reasoning, permit verification, and enterprise roadmap.
 - [`docs/technical/mcp_setup.md`](./docs/technical/mcp_setup.md): Step-by-step connection guide for IBM Bob and Langflow MCP proxy.

@@ -449,7 +449,7 @@ Preview in Mailpit: http://localhost:8025
 
           <div className="flex items-center gap-3">
             <a
-              href="https://github.com/rafifmsn/customs-guard/blob/main/docs/API_REFERENCE.md"
+              href="https://github.com/rafifmsn/customs-guard/blob/main/docs/technical/api_reference.md"
               target="_blank"
               rel="noreferrer"
               className="hidden rounded-full border border-[#2A2A35] bg-[#16161E] px-4 py-2 text-sm font-medium text-[#F8FAFC] transition hover:border-[#A78BFA] sm:inline-block"
@@ -489,7 +489,7 @@ Preview in Mailpit: http://localhost:8025
               Dashboard
             </a>
             <a
-              href="https://github.com/rafifmsn/customs-guard/blob/main/docs/API_REFERENCE.md"
+              href="https://github.com/rafifmsn/customs-guard/blob/main/docs/technical/api_reference.md"
               target="_blank"
               rel="noreferrer"
               className="rounded-full border border-[#2A2A35] bg-[#1A1A22] px-6 py-3 text-sm font-medium text-[#F8FAFC] transition hover:border-[#A78BFA]"

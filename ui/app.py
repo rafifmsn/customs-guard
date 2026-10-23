@@ -31,7 +31,6 @@ API_CANDIDATE_URLS = [
 ]
 API_CANDIDATE_URLS = [u for u in API_CANDIDATE_URLS if u]
 
-
 def escape_md_dollars(text: str) -> str:
     """Escapes literal dollar signs so Streamlit Markdown does not trigger KaTeX math."""
     return str(text or "").replace("\\$", "$").replace("$", "\\$")
@@ -795,6 +794,28 @@ def render_app() -> None:
         page_title="CustomsGuard | Autonomous Trade Compliance",
         layout="centered",
         initial_sidebar_state="expanded",
+    )
+
+    st.markdown(
+        """
+        <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+
+        /* Target application text containers, but exclude icon fonts */
+        .stApp :not(span[data-testid="stIconMaterial"]):not([class*="material-icons"]) {
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        /* Specifically style sidebar navigation items while leaving icons alone */
+        [data-testid="stSidebarNavItems"] span:not([data-testid="stIconMaterial"]), 
+        [data-testid="stSidebarNavItems"] div:not([data-testid="stIconMaterial"]),
+        [data-testid="stSidebarNavItems"] p,
+        [data-testid="stSidebarNavLinks"] span:not([data-testid="stIconMaterial"]) {
+            font-family: 'DM Sans', sans-serif;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
     )
 
     ensure_session_defaults()
