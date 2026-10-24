@@ -92,6 +92,8 @@ Clone the repository and launch the container ecosystem:
 docker compose up -d
 ```
 
+To deploy the production landing showcase to Cloudflare Pages, run `cd web-landing && npx wrangler deploy`.
+
 Service endpoints:
 
 - **CustomsGuard Operator Dashboard**: `http://localhost:8501`
