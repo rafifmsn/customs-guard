@@ -78,48 +78,48 @@ flowchart LR
 
 ## Quickstart Guide
 
-### 1. Prerequisites
+### 1. Launch Container Stack
 
-- Docker and Docker Compose
-- Python 3.10+ (or [Astral uv](https://docs.astral.sh/uv/))
-- IBM Bob Desktop Application
-
-### 2. Start the Docker Services
-
-Clone the repository and launch the container ecosystem:
+Copy environment defaults and start the container ecosystem:
 
 ```bash
+cp .env.example .env
 docker compose up -d
 ```
 
-To deploy the production landing showcase to Cloudflare Pages, run `cd web-landing && npx wrangler deploy`.
+### 2. Seed Customs Tariff Database (5,612 HS-6 Codes)
 
-Service endpoints:
-
-- **CustomsGuard Operator Dashboard**: `http://localhost:8501`
-- **Next.js Landing Showcase**: `http://localhost:3000`
-- **FastAPI Controller & Swagger UI**: `http://localhost:8000/docs`
-- **Langflow Canvas & MCP**: `http://localhost:7860`
-- **Mailpit Web UI**: `http://localhost:8025`
-- **Qdrant REST API**: `http://localhost:6333`
-- **PostgreSQL**: `localhost:5432`
-
-### 3. Import Workflow Templates
-
-CustomsGuard includes two pre-configured Langflow pipeline templates in `./langflow/`:
-
-- [`langflow/CustomsGuard.json`](./langflow/CustomsGuard.json): Primary Autonomous Compliance Audit & MCP Tool Flow (6-node topology with CustomsGuard Toolkit and AI Safety Guardrails).
-- [`langflow/CustomsGuard Bot.json`](./langflow/CustomsGuard%20Bot.json): Dedicated Regulatory Knowledge Assistant Flow for conversational HS tariff and Lartas inquiries.
-
-On a fresh environment, navigate to `http://localhost:7860`, go to **My Projects** -> **Import**, and upload both JSON flow templates to load the canvases with all agent nodes, custom tools, and guardrails pre-configured.
-
-### 4. Seed the Customs Tariff Database
-
-Index all 5,612 official Indonesian HS codes, duty rates, and permit regulations into Qdrant:
+Index all official Indonesian HS-6 subheadings and Lartas ministry permits into Qdrant directly through the API container:
 
 ```bash
-uv run python scripts/seed_qdrant.py
+docker compose exec customsguard-api python scripts/seed_qdrant.py
 ```
+
+### 3. Import Langflow Workflow Templates
+
+Navigate to `http://localhost:7860` (or `https://cgflow.rafifmsn.com`), go to **My Projects** -> **Import**, and upload both JSON flow templates:
+- [`langflow/CustomsGuard.json`](./langflow/CustomsGuard.json): Primary Autonomous Compliance Audit & MCP Tool Flow.
+- [`langflow/CustomsGuard Bot.json`](./langflow/CustomsGuard%20Bot.json): Dedicated Regulatory Knowledge Assistant Flow.
+
+Configure your model provider API key under **Settings** -> **Model Providers** in Langflow.
+
+### 4. Deploy Landing Showcase (Optional)
+
+Deploy the static Next.js landing showcase to Cloudflare Pages:
+
+```bash
+cd web-landing && npx wrangler deploy
+```
+
+### Service Endpoints
+
+- **Operator Dashboard**: `http://localhost:8501` (or `https://cgd.rafifmsn.com`)
+- **Landing Showcase**: `http://localhost:3000` (or `https://cg.rafifmsn.com`)
+- **FastAPI Controller & Swagger Docs**: `http://localhost:8000/docs`
+- **Langflow Canvas & MCP**: `http://localhost:7860` (or `https://cgflow.rafifmsn.com`)
+- **Mailpit Web UI**: `http://localhost:8025` (or `https://cgmail.rafifmsn.com`)
+- **Qdrant REST API**: `http://localhost:6333`
+- **PostgreSQL**: `localhost:5432`
 
 ## Running Automated Tests
 

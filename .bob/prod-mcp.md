@@ -1,0 +1,20 @@
+```json
+{
+  "mcpServers": {
+    "lf-ibmsb": {
+      "command": "uvx",
+      "args": [
+        "--with",
+        "mcp<2.0.0",
+        "mcp-proxy",
+        "--transport",
+        "streamablehttp",
+        "--headers",
+        "x-api-key",
+        "sk-JFUZI6i7BfbwLhtGSXxQcdNfrOAHYb9FXgU66Kn3vKk",
+        "https://cgflow.rafifmsn.com/api/v1/mcp/project/e5f08a33-f06d-470c-85f7-1dbffb21fdec/streamable"
+      ]
+    }
+  }
+}
+```

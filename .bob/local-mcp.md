@@ -1,0 +1,20 @@
+```json
+{
+  "mcpServers": {
+    "lf-ibmsb": {
+      "command": "uvx",
+      "args": [
+        "--with",
+        "mcp<2.0.0",
+        "mcp-proxy",
+        "--transport",
+        "streamablehttp",
+        "--headers",
+        "x-api-key",
+        "sk-AO_tl6zX7qTSLpUM-73618ALKBsXpQUYYtHiNmifz-0",
+        "http://localhost:7860/api/v1/mcp/project/ac2829f3-f14c-4446-a785-6d6aa18de88b/streamable"
+      ]
+    }
+  }
+}
+```

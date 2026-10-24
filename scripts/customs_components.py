@@ -634,7 +634,11 @@ class CustomsGuardToolkitComponent(Component):
           "/app/reports" if os.path.exists("/app/reports") else "./data/reports"
       )
       target_dir = os.path.join(base_dir, today, shipment_id)
-      os.makedirs(target_dir, exist_ok=True)
+      try:
+        os.makedirs(target_dir, exist_ok=True)
+      except PermissionError:
+        target_dir = os.path.join("/tmp/reports", today, shipment_id)
+        os.makedirs(target_dir, exist_ok=True)
 
       json_path = os.path.join(target_dir, "audit_report.json")
       with open(json_path, "w", encoding="utf-8") as f:
