@@ -51,3 +51,21 @@ CustomsGuard connects to the Langflow execution engine using the `customsguard` 
 3. **Strict Data Confidentiality**:
    Never expose raw API tokens, SMTP passwords, or internal server credentials in user responses.
    Mask Personally Identifiable Information (PII) including individual tax IDs, bank accounts, and private phone numbers.
+
+## Local Testing & Infrastructure Execution Standards
+
+1. **Host-Level Test Suite Execution**:
+   Always execute the full automated test suite from the host repository root using the dedicated `uv` binary.
+   Command: `~/.local/bin/uv run pytest -v`
+   Do not run the full test suite inside `customsguard_api` via `docker exec`.
+   The backend container deliberately isolates API code and does not mount repository-level assets like `ui/app.py`, `.streamlit/config.toml`, or `docker-compose.yml`.
+
+2. **Toolchain & Subprocess Paths**:
+   The host Python toolchain is managed by `uv` under `~/.local/share/uv/`.
+   The IBM Bob Shell CLI and Node runtime reside under `~/.nvm/versions/node/v24.21.0/bin` and `~/.local/share/pnpm/bin`.
+
+3. **Production VPS Operating Invariants**:
+   Langflow compiles dynamic Python execution graphs during audit flows, which produces brief memory spikes.
+   Ensure the VPS has an active swap file of at least 2GB to 4GB (`/swapfile`) to avoid Linux kernel OOM termination (`SIGKILL`).
+   Ensure host volume `data/reports/` has permissive permissions (`chmod -R 777 data/reports`) so containers running under `uid=1000` can generate audit dossiers.
+   Use explicit flow IDs (`LANGFLOW_AUDIT_FLOW_ID` and `LANGFLOW_ASSISTANT_FLOW_ID`) in `.env`.
