@@ -535,7 +535,7 @@ Preview in Mailpit: http://localhost:8025
               >
                 {/* Background Dashboard Mockup Poster */}
                 <img
-                  src="https://placehold.co/1920x1080/16161E/94A3B8?text=CustomsGuard+Compliance+Engine+Walkthrough"
+                  src="/thumbnail.png"
                   alt="CustomsGuard Application Walkthrough"
                   className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02] opacity-85 group-hover:opacity-100"
                 />
@@ -1323,24 +1323,24 @@ Preview in Mailpit: http://localhost:8025
             <div className="flex flex-wrap items-center gap-6 font-mono text-xs text-[#94A3B8]">
               <a
                 href="https://rmsn.notion.site/CustomsGuard-402ecf518bfa80f88309efb2ecc8cb3f?source=copy_link"
-                onClick={(e) => {
-                  e.preventDefault();
-                  alert(
-                    "CustomsGuard operates strictly on-premise within your air-gapped Docker perimeter. Commercial invoices and shipment data remain confidential inside your infrastructure.",
-                  );
-                }}
+                // onClick={(e) => {
+                //   e.preventDefault();
+                //   alert(
+                //     "CustomsGuard operates strictly on-premise within your air-gapped Docker perimeter. Commercial invoices and shipment data remain confidential inside your infrastructure.",
+                //   );
+                // }}
                 className="transition hover:text-[#A78BFA]"
               >
                 Privacy
               </a>
               <a
                 href="https://rmsn.notion.site/CustomsGuard-402ecf518bfa80f88309efb2ecc8cb3f?source=copy_link"
-                onClick={(e) => {
-                  e.preventDefault();
-                  alert(
-                    "CustomsGuard provides advisory customs audit intelligence. Final cargo release authorizations remain with certified trade compliance officers and PPJK brokers.",
-                  );
-                }}
+                // onClick={(e) => {
+                //   e.preventDefault();
+                //   alert(
+                //     "CustomsGuard provides advisory customs audit intelligence. Final cargo release authorizations remain with certified trade compliance officers and PPJK brokers.",
+                //   );
+                // }}
                 className="transition hover:text-[#A78BFA]"
               >
                 Terms of Service
