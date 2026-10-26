@@ -332,7 +332,10 @@ def _try_langflow_assistant(prompt: str, timeout_seconds: float = 30.0) -> Optio
     return None
 
 
-def _try_langflow_ingest_flow(extracted_text: str, timeout_seconds: float = 30.0) -> Optional[str]:
+def _try_langflow_ingest_flow(
+    extracted_text: str,
+    timeout_seconds: float = 30.0,
+) -> Optional[str]:
     """Queries dedicated Langflow Ingestion Flow to extract and verify invoice line items."""
     import uuid
 
@@ -345,18 +348,18 @@ def _try_langflow_ingest_flow(extracted_text: str, timeout_seconds: float = 30.0
     if api_key:
         headers["x-api-key"] = api_key
 
+    payload_dict: Dict[str, Any] = {
+        "output_type": "chat",
+        "input_type": "chat",
+        "input_value": extracted_text,
+        "session_id": str(uuid.uuid4()),
+    }
+
     connect_timeout = float(timeout_seconds)
     for host in ["langflow", "localhost"]:
         # 1. Try Langflow v1 run endpoint
         v1_url = f"http://{host}:7860/api/v1/run/{flow_id}"
-        v1_payload = json.dumps(
-            {
-                "output_type": "chat",
-                "input_type": "chat",
-                "input_value": extracted_text,
-                "session_id": str(uuid.uuid4()),
-            }
-        ).encode("utf-8")
+        v1_payload = json.dumps(payload_dict).encode("utf-8")
         try:
             req = urllib.request.Request(v1_url, data=v1_payload, headers=headers)
             with urllib.request.urlopen(req, timeout=connect_timeout) as resp:
@@ -377,7 +380,12 @@ def _try_langflow_ingest_flow(extracted_text: str, timeout_seconds: float = 30.0
 
         # 2. Try Langflow v2 workflows endpoint
         v2_url = f"http://{host}:7860/api/v2/workflows"
-        v2_payload = json.dumps({"flow_id": flow_id, "input_value": extracted_text}).encode("utf-8")
+        v2_payload = json.dumps(
+            {
+                "flow_id": flow_id,
+                "input_value": extracted_text,
+            }
+        ).encode("utf-8")
         try:
             req = urllib.request.Request(v2_url, data=v2_payload, headers=headers)
             with urllib.request.urlopen(req, timeout=connect_timeout) as resp:
@@ -388,6 +396,7 @@ def _try_langflow_ingest_flow(extracted_text: str, timeout_seconds: float = 30.0
         except Exception:
             continue
     return None
+
 
 
 def _extract_text_from_file_bytes(content: bytes, filename: str) -> str:
@@ -733,7 +742,10 @@ async def ingest_document(file: UploadFile = File(...)) -> IngestionResponse:
     # 3. Process via Langflow Ingestion Flow if configured
     llm_raw_response = None
     if extracted_text:
-        llm_raw_response = _try_langflow_ingest_flow(extracted_text, timeout_seconds=30.0)
+        llm_raw_response = _try_langflow_ingest_flow(
+            extracted_text=extracted_text,
+            timeout_seconds=30.0,
+        )
 
     # 4. If Langflow output received, validate outermost JSON and line-item completeness
     if llm_raw_response:

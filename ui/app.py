@@ -422,8 +422,8 @@ def page_audit_workspace() -> None:
                 st.rerun()
 
         uploaded_file = st.file_uploader(
-            "Upload commercial invoice document (PDF, DOCX, Image, or JSON)",
-            type=["json", "pdf", "docx", "png", "jpg", "jpeg"],
+            "Upload commercial invoice document (PDF, DOCX, or JSON)",
+            type=["json", "pdf", "docx"],
         )
         if uploaded_file is not None:
             # Prevent re-triggering ingestion every UI interaction if already processed
