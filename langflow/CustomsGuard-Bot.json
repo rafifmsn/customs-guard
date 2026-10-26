@@ -431,7 +431,7 @@
             ],
             "frozen": false,
             "icon": "bot",
-            "last_updated": "2026-10-23T15:15:32.570Z",
+            "last_updated": "2026-10-26T08:24:02.653Z",
             "legacy": false,
             "lf_version": "1.12.3",
             "metadata": {
@@ -848,10 +848,10 @@
                       "model_name_param": "model",
                       "reasoning": true,
                       "reasoning_models": [
-                        "gpt-6-luna"
+                        "gpt-6-sol"
                       ]
                     },
-                    "name": "gpt-6-luna",
+                    "name": "gpt-6-sol",
                     "provider": "OpenAI"
                   },
                   {
@@ -865,10 +865,10 @@
                       "model_name_param": "model",
                       "reasoning": true,
                       "reasoning_models": [
-                        "gpt-6-sol"
+                        "gpt-6-luna"
                       ]
                     },
-                    "name": "gpt-6-sol",
+                    "name": "gpt-6-luna",
                     "provider": "OpenAI"
                   },
                   {
@@ -1862,6 +1862,6 @@
   "is_component": false,
   "last_tested_version": "1.12.3",
   "locked": false,
-  "name": "CustomsGuard Bot",
+  "name": "CustomsGuard-Bot",
   "tags": []
 }

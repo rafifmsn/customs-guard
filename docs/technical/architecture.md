@@ -58,7 +58,7 @@ The primary compliance flow automates invoice verification, regulatory permit ch
 4. **Node 4 (Safety Guardrails)**: Verifies that outputs do not leak internal tokens or passwords, redacts Personally Identifiable Information (PII), and protects against prompt injections.
 5. **Node 5 & 6 (Chat Output)**: Separate pass and fail routes delivering structured executive audit findings or security policy notices.
 
-### Pipeline B: Regulatory Knowledge Assistant (`CustomsGuard Bot.json`)
+### Pipeline B: Regulatory Knowledge Assistant (`CustomsGuard-Bot.json`)
 
 A dedicated conversational pipeline grounded in official Indonesian customs regulations and Lartas ministry schedules:
 

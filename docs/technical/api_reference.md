@@ -2,17 +2,17 @@
 
 CustomsGuard exposes two complementary programmatic integration channels:
 
-1. **Langflow Execution & MCP Server (`:7860`)**: Direct access to the autonomous `customsguard` agent workflow and the `CustomsGuard Bot` regulatory assistant via the Model Context Protocol (MCP) and Langflow REST endpoints.
+1. **Langflow Execution & MCP Server (`:7860`)**: Direct access to the autonomous `customsguard` agent workflow and the `CustomsGuard-Bot` regulatory assistant via the Model Context Protocol (MCP) and Langflow REST endpoints.
 2. **FastAPI Deterministic Gateway (`:8000`)**: Sub-50ms deterministic vector auditing, progressive CMA CGM demurrage modeling, and compliance dossier archiving.
 
 ## Part I: Langflow Execution & MCP Endpoints (`:7860`)
 
-The core `customsguard` compliance flow and `CustomsGuard Bot` assistant flow run directly inside the Langflow engine and can be invoked independently of the FastAPI gateway.
+The core `customsguard` compliance flow and `CustomsGuard-Bot` assistant flow run directly inside the Langflow engine and can be invoked independently of the FastAPI gateway.
 
 - **Local Base URL**: `http://localhost:7860`
 - **Authentication Header**: `x-api-key: <YOUR_LANGFLOW_API_KEY>`
 - **Primary Audit Flow ID (`customsguard`)**: `d79a75e5-63f9-4da4-ac36-9c7d7d1b9e1b`
-- **Regulatory Assistant Flow ID (`CustomsGuard Bot`)**: `5ca6e9b6-937c-4ab3-a95e-f4d3a5ff9818`
+- **Regulatory Assistant Flow ID (`CustomsGuard-Bot`)**: `5ca6e9b6-937c-4ab3-a95e-f4d3a5ff9818`
 
 ### 1. Model Context Protocol (MCP) Streamable Server
 
@@ -50,7 +50,7 @@ Expose the `customsguard` workflow directly to MCP-compliant hosts such as IBM B
 
 ### 2. Langflow v2 Workflow Execution API
 
-Execute the primary `customsguard` flow or the `CustomsGuard Bot` assistant flow via Langflow's v2 workflow endpoint.
+Execute the primary `customsguard` flow or the `CustomsGuard-Bot` assistant flow via Langflow's v2 workflow endpoint.
 
 - **Endpoint**: `POST /api/v2/workflows`
 - **Headers**:
@@ -103,7 +103,7 @@ curl -X POST "http://localhost:7860/api/v1/run/d79a75e5-63f9-4da4-ac36-9c7d7d1b9
   }'
 ```
 
-#### Example Request (`CustomsGuard Bot` Regulatory Assistant Flow)
+#### Example Request (`CustomsGuard-Bot` Regulatory Assistant Flow)
 
 ```bash
 curl -X POST "http://localhost:7860/api/v1/run/5ca6e9b6-937c-4ab3-a95e-f4d3a5ff9818" \
