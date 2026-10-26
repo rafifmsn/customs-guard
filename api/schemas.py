@@ -46,15 +46,15 @@ class InvoicePayload(BaseModel):
         description="Ocean carrier benchmark (defaults to CMA CGM).",
     )
     importer_name: str = Field(
-        default="PT Importir Nusantara",
+        default="UNSPECIFIED",
         description="Registered Indonesian importing entity.",
     )
     exporter_name: Optional[str] = Field(
-        default="Global Trade Exporter Ltd",
+        default="UNSPECIFIED",
         description="Foreign exporting entity.",
     )
     country_of_origin: Optional[str] = Field(
-        default="CN",
+        default="UNSPECIFIED",
         description="ISO 2-letter country of origin code.",
     )
     destination_port: str = Field(
@@ -198,3 +198,27 @@ class HealthStatus(BaseModel):
     qdrant: ServiceCheck
     langflow: ServiceCheck
     mailpit: ServiceCheck
+
+
+class IngestionResponse(BaseModel):
+    status: str = Field(
+        ...,
+        description="Ingestion status ('complete', 'rejected', or 'failed').",
+    )
+    invoice_data: Optional[InvoicePayload] = Field(
+        default=None,
+        description="Validated InvoicePayload ready for audit workspace if extraction succeeded.",
+    )
+    error_message: Optional[str] = Field(
+        default=None,
+        description="Descriptive reason why the document was rejected or failed parsing.",
+    )
+    missing_fields: List[str] = Field(
+        default_factory=list,
+        description="List of critical required fields missing from the document.",
+    )
+    filename: Optional[str] = Field(
+        default=None,
+        description="Original uploaded document filename.",
+    )
+

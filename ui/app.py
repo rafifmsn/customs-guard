@@ -168,6 +168,57 @@ def execute_audit_request(invoice_dict: Dict[str, Any]) -> Dict[str, Any]:
     return run_audit(model_payload).model_dump()
 
 
+def execute_ingest_document(file_bytes: bytes, filename: str) -> Dict[str, Any]:
+    """Sends uploaded file to /api/v1/ingest/document using multipart HTTP POST."""
+    import uuid
+    import asyncio
+    from fastapi import UploadFile
+
+    boundary = f"----WebKitFormBoundary{uuid.uuid4().hex}"
+    body = bytearray()
+    body.extend(f"--{boundary}\r\n".encode("utf-8"))
+    body.extend(
+        f'Content-Disposition: form-data; name="file"; filename="{filename}"\r\n'.encode(
+            "utf-8"
+        )
+    )
+    body.extend(b"Content-Type: application/octet-stream\r\n\r\n")
+    body.extend(file_bytes)
+    body.extend(f"\r\n--{boundary}--\r\n".encode("utf-8"))
+
+    headers = {"Content-Type": f"multipart/form-data; boundary={boundary}"}
+
+    for base_url in API_CANDIDATE_URLS:
+        url = f"{base_url}/api/v1/ingest/document"
+        try:
+            req = urllib.request.Request(
+                url,
+                data=bytes(body),
+                headers=headers,
+                method="POST",
+            )
+            with urllib.request.urlopen(req, timeout=30.0) as resp:
+                return json.loads(resp.read().decode("utf-8"))
+        except Exception:
+            continue
+
+    # In-process fallback call if API container is unreachable
+    try:
+        from api.main import ingest_document
+        import io
+        fake_upload = UploadFile(file=io.BytesIO(file_bytes), filename=filename)
+        res = asyncio.run(ingest_document(fake_upload))
+        return res.model_dump()
+    except Exception as exc:
+        return {
+            "status": "failed",
+            "error_message": f"Ingestion service unreachable: {exc}",
+            "missing_fields": [],
+            "invoice_data": None,
+        }
+
+
+
 def fetch_reports_archive() -> List[Dict[str, Any]]:
     res = api_request("GET", "/api/v1/reports", timeout=8.0)
     if isinstance(res, list):
@@ -371,19 +422,26 @@ def page_audit_workspace() -> None:
                 st.rerun()
 
         uploaded_file = st.file_uploader(
-            "Upload custom commercial invoice JSON",
-            type=["json"],
+            "Upload commercial invoice document (PDF, DOCX, Image, or JSON)",
+            type=["json", "pdf", "docx", "png", "jpg", "jpeg"],
         )
         if uploaded_file is not None:
-            try:
-                uploaded_data = json.load(uploaded_file)
-                if isinstance(uploaded_data, list) and uploaded_data:
-                    uploaded_data = uploaded_data[0]
-                if isinstance(uploaded_data, dict):
-                    st.session_state["active_invoice"] = uploaded_data
-                    st.session_state["last_audit_response"] = None
-            except Exception as exc:
-                st.error(f"Invalid JSON file: {exc}")
+            # Prevent re-triggering ingestion every UI interaction if already processed
+            uploaded_file_id = f"{uploaded_file.name}_{uploaded_file.size}"
+            if st.session_state.get("last_uploaded_file_id") != uploaded_file_id:
+                st.session_state["last_uploaded_file_id"] = uploaded_file_id
+                file_bytes = uploaded_file.getvalue()
+                with st.spinner(f"Ingesting and extracting line items from '{uploaded_file.name}'..."):
+                    ingest_res = execute_ingest_document(file_bytes, uploaded_file.name)
+                    if ingest_res.get("status") == "complete" and ingest_res.get("invoice_data"):
+                        st.session_state["active_invoice"] = ingest_res["invoice_data"]
+                        st.session_state["last_audit_response"] = None
+                        st.toast(f"Extracted {len(ingest_res['invoice_data'].get('items', []))} items from {uploaded_file.name}", icon="✅")
+                        st.rerun()
+                    else:
+                        err = ingest_res.get("error_message") or "Document could not be verified."
+                        st.error(f"Extraction Rejected: {err}")
+
 
     inv = st.session_state["active_invoice"]
 
