@@ -13,6 +13,7 @@ The core `customsguard` compliance flow and `CustomsGuard-Bot` assistant flow ru
 - **Authentication Header**: `x-api-key: <YOUR_LANGFLOW_API_KEY>`
 - **Primary Audit Flow ID (`customsguard`)**: `d79a75e5-63f9-4da4-ac36-9c7d7d1b9e1b`
 - **Regulatory Assistant Flow ID (`CustomsGuard-Bot`)**: `5ca6e9b6-937c-4ab3-a95e-f4d3a5ff9818`
+- **Document Ingestion Flow ID (`CustomsGuard-Ingest`)**: `c97facae-5fc1-469a-bac2-244d26882f88`
 
 ### 1. Model Context Protocol (MCP) Streamable Server
 
@@ -180,7 +181,57 @@ curl -X GET http://localhost:8000/api/v1/health
 }
 ```
 
-### 2. Autonomous Compliance Audit
+### 2. Multimodal Document Ingestion
+
+Upload and extract commercial invoice declarations from PDF, DOCX, or JSON documents. Converts raw unstructured declarations into a validated `InvoicePayload` ready for immediate audit review.
+
+- **Endpoint**: `POST /api/v1/ingest/document`
+- **Content-Type**: `multipart/form-data`
+
+#### Request Parameters
+
+| Parameter | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| `file` | file (binary) | Yes | Commercial invoice file (`.pdf`, `.docx`, or `.json`). |
+
+#### Example Request
+
+```bash
+curl -X POST "http://localhost:8000/api/v1/ingest/document" \
+  -F "file=@invoice.pdf"
+```
+
+#### Example Response Body
+
+```json
+{
+  "status": "complete",
+  "invoice_data": {
+    "shipment_id": "SHP-2026-0042",
+    "invoice_number": "INV-2026-APL-091",
+    "carrier": "CMA CGM",
+    "importer_name": "PT Nexus Indo Tech",
+    "destination_port": "Tanjung Priok, Jakarta (IDTPP)",
+    "container_count": 4,
+    "items": [
+      {
+        "item_id": 1,
+        "declared_description": "Apple iPhone 15 Pro Max 256GB Dual SIM Phone",
+        "declared_hs_code": "8517.13",
+        "quantity": 100,
+        "unit_price": 1150.0,
+        "total_value": 115000.0,
+        "declared_duty_rate": 0.0
+      }
+    ]
+  },
+  "error_message": null,
+  "missing_fields": [],
+  "filename": "invoice.pdf"
+}
+```
+
+### 3. Autonomous Compliance Audit
 
 Audit an incoming commercial shipping manifest against 5,612 Indonesian HS-6 subheadings, mandatory ministry permits, and CMA CGM demurrage schedules.
 
@@ -267,7 +318,7 @@ Audit an incoming commercial shipping manifest against 5,612 Indonesian HS-6 sub
 }
 ```
 
-### 3. Compliance Dossier Archive
+### 4. Compliance Dossier Archive
 
 Retrieve a list of archived compliance reports and audit summaries saved to local disk.
 
@@ -297,7 +348,7 @@ curl -X GET "http://localhost:8000/api/v1/reports?limit=10"
 ]
 ```
 
-### 4. Regulatory Knowledge Assistant
+### 5. Regulatory Knowledge Assistant
 
 Query Indonesian import regulations, Lartas permit schedules, or carrier tariff rules using bounded natural language intelligence.
 

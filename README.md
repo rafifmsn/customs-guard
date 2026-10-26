@@ -86,6 +86,7 @@ Navigate to `http://localhost:7860`, open **My Projects** -> **Import**, and upl
 
 - [`langflow/CustomsGuard.json`](./langflow/CustomsGuard.json): Autonomous Compliance Audit and MCP Tool Flow.
 - [`langflow/CustomsGuard-Bot.json`](./langflow/CustomsGuard-Bot.json): Regulatory Knowledge Assistant Flow.
+- [`langflow/CustomsGuard-Ingest.json`](./langflow/CustomsGuard-Ingest.json): Multimodal Document Ingestion and Verification Flow.
 
 ### Service Endpoints
 
@@ -121,6 +122,7 @@ uv run pytest
 |                             | [`docs/technical/mcp_setup.md`](./docs/technical/mcp_setup.md)               | Connection guide for IBM Bob and Langflow MCP streamable transport.         |
 | **Pipelines & Workflows**   | [`langflow/CustomsGuard.json`](./langflow/CustomsGuard.json)                 | Langflow visual pipeline export for Audit and MCP Tool flow.                |
 |                             | [`langflow/CustomsGuard-Bot.json`](./langflow/CustomsGuard-Bot.json)         | Langflow visual pipeline export for Regulatory Assistant flow.              |
+|                             | [`langflow/CustomsGuard-Ingest.json`](./langflow/CustomsGuard-Ingest.json)   | Langflow visual pipeline export for Document Ingestion flow.                |
 | **Test Fixtures & Outputs** | [`scenarios/prompts/`](./scenarios/prompts/)                                 | Modular prompts for high-risk audits, demurrage, and restitution.           |
 |                             | [`data/seed/sample_invoices.json`](./data/seed/sample_invoices.json)         | Benchmark invoice manifests covering multi-commodity scenarios.             |
 |                             | [`scenarios/expected-outputs/`](./scenarios/expected-outputs/)               | Reference audit reports matching canonical test cases.                      |

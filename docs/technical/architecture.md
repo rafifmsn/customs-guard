@@ -46,7 +46,7 @@ flowchart LR
 
 ## 2. Langflow Visual Canvas Pipelines
 
-CustomsGuard provides two pre-configured visual pipeline definitions in `./langflow/`:
+CustomsGuard provides three pre-configured visual pipeline definitions in `./langflow/`:
 
 ### Pipeline A: Primary Autonomous Audit Flow (`CustomsGuard.json`)
 
@@ -65,6 +65,15 @@ A dedicated conversational pipeline grounded in official Indonesian customs regu
 1. **Chat Input & History**: Tracks multi-turn conversational context for compliance inquiries.
 2. **Tariff Vector Retrieval**: Embeds and matches queries against 5,612 Indonesian HS-6 subheadings in Qdrant.
 3. **Synthesis Engine**: Answers importer questions regarding mandatory ministry permits (SDPPI, Kemenkes, BPOM) and MFN duty schedules.
+
+### Pipeline C: Document Ingestion & Verification (`CustomsGuard-Ingest.json`)
+
+A focused multimodal extraction and verification pipeline that transforms unstructured commercial invoice files into validated trade manifests:
+
+1. **Chat Input**: Receives parsed document text and shipping declarations dispatched from the API gateway.
+2. **Ingestion Validator Tools**: Custom Python component ([`scripts/ingestion_validator.py`](../../scripts/ingestion_validator.py)) that inspects extracted document payloads, strips surrounding conversational text or markdown blocks, verifies strict JSON syntax, and enforces mandatory customs line-item completeness.
+3. **Extraction Agent**: Autonomous LLM agent that interprets commercial descriptions, extracts 6-digit Indonesian HS codes, checks commodity quantities and values, and invokes the validator tool to guarantee compliant JSON output.
+4. **Chat Output**: Delivers the verified invoice payload or structured rejection notice back to the FastAPI gateway and Streamlit workspace.
 
 ## 3. Model Context Protocol (MCP) Interface
 
