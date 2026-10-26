@@ -305,7 +305,25 @@ def ensure_session_defaults() -> None:
                         "unit_price": 1150.0,
                         "total_value": 115000.0,
                         "declared_duty_rate": 0.0,
-                    }
+                    },
+                    {
+                        "item_id": 2,
+                        "declared_description": "Ultrasonic Diagnostic Scanner Probe System",
+                        "declared_hs_code": "8471.50",
+                        "quantity": 2,
+                        "unit_price": 30000.0,
+                        "total_value": 60000.0,
+                        "declared_duty_rate": 0.0,
+                    },
+                    {
+                        "item_id": 3,
+                        "declared_description": "Enterprise Rackmount Data Processing Server Unit",
+                        "declared_hs_code": "8471.50",
+                        "quantity": 5,
+                        "unit_price": 8000.0,
+                        "total_value": 40000.0,
+                        "declared_duty_rate": 0.0,
+                    },
                 ],
             }
         )

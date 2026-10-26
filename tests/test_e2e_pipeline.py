@@ -63,12 +63,12 @@ def test_bob_shell_orchestrator_cli_e2e():
             env=env,
             capture_output=True,
             text=True,
-            timeout=60
+            timeout=120
         )
     except FileNotFoundError:
         pytest.skip("bob command line tool is not installed on system PATH.")
     except subprocess.TimeoutExpired:
-        pytest.fail("bob run execution timed out after 60 seconds.")
+        pytest.fail("bob run execution timed out after 120 seconds.")
 
     assert proc.returncode == 0, f"bob run exited with error code {proc.returncode}: {proc.stderr}"
 

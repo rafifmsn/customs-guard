@@ -65,6 +65,30 @@ const SCENARIOS: ScenarioPreset[] = [
         restricted: true,
         required_permits: ["SDPPI Type Approval Certification (Kemkominfo)"],
       },
+      {
+        item_id: 2,
+        declared_description:
+          "Ultrasonic Diagnostic Scanner Probe System",
+        declared_hs: "8471.50",
+        matched_hs: "8515.11",
+        declared_duty: 0.0,
+        official_duty: 5.0,
+        total_value: 60000.0,
+        restricted: false,
+        required_permits: [],
+      },
+      {
+        item_id: 3,
+        declared_description:
+          "Enterprise Rackmount Data Processing Server Unit",
+        declared_hs: "8471.50",
+        matched_hs: "8471.50",
+        declared_duty: 0.0,
+        official_duty: 0.0,
+        total_value: 40000.0,
+        restricted: false,
+        required_permits: [],
+      },
     ],
   },
   {
