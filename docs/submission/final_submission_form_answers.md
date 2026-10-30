@@ -99,6 +99,28 @@ Sertakan informasi berikut jika tersedia:
 - Bagaimana hasil validasi memengaruhi solusi atau rencana pengembangan project.
 - Boleh tautkan juga link to drive jika ada dokumentasi (opsional)
 
+Metode Validasi:
+Wawancara semi-terstruktur untuk menguji alur audit invoice, kalkulasi tarif, serta kegunaan antarmuka.
+
+Jumlah dan Karakteristik Responden:
+Melibatkan 3 responden:
+
+1. Responden 1: Karyawan swasta data analyst dengan latar belakang Machine Learning dan nalar kritis.
+2. Responden 2: Mahasiswa IT yang peka terhadap estetika visual antarmuka dan berlatar belakang Machine Learning.
+3. Responden 3: Mahasiswi IT pengembang web yang memahami konteks operasional logistik pelabuhan (demurrage dan detention).
+
+Temuan Utama dan Umpan Balik:
+
+1. Input Data: Kebutuhan integrasi OCR (EasyOCR atau PaddleOCR) agar invoice fisik atau gambar dapat diubah otomatis menjadi format JSON terstruktur.
+2. Desain Antarmuka: Konsep minimalis dinilai sudah tepat, disarankan menjaga tampilan tetap bersih tanpa ornamen berlebihan yang terkesan artifisial (AI slop).
+3. Keterbacaan dan Tema: Teks laporan audit dinilai terlalu padat sehingga perlu penyajian yang lebih visual, serta usulan opsi Light Mode selain tema gelap.
+
+Pengaruh Hasil Validasi terhadap Solusi dan Rencana Pengembangan:
+
+1. Penyempurnaan Visual Terimplementasi: Mengadopsi masukan Responden 2 dan 3, dasbor antarmuka saat ini telah menerapkan kartu metrik ringkas, badge status kepatuhan, dan tabel komparasi tarif terstruktur sehingga hasil audit langsung terbaca tanpa beban teks padat, dengan tetap mempertahankan estetika minimalis bebas AI slop.
+2. Keputusan Terkait Light Mode: Permintaan tema terang (Light Mode) saat ini diputuskan untuk ditiadakan guna menjaga konsistensi visual, meskipun secara teknis konfigurasi tema Streamlit sangat fleksibel dan memungkinkan untuk diaktifkan sewaktu-waktu.
+3. Rencana Pengembangan (Roadmap OCR): Masukan Responden 1 mengenai ekstraksi dokumen pindaian dimasukkan ke dalam roadmap pengembangan berikutnya untuk mengintegrasikan pipeline OCR multimodal (EasyOCR atau PaddleOCR) pada alur ingest.
+
 ### Perkembangan dan Status Project (Project Development & Current Progress)
 
 Jelaskan perkembangan project sejak tahap preliminary hingga tahap semifinal.
@@ -136,7 +158,7 @@ Keterbatasan yang Masih Ditemukan dan Rencana Perbaikan:
 
 1. Keterbatasan: Pada agen percakapan berbasis model lokal ringan (seperti qwen2.5:3b), model terkadang menghasilkan teks analisis yang akurat tetapi melewatkan pemanggilan tool sekunder secara mandiri (seperti dispatch email alert) karena limitasi multi-step tool calling pada model 3B.
 2. Keterbatasan: Input saat ini diutamakan untuk dokumen digital berbasis teks dan JSON terstruktur.
-Dokumen pindaian fisik (scanned PDF atau foto dokumen) belum didukung secara langsung.
+   Dokumen pindaian fisik (scanned PDF atau foto dokumen) belum didukung secara langsung.
 3. Rencana Perbaikan: Menambahkan modul Document OCR multimodal (seperti Docling) untuk ekstraksi otomatis dari berkas PDF atau gambar pindaian Bill of Lading dan invoice fisik.
 4. Rencana Perbaikan: Memperluas database tarif untuk mencakup skema Free Trade Agreement (ATIGA, ACFTA) dan integrasi verifikasi Surat Keterangan Asal (Form D / Form E).
 5. Rencana Perbaikan: Menambahkan adapter API untuk maskapai pelayaran global lainnya seperti Maersk, MSC, Hapag-Lloyd, dan ONE.
@@ -144,6 +166,8 @@ Dokumen pindaian fisik (scanned PDF atau foto dokumen) belum didukung secara lan
 ### Product Pitching Video (End-to-End Journey)
 
 insert youtube video link here (7 mins max)
+
+https://youtu.be/zaiTPeZeazU
 
 ### Product Demo Project (End-to-End Journey)
 
@@ -153,7 +177,8 @@ https://youtu.be/OBHL-cSZEY8
 
 ### Silahkan upload slides presentasi (Pitching Deck) dalam format PDF
 
-Upload 1 supported file. Max 10 MB.
+Upload 1 supported file.
+Max 10 MB.
 
 Berkas presentasi telah disiapkan dalam format PDF:
 CustomsGuard.pdf (tersedia pada folder docs/submission/CustomsGuard.pdf dengan ukuran 1.3 MB, memenuhi batas maksimal 10 MB).
