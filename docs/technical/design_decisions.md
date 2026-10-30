@@ -143,3 +143,17 @@ The primary efficiency advantage of CustomsGuard lies in horizontal concurrency 
 - **Dual-Mode Deployment**:
   - **Conversational Co-Pilot Mode** (~30 to 45 seconds): For human-in-the-loop exception handling, broker inquiry, and interactive decision review.
   - **Headless Batch Ingestion Mode** (< 1 second per manifest): For direct integration with shipping EDI feeds or INSW APIs, passing clean shipments instantly and shunting only high-risk discrepancies to compliance officers.
+
+## 7. Model Capability Trade-offs
+
+### Observed Behavioral Differences in Multi-Step Tool Calling
+
+When CustomsGuard originally utilized frontier cloud models (such as GPT-4o-mini), the agent reliably executed sequential multi-step tool chains (auditing the declaration, saving the disk dossier, and triggering `send_compliance_alert` via Mailpit).
+Transitioning the conversational agent to a lightweight local model (`qwen2.5:3b`) introduces a notable operational trade-off:
+While the local model produces accurate tariff calculations and formats structured Markdown reports, it frequently skips the autonomous execution of secondary actions such as dispatching email alerts.
+
+### Execution Verification via PostgreSQL Transaction Logs
+
+Because smaller parameter models tend to jump directly to generating textual report templates rather than executing multi-turn tool loops, relying solely on conversational text can obscure whether a tool actually fired.
+To validate whether actions genuinely occurred, operators can review the persistent `transaction` and `span` tables in PostgreSQL.
+The database stores the exact inputs, outputs, and execution status for every node in the graph, providing an objective audit record to confirm whether downstream tasks like email dispatch took place or were bypassed.

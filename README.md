@@ -132,6 +132,20 @@ Evaluated across 5,612 Indonesian HS-6 tariff lines:
 - **Tier 2: Dense Semantic Vector**: Unit-normalized `all-minilm` 384-d Cosine search in Qdrant.
 - **Tier 3: Hybrid + LLM Reranker**: Top-5 candidates reranked by Qwen 2.5 3B.
 
+Accuracy Formula:
+`Accuracy = (Correct Predictions / 50 Total Declarations) * 100%`
+
+Non-conditional classification recall across all 50 sample declarations:
+
+```text
+[ All 50 Declarations (100%) ]
+   └── 38 items (76%) got the broad Chapter (HS-2) correct
+         └── 24 items (48%) got the specific Heading (HS-4) correct
+               └── 25 items (50%) had the exact 6-digit code in the Top-3
+                     └── 11 items (22%) nailed the exact 6-digit code as the #1 pick
+```
+
+The evaluation does not use LLM-as-a-Judge scoring, but relies on deterministic string verification against the official ground truth cheatsheet in [`data/seed/ground_truth_benchmark_50.json`](./data/seed/ground_truth_benchmark_50.json).
 Dense semantic retrieval doubles exact HS-6 classification accuracy over keyword matching while correctly identifying the governing trade chapter in 76% of zero-shot declarations across 5,612 candidate tariff lines.
 
 ### 2. Execution Latency & Tail Throughput (Grafana k6 Load Test)
@@ -152,21 +166,18 @@ Because baseline tail latency is only 37 ms, even with a 5x to 10x slowdown on a
 
 ## Documentation & Scenarios Directory
 
-| Category                    | Resource                                                                     | Description                                                                 |
-| :-------------------------- | :--------------------------------------------------------------------------- | :-------------------------------------------------------------------------- |
-| **Domain & Strategy**       | [`docs/domain/problem_solution.md`](./docs/domain/problem_solution.md)       | Deep analysis of customs bottlenecks, demurrage costs, and AI solution.     |
-|                             | [`docs/domain/business_canvas.md`](./docs/domain/business_canvas.md)         | Business model canvas, ROI calculations, and operational cost analysis.     |
-|                             | [`docs/domain/macmap.xlsx`](./docs/domain/macmap.xlsx)                       | Official WTO/UNCTAD ITC Market Access Map tariff dataset for Indonesia.     |
-| **Technical Architecture**  | [`docs/technical/api_reference.md`](./docs/technical/api_reference.md)       | REST API and Model Context Protocol specification for Langflow and FastAPI. |
-|                             | [`docs/technical/architecture.md`](./docs/technical/architecture.md)         | Canvas topology, node specifications, guardrails, and data contracts.       |
-|                             | [`docs/technical/design_decisions.md`](./docs/technical/design_decisions.md) | Architectural rationale, permit verification, and enterprise design.        |
-|                             | [`docs/technical/mcp_setup.md`](./docs/technical/mcp_setup.md)               | Connection guide for IBM Bob and Langflow MCP streamable transport.         |
-| **Pipelines & Workflows**   | [`langflow/CustomsGuard.json`](./langflow/CustomsGuard.json)                 | Langflow visual pipeline export for Audit and MCP Tool flow.                |
-|                             | [`langflow/CustomsGuard-Bot.json`](./langflow/CustomsGuard-Bot.json)         | Langflow visual pipeline export for Regulatory Assistant flow.              |
-|                             | [`langflow/CustomsGuard-Ingest.json`](./langflow/CustomsGuard-Ingest.json)   | Langflow visual pipeline export for Document Ingestion flow.                |
-| **Test Fixtures & Outputs** | [`scenarios/prompts/`](./scenarios/prompts/)                                 | Modular prompts for high-risk audits, demurrage, and restitution.           |
-|                             | [`data/seed/sample_invoices.json`](./data/seed/sample_invoices.json)         | Benchmark invoice manifests covering multi-commodity scenarios.             |
-|                             | [`scenarios/expected-outputs/`](./scenarios/expected-outputs/)               | Reference audit reports matching canonical test cases.                      |
+| Category                   | Resource                                                                     | Description                                                                 |
+| :------------------------- | :--------------------------------------------------------------------------- | :-------------------------------------------------------------------------- |
+| **Domain & Strategy**      | [`docs/domain/problem_solution.md`](./docs/domain/problem_solution.md)       | Deep analysis of customs bottlenecks, demurrage costs, and AI solution.     |
+|                            | [`docs/domain/business_canvas.md`](./docs/domain/business_canvas.md)         | Business model canvas, ROI calculations, and operational cost analysis.     |
+|                            | [`docs/domain/macmap.xlsx`](./docs/domain/macmap.xlsx)                       | Official WTO/UNCTAD ITC Market Access Map tariff dataset for Indonesia.     |
+| **Technical Architecture** | [`docs/technical/api_reference.md`](./docs/technical/api_reference.md)       | REST API and Model Context Protocol specification for Langflow and FastAPI. |
+|                            | [`docs/technical/architecture.md`](./docs/technical/architecture.md)         | Canvas topology, node specifications, guardrails, and data contracts.       |
+|                            | [`docs/technical/design_decisions.md`](./docs/technical/design_decisions.md) | Architectural rationale, permit verification, and enterprise design.        |
+|                            | [`docs/technical/mcp_setup.md`](./docs/technical/mcp_setup.md)               | Connection guide for IBM Bob and Langflow MCP streamable transport.         |
+| **Pipelines & Workflows**  | [`langflow/CustomsGuard.json`](./langflow/CustomsGuard.json)                 | Langflow visual pipeline export for Audit and MCP Tool flow.                |
+|                            | [`langflow/CustomsGuard-Bot.json`](./langflow/CustomsGuard-Bot.json)         | Langflow visual pipeline export for Regulatory Assistant flow.              |
+|                            | [`langflow/CustomsGuard-Ingest.json`](./langflow/CustomsGuard-Ingest.json)   | Langflow visual pipeline export for Document Ingestion flow.                |
 
 [^mckinsey-trade]: Casanova, D., Dierker, D., Jensen, B., Hausmann, L., & Stoffels, J. (2022, November 29). The multi-billion-dollar paper jam: Unlocking trade by digitalizing documentation. McKinsey & Company. https://www.mckinsey.com/industries/logistics/our-insights/the-multi-billion-dollar-paper-jam-unlocking-trade-by-digitalizing-documentation
 
