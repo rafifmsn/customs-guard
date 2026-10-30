@@ -381,15 +381,21 @@ def ensure_session_defaults() -> None:
         st.session_state["active_invoice"] = json.loads(json.dumps(default_inv))
     if "last_audit_response" not in st.session_state:
         st.session_state["last_audit_response"] = None
+    if "lang" not in st.session_state:
+        st.session_state["lang"] = "en"
 
 
 def page_audit_workspace() -> None:
     ensure_session_defaults()
     samples = st.session_state["samples_cache"]
 
-    st.title("CustomsGuard Audit Workspace")
+    is_id = st.session_state.get("lang", "en") == "id"
+    st.title("Ruang Kerja Audit Kepatuhan Kepabeanan" if is_id else "CustomsGuard Audit Workspace")
     st.write(
-        "Audit commercial shipping declarations against 5,612 Indonesian HS-6 tariff records, "
+        "Audit deklarasi pengapalan terhadap 5.612 data tarif HS-6 BTKI Indonesia, izin Lartas kementerian, "
+        "dan skema progresif biaya inap kontainer CMA CGM Indonesia."
+        if is_id
+        else "Audit commercial shipping declarations against 5,612 Indonesian HS-6 tariff records, "
         "Lartas ministry permits, and CMA CGM Indonesia progressive detention schedules."
     )
 
@@ -422,8 +428,8 @@ def page_audit_workspace() -> None:
                 st.rerun()
 
         uploaded_file = st.file_uploader(
-            "Upload commercial invoice document (PDF, DOCX, or JSON)",
-            type=["json", "pdf", "docx"],
+            "Upload commercial invoice document (PDF, DOCX, Markdown, or JSON)",
+            type=["json", "pdf", "docx", "md", "txt"],
         )
         if uploaded_file is not None:
             # Prevent re-triggering ingestion every UI interaction if already processed
@@ -661,6 +667,41 @@ def page_audit_workspace() -> None:
             },
         )
 
+        # Human-in-the-Loop Decision & Governance Workflow
+        st.markdown("---")
+        st.markdown("**:material/verified_user: Human-in-the-Loop Sign-Off & Regulatory Governance**")
+        gov_col1, gov_col2 = st.columns(2)
+        with gov_col1:
+            st.caption(
+                f"**Tariff Dataset:** `{audit.get('tariff_schedule_version', 'BTKI-2022-v2026.1 (WTO/UNCTAD ITC MacMap)')}`\n\n"
+                f"**Effective Date:** `{audit.get('tariff_effective_date', '2026-07-01')}`"
+            )
+        with gov_col2:
+            st.caption(
+                f"**Carrier Benchmark:** `{audit.get('carrier_tariff_schedule', 'CMA CGM Indonesia Merged Import D&D (Effective July 1, 2026)')}`\n\n"
+                f"**Sign-off Authority:** Licensed Customs Broker (PPJK)"
+            )
+
+        current_signoff = st.session_state.get(f"signoff_{audit['shipment_id']}", "PENDING_REVIEW")
+        if current_signoff == "APPROVED":
+            st.success("✅ **Cargo Release Authorized**: Approved by Human Compliance Officer for green-lane declaration.", icon="✅")
+        elif current_signoff == "HELD":
+            st.error("🛑 **Cargo Held for Inspection**: Flagged for physical verification (Jalur Merah / SPTNP rectification).", icon="🚨")
+        else:
+            st.info("ℹ️ **Human Verification Pending**: Review AI findings above before authorizing final clearance.", icon="⏳")
+
+        action_col1, action_col2 = st.columns(2)
+        with action_col1:
+            if st.button("Authorize Cargo Release (Sign Off)", key=f"btn_approve_{audit['shipment_id']}", type="primary", use_container_width=True):
+                st.session_state[f"signoff_{audit['shipment_id']}"] = "APPROVED"
+                st.toast("Cargo release successfully authorized by licensed broker.", icon="✅")
+                st.rerun()
+        with action_col2:
+            if st.button("Hold for Physical Inspection (Jalur Merah)", key=f"btn_hold_{audit['shipment_id']}", use_container_width=True):
+                st.session_state[f"signoff_{audit['shipment_id']}"] = "HELD"
+                st.toast("Shipment flagged for human physical inspection.", icon="🛑")
+                st.rerun()
+
 
 def page_demurrage_matrix() -> None:
     ensure_session_defaults()
@@ -733,7 +774,7 @@ def page_demurrage_matrix() -> None:
 def page_dossier_archive() -> None:
     st.title("Evidentiary Dossier Archive")
     st.write(
-        "Browse timestamped compliance dossiers stored in `./data/reports` and export official Markdown or JSON evidence packages."
+        "Browse timestamped compliance dossiers stored in `./data/reports` and export official Markdown, JSON, or CSV evidence packages."
     )
 
     reports_list = fetch_reports_archive()
@@ -779,7 +820,44 @@ def page_dossier_archive() -> None:
     )
     if selected_key:
         selected_report = options_map[selected_key]
-        dl_col1, dl_col2 = st.columns(2)
+        import csv
+        import io
+
+        csv_buffer = io.StringIO()
+        try:
+            parsed_json = json.loads(selected_report.get("json_content", "{}"))
+            findings = parsed_json.get("findings", [])
+            writer = csv.writer(csv_buffer)
+            writer.writerow([
+                "Item ID",
+                "Declared Description",
+                "Declared HS",
+                "Matched HS",
+                "Declared Duty Rate",
+                "Official Duty Rate",
+                "Duty Shortfall (USD)",
+                "Restitution (USD)",
+                "Restricted",
+                "Required Permits",
+            ])
+            for item in findings:
+                writer.writerow([
+                    item.get("item_id", ""),
+                    item.get("declared_description", ""),
+                    item.get("declared_hs", ""),
+                    item.get("matched_hs", ""),
+                    item.get("declared_duty", 0.0),
+                    item.get("official_duty", 0.0),
+                    item.get("duty_shortfall_usd", 0.0),
+                    item.get("restitution_usd", 0.0),
+                    item.get("restricted", False),
+                    "; ".join(item.get("required_permits", [])),
+                ])
+            csv_output = csv_buffer.getvalue()
+        except Exception:
+            csv_output = ""
+
+        dl_col1, dl_col2, dl_col3 = st.columns(3)
         with dl_col1:
             st.download_button(
                 label=f"Download Markdown ({selected_report['shipment_id']}.md)",
@@ -795,6 +873,14 @@ def page_dossier_archive() -> None:
                 data=selected_report["json_content"],
                 file_name=f"{selected_report['shipment_id']}_audit_report.json",
                 mime="application/json",
+                use_container_width=True,
+            )
+        with dl_col3:
+            st.download_button(
+                label=f"Download CSV ({selected_report['shipment_id']}.csv)",
+                data=csv_output,
+                file_name=f"{selected_report['shipment_id']}_line_items.csv",
+                mime="text/csv",
                 use_container_width=True,
             )
 
@@ -905,34 +991,46 @@ def render_app() -> None:
     )
 
     ensure_session_defaults()
+    is_id = st.session_state.get("lang", "en") == "id"
 
     nav = st.navigation(
         [
             st.Page(
                 page_audit_workspace,
-                title="Audit Workspace",
+                title="Ruang Kerja Audit" if is_id else "Audit Workspace",
                 icon=":material/fact_check:",
                 default=True,
             ),
             st.Page(
                 page_demurrage_matrix,
-                title="Demurrage Matrix",
+                title="Matriks Demurrage" if is_id else "Demurrage Matrix",
                 icon=":material/monitoring:",
             ),
             st.Page(
                 page_dossier_archive,
-                title="Dossier Archive",
+                title="Arsip Berkas Kepatuhan" if is_id else "Dossier Archive",
                 icon=":material/folder_open:",
             ),
             st.Page(
                 page_bob_assistant,
-                title="Bob Assistant",
+                title="Asisten Regulasi Bob" if is_id else "Bob Assistant",
                 icon=":material/smart_toy:",
             ),
         ]
     )
 
     with st.sidebar:
+        lang_sel = st.radio(
+            "Language / Bahasa",
+            options=["English", "Bahasa Indonesia"],
+            horizontal=True,
+            index=1 if is_id else 0,
+            label_visibility="collapsed",
+        )
+        if (lang_sel == "Bahasa Indonesia") != is_id:
+            st.session_state["lang"] = "id" if lang_sel == "Bahasa Indonesia" else "en"
+            st.rerun()
+
         health = fetch_health()
         resp_data = st.session_state.get("last_audit_response")
         active_inv = st.session_state.get("active_invoice", {})

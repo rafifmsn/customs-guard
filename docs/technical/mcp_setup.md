@@ -10,13 +10,16 @@ This guide details how to expose CustomsGuard flows as MCP tools in Langflow and
    - **Password**: `admin123`
 3. Verify that the dashboard loads successfully.
 
-## 2. Configure Model Providers in Langflow
+## 2. Configure Model Provider in Langflow (Ollama Qwen 2.5 3B)
 
-1. Click the rocket icon / settings gear in the top-right corner of Langflow.
-2. Navigate to **Settings** -> **Model Providers**.
-3. Select your provider (e.g. OpenRouter or OpenAI).
-4. Enter your API key and configure the provider settings.
-5. In the flow canvas, the Agent node will now use the configured model.
+For a 100% on-premise, air-gapped setup without external API keys, configure Langflow to use Ollama:
+
+1. Ensure Ollama is running on the host machine listening on `0.0.0.0:11434` with `qwen2.5:3b` pulled.
+2. Open Langflow at `http://localhost:7860` and open the flow canvas.
+3. In the Agent node, set the model provider to **Ollama**.
+4. Set the Base URL to `http://host.docker.internal:11434`.
+5. Set the Model Name to `qwen2.5:3b`.
+6. Alternatively, if using a cloud provider, configure API keys under **Settings** -> **Model Providers**.
 
 ## 3. Enable MCP on the CustomsGuard Flow
 

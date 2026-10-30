@@ -268,3 +268,33 @@ def test_audit_duty_overpayment_restitution(audit_tool):
     # Overpayment is (10% / 100) * 100,000 = $10,000.00
     assert any("Potential duty overpayment" in note for note in result["critical_notes"])
     assert any("$10,000.00" in note for note in result["critical_notes"])
+
+
+def test_audit_fail_closed_on_unverified_tariff(audit_tool):
+    """Ensure fail-closed architecture: unverified tariffs trigger WARNING_DISCREPANCY instead of silent COMPLIANT verdict."""
+    sample_invoice = {
+        "shipment_id": "TEST-SHP-UNVERIFIED",
+        "importer_name": "Suspicious Importer Ltd",
+        "items": [
+            {
+                "item_id": 1,
+                "declared_description": "Unregistered Commodity XYZ",
+                "declared_hs_code": "9999.99",
+                "declared_duty_rate": 0.0,
+                "total_value": 50000.0
+            }
+        ]
+    }
+
+    # Simulate Qdrant returning 0 matches or failing
+    mock_resp = MagicMock()
+    mock_resp.read.return_value = json.dumps({"result": {"points": []}}).encode("utf-8")
+    mock_resp.__enter__.return_value = mock_resp
+
+    with patch("urllib.request.urlopen", return_value=mock_resp):
+        output = audit_tool.invoke({"invoice_json": json.dumps(sample_invoice)})
+        result = json.loads(output)
+
+    # Must NOT be marked as COMPLIANT
+    assert result["overall_status"] == "WARNING_DISCREPANCY"
+    assert any("Fail-closed safety alert" in note for note in result["critical_notes"])

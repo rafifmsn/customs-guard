@@ -58,6 +58,8 @@ services:
     <<: *default-logging
     image: langflowai/langflow:latest
     container_name: customs_langflow
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     ports:
       - "${LANGFLOW_PORT:-7860}:7860"
     dns:
@@ -70,7 +72,7 @@ services:
       - LANGFLOW_SUPERUSER=${LANGFLOW_SUPERUSER:-admin}
       - LANGFLOW_SUPERUSER_PASSWORD=${LANGFLOW_SUPERUSER_PASSWORD:-admin123}
       - LANGFLOW_DO_NOT_TRACK=true
-      - LANGFLOW_SSRF_ALLOWED_HOSTS=qdrant,mailpit
+      - LANGFLOW_SSRF_ALLOWED_HOSTS=qdrant,mailpit,host.docker.internal
     volumes:
       - ./data/reports:/app/reports
       - ./data/seed:/app/seed
@@ -92,6 +94,8 @@ services:
       context: .
       dockerfile: api/Dockerfile
     container_name: customsguard_api
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     ports:
       - "${API_PORT:-8000}:8000"
     dns:

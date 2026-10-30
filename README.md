@@ -1,7 +1,9 @@
 # CustomsGuard
 
-[![X / Twitter](https://img.shields.io/badge/Twitter-@rafifmsn-1DA1F2?logo=x&logoColor=white)](https://x.com/rafifmsn)
+[![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white)](https://www.docker.com/)
+[![Ollama](https://img.shields.io/badge/Ollama-Qwen_2.5-black?logo=ollama&logoColor=white)](https://ollama.com/)
 [![uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json)](https://github.com/astral-sh/uv)
+[![npm](https://img.shields.io/badge/npm-CB3837?logo=npm&logoColor=white)](https://www.npmjs.com/)
 
 **Autonomous Trade Compliance & Tariff Discrepancy Engine**  
 _IBM SkillsBuild x Hacktiv8 National Hackathon 2026 (Productivity & Smart Business)_
@@ -88,6 +90,14 @@ Navigate to `http://localhost:7860`, open **My Projects** -> **Import**, and upl
 - [`langflow/CustomsGuard-Bot.json`](./langflow/CustomsGuard-Bot.json): Regulatory Knowledge Assistant Flow.
 - [`langflow/CustomsGuard-Ingest.json`](./langflow/CustomsGuard-Ingest.json): Multimodal Document Ingestion and Verification Flow.
 
+### 4. Configure Local Agent LLM
+
+For an air-gapped, on-premise deployment without external API keys:
+
+1. Pull the model on the host: `ollama pull qwen2.5:3b`.
+2. Ensure Ollama listens on all interfaces by adding `Environment="OLLAMA_HOST=0.0.0.0"`.
+3. In Langflow, set the model provider to Ollama with `http://host.docker.internal:11434`.
+
 ### Service Endpoints
 
 - **Operator Dashboard**: `http://localhost:8501`
@@ -107,7 +117,7 @@ uv run pytest
 ```
 
 > Core tariff lookup, arithmetic, and reporting tests run locally against containerized services.
-> Full live end-to-end conversational CLI tests require configuring the model provider API key in Langflow and setting `BOB_API_KEY` in `.env`.
+> Full live end-to-end conversational CLI tests require configuring the agent model (e.g. Ollama) in Langflow and setting `BOB_API_KEY` in `.env`.
 
 ## Documentation & Scenarios Directory
 

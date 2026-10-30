@@ -60,7 +60,7 @@ CustomsGuard menjadi solusi yang jauh lebih unggul karena:
 1. Autonomous Tariff RAG & Discrepancy Auditing: Mencocokkan deskripsi barang invoice secara otonom terhadap 5.612 kode HS Indonesia bersumber dari WTO/UNCTAD ITC MAcMap di database Qdrant untuk mendeteksi perbedaan kode dan kekurangan bea masuk.
 2. Regulatory Permit Verification (Lartas Engine): Memverifikasi kepemilikan sertifikasi wajib seperti SDPPI Kemkominfo, izin edar Alkes Kemenkes, dan izin BPOM sebelum kargo tiba di pelabuhan.
 3. Carrier Demurrage & Restitution Calculator: Menghitung liabilitas demurrage harian dan kumulatif berbasis tarif resmi CMA CGM Indonesia (5 free days dan tier progresif per kontainer) dengan default kontainer 40ft Dry Standard, serta mendeteksi potensi restitusi lebih bayar tarif.
-4. Automated Evidence Archiving: Mengekspor berkas audit resmi bertanda waktu dalam format Markdown dan JSON ke direktori penyimpanan lokal.
+4. Automated Evidence Archiving: Mengekspor berkas audit resmi bertanda waktu dalam format Markdown, JSON, dan CSV ke direktori penyimpanan lokal.
 5. Real-Time SMTP Alert Dispatching: Mengirimkan email peringatan darurat otomatis ke tim kepatuhan melalui Mailpit ketika terdeteksi risiko penahanan tinggi.
 
 ### Alur Penggunaan Project

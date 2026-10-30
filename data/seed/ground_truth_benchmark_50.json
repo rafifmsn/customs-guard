@@ -1,0 +1,578 @@
+[
+  {
+    "id": 1,
+    "query_description": "Apple iPhone 15 Pro Max 256GB Dual SIM Smartphone",
+    "ground_truth_hs": "8517.13",
+    "official_description": "Telephone sets, including smartphones and other telephones for cellular networks or for other wireless networks; other apparatus for the transmission or reception of voice, images or other data, including apparatus for communication in a wired or wireless network (such as a local or wide area network), other than transmission or reception apparatus of heading 8443, 8525, 8527 or 8528 : Telephone sets, including smartphones and other telephones for cellular networks or for other wireless networks : Smartphones",
+    "chapter": "85",
+    "duty_rate": 0.0,
+    "vat_rate": 11.0,
+    "restricted": true,
+    "required_permits": [
+      "Telecommunication Type Approval / SDPPI Certification (Kemkominfo)"
+    ]
+  },
+  {
+    "id": 2,
+    "query_description": "Dell Latitude 5540 Laptop 15.6 inch Core i7 16GB RAM",
+    "ground_truth_hs": "8471.30",
+    "official_description": "Automatic data-processing machines and units thereof; magnetic or optical readers, machines for transcribing data onto data media in coded form and machines for processing such data, not elsewhere specified or included : Portable automatic data-processing machines, weighing not more than 10 kg, consisting of at least a central processing unit, a keyboard and a display",
+    "chapter": "84",
+    "duty_rate": 0.0,
+    "vat_rate": 11.0,
+    "restricted": false,
+    "required_permits": []
+  },
+  {
+    "id": 3,
+    "query_description": "Siemens Acuson Freestyle Ultrasound Probe System",
+    "ground_truth_hs": "9018.12",
+    "official_description": "Instruments and appliances used in medical, surgical, dental or veterinary sciences, including scintigraphic apparatus, other electromedical apparatus and sight-testing instruments : Electrodiagnostic apparatus (including apparatus for functional exploratory examination or for checking physiological parameters) : Ultrasonic scanning apparatus",
+    "chapter": "90",
+    "duty_rate": 5.0,
+    "vat_rate": 11.0,
+    "restricted": true,
+    "required_permits": [
+      "Medical Device Import & Distribution License / Izin Edar (Kemenkes)"
+    ]
+  },
+  {
+    "id": 4,
+    "query_description": "Submarine Armored Optical Fiber Cable Single Mode 48 Core",
+    "ground_truth_hs": "8544.70",
+    "official_description": "Insulated (including enamelled or anodised) wire, cable (including coaxial cable) and other insulated electric conductors, whether or not fitted with connectors; optical fibre cables, made up of individually sheathed fibres, whether or not assembled with electric conductors or fitted with connectors : Optical fibre cables",
+    "chapter": "85",
+    "duty_rate": 0.0,
+    "vat_rate": 11.0,
+    "restricted": false,
+    "required_permits": []
+  },
+  {
+    "id": 5,
+    "query_description": "Nike Canvas Running Shoes with Rubber Soles",
+    "ground_truth_hs": "6404.11",
+    "official_description": "Footwear with outer soles of rubber, plastics, leather or composition leather and uppers of textile materials : Footwear with outer soles of rubber or plastics : Sports footwear; tennis shoes, basketball shoes, gym shoes, training shoes and the like",
+    "chapter": "64",
+    "duty_rate": 26.67,
+    "vat_rate": 11.0,
+    "restricted": false,
+    "required_permits": []
+  },
+  {
+    "id": 6,
+    "query_description": "Rotary Screw Industrial Air Compressor 500L 10 Bar",
+    "ground_truth_hs": "8414.80",
+    "official_description": "Air or vacuum pumps, air or other gas compressors and fans; ventilating or recycling hoods incorporating a fan, whether or not fitted with filters; gas-tight biological safety cabinets, whether or not fitted with filters : Other",
+    "chapter": "84",
+    "duty_rate": 5.0,
+    "vat_rate": 11.0,
+    "restricted": true,
+    "required_permits": [
+      "Surveyor Technical Inspection / Laporan Surveyor (Sucofindo / Kemenperin)"
+    ]
+  },
+  {
+    "id": 7,
+    "query_description": "Cisco Catalyst 9300 48-Port Network Switch Router",
+    "ground_truth_hs": "8517.62",
+    "official_description": "Telephone sets, including smartphones and other telephones for cellular networks or for other wireless networks; other apparatus for the transmission or reception of voice, images or other data, including apparatus for communication in a wired or wireless network (such as a local or wide area network), other than transmission or reception apparatus of heading 8443, 8525, 8527 or 8528 : Other apparatus for the transmission or reception of voice, images or other data, including apparatus for communication in a wired or wireless network (such as a local or wide area network) : Machines for the reception, conversion and transmission or regeneration of voice, images or other data, including switching and routing apparatus",
+    "chapter": "85",
+    "duty_rate": 2.0,
+    "vat_rate": 11.0,
+    "restricted": true,
+    "required_permits": [
+      "Telecommunication Type Approval / SDPPI Certification (Kemkominfo)"
+    ]
+  },
+  {
+    "id": 8,
+    "query_description": "Rechargeable Lithium-ion Battery Pack 48V 100Ah",
+    "ground_truth_hs": "8507.60",
+    "official_description": "Electric accumulators, including separators therefor, whether or not rectangular (including square) : Lithium-ion",
+    "chapter": "85",
+    "duty_rate": 10.0,
+    "vat_rate": 11.0,
+    "restricted": false,
+    "required_permits": []
+  },
+  {
+    "id": 9,
+    "query_description": "Split Wall Mounted Air Conditioner 1.5 PK Inverter",
+    "ground_truth_hs": "8415.10",
+    "official_description": "Air-conditioning machines, comprising a motor-driven fan and elements for changing the temperature and humidity, including those machines in which the humidity cannot be separately regulated : Of a kind designed to be fixed to a window, wall, ceiling or floor, self-contained or ‘split-system’",
+    "chapter": "84",
+    "duty_rate": 13.33,
+    "vat_rate": 11.0,
+    "restricted": false,
+    "required_permits": []
+  },
+  {
+    "id": 10,
+    "query_description": "Paracetamol Oral Suspension 120mg/5ml Pediatric Formulation",
+    "ground_truth_hs": "3004.90",
+    "official_description": "Medicaments (excluding goods of heading 3002, 3005 or 3006) consisting of mixed or unmixed products for therapeutic or prophylactic uses, put up in measured doses (including those in the form of transdermal administration systems) or in forms or packings for retail sale : Other",
+    "chapter": "30",
+    "duty_rate": 4.46,
+    "vat_rate": 11.0,
+    "restricted": true,
+    "required_permits": [
+      "Food & Drug Import Certificate / SKI BPOM (Badan POM)"
+    ]
+  },
+  {
+    "id": 11,
+    "query_description": "Chocolate Coated Sweet Biscuits in Retail Pack 200g",
+    "ground_truth_hs": "1905.31",
+    "official_description": "Bread, pastry, cakes, biscuits and other bakers' wares, whether or not containing cocoa; communion wafers, empty cachets of a kind suitable for pharmaceutical use, sealing wafers, rice paper and similar products : Sweet biscuits; waffles and wafers : Sweet biscuits",
+    "chapter": "19",
+    "duty_rate": 20.0,
+    "vat_rate": 11.0,
+    "restricted": false,
+    "required_permits": []
+  },
+  {
+    "id": 12,
+    "query_description": "Enterprise Server Rack 2U Intel Xeon Scalable Dual Socket",
+    "ground_truth_hs": "8471.50",
+    "official_description": "Automatic data-processing machines and units thereof; magnetic or optical readers, machines for transcribing data onto data media in coded form and machines for processing such data, not elsewhere specified or included : Processing units other than those of subheading 847141 or 847149, whether or not containing in the same housing one or two of the following types of unit: storage units, input units, output units",
+    "chapter": "84",
+    "duty_rate": 0.0,
+    "vat_rate": 11.0,
+    "restricted": false,
+    "required_permits": []
+  },
+  {
+    "id": 13,
+    "query_description": "Switching Power Supply Adapter 24V 10A DC Output",
+    "ground_truth_hs": "8504.40",
+    "official_description": "Electrical transformers, static converters (for example, rectifiers) and inductors : Static converters",
+    "chapter": "85",
+    "duty_rate": 7.5,
+    "vat_rate": 11.0,
+    "restricted": false,
+    "required_permits": []
+  },
+  {
+    "id": 14,
+    "query_description": "LED Backlit LCD Computer Monitor 27 Inch 4K UHD",
+    "ground_truth_hs": "8528.52",
+    "official_description": "Monitors and projectors, not incorporating television reception apparatus; reception apparatus for television, whether or not incorporating radio-broadcast receivers or sound or video recording or reproducing apparatus : Other monitors : Capable of directly connecting to and designed for use with an automatic data processing machine of heading 8471",
+    "chapter": "85",
+    "duty_rate": 0.0,
+    "vat_rate": 11.0,
+    "restricted": true,
+    "required_permits": [
+      "Telecommunication Type Approval / SDPPI Certification (Kemkominfo)"
+    ]
+  },
+  {
+    "id": 15,
+    "query_description": "Digital Infrared Surveillance Camera 4K Dome",
+    "ground_truth_hs": "8525.89",
+    "official_description": "Transmission apparatus for radio-broadcasting or television, whether or not incorporating reception apparatus or sound recording or reproducing apparatus; television cameras, digital cameras and video camera recorders : Television cameras, digital cameras and video camera recorders : Other",
+    "chapter": "85",
+    "duty_rate": 5.0,
+    "vat_rate": 11.0,
+    "restricted": true,
+    "required_permits": [
+      "Telecommunication Type Approval / SDPPI Certification (Kemkominfo)"
+    ]
+  },
+  {
+    "id": 16,
+    "query_description": "Polypropylene Polymer Granules Injection Grade",
+    "ground_truth_hs": "3902.10",
+    "official_description": "Polymers of propylene or of other olefins, in primary forms : Polypropylene",
+    "chapter": "39",
+    "duty_rate": 10.0,
+    "vat_rate": 11.0,
+    "restricted": false,
+    "required_permits": []
+  },
+  {
+    "id": 17,
+    "query_description": "Seamless Stainless Steel Industrial Hydraulic Pipes",
+    "ground_truth_hs": "7304.41",
+    "official_description": "Tubes, pipes and hollow profiles, seamless, of iron (other than cast iron) or steel : Other, of circular cross-section, of stainless steel : Cold-drawn or cold-rolled (cold-reduced)",
+    "chapter": "73",
+    "duty_rate": 5.0,
+    "vat_rate": 11.0,
+    "restricted": false,
+    "required_permits": []
+  },
+  {
+    "id": 18,
+    "query_description": "Automotive Disc Brake Pad Set Front Axle",
+    "ground_truth_hs": "8708.30",
+    "official_description": "Parts and accessories of the motor vehicles of headings 8701 to 8705 : Brakes and servo-brakes; parts thereof",
+    "chapter": "87",
+    "duty_rate": 10.0,
+    "vat_rate": 11.0,
+    "restricted": false,
+    "required_permits": []
+  },
+  {
+    "id": 19,
+    "query_description": "Automatic Hemodialysis Blood Filtration Machine",
+    "ground_truth_hs": "9018.90",
+    "official_description": "Instruments and appliances used in medical, surgical, dental or veterinary sciences, including scintigraphic apparatus, other electromedical apparatus and sight-testing instruments : Other instruments and appliances",
+    "chapter": "90",
+    "duty_rate": 6.0,
+    "vat_rate": 11.0,
+    "restricted": true,
+    "required_permits": [
+      "Medical Device Import & Distribution License / Izin Edar (Kemenkes)"
+    ]
+  },
+  {
+    "id": 20,
+    "query_description": "Electric Motor Three Phase Induction 15kW",
+    "ground_truth_hs": "8501.52",
+    "official_description": "Electric motors and generators (excluding generating sets) : Other AC motors, multi-phase : Of an output exceeding 750 W but not exceeding 75 kW",
+    "chapter": "85",
+    "duty_rate": 10.0,
+    "vat_rate": 11.0,
+    "restricted": false,
+    "required_permits": []
+  },
+  {
+    "id": 21,
+    "query_description": "Centrifugal Water Pump Impeller Assembly Cast Iron",
+    "ground_truth_hs": "8413.70",
+    "official_description": "Pumps for liquids, whether or not fitted with a measuring device; liquid elevators : Other centrifugal pumps",
+    "chapter": "84",
+    "duty_rate": 5.0,
+    "vat_rate": 11.0,
+    "restricted": false,
+    "required_permits": []
+  },
+  {
+    "id": 22,
+    "query_description": "Monolithic Integrated Circuit Microcontroller ARM Cortex-M4",
+    "ground_truth_hs": "8542.31",
+    "official_description": "Electronic integrated circuits : Electronic integrated circuits : Processors and controllers, whether or not combined with memories, converters, logic circuits, amplifiers, clock and timing circuits, or other circuits",
+    "chapter": "85",
+    "duty_rate": 0.0,
+    "vat_rate": 11.0,
+    "restricted": false,
+    "required_permits": []
+  },
+  {
+    "id": 23,
+    "query_description": "N95 Medical Protective Face Mask Particulate Respirator",
+    "ground_truth_hs": "6307.90",
+    "official_description": "Other made-up articles, including dress patterns : Other",
+    "chapter": "63",
+    "duty_rate": 18.57,
+    "vat_rate": 11.0,
+    "restricted": false,
+    "required_permits": []
+  },
+  {
+    "id": 24,
+    "query_description": "Unroasted Decaffeinated Arabica Green Coffee Beans",
+    "ground_truth_hs": "0901.12",
+    "official_description": "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion : Coffee, not roasted : Decaffeinated",
+    "chapter": "09",
+    "duty_rate": 5.0,
+    "vat_rate": 11.0,
+    "restricted": false,
+    "required_permits": []
+  },
+  {
+    "id": 25,
+    "query_description": "Refined Palm Olein Cooking Oil Fractionated",
+    "ground_truth_hs": "1511.90",
+    "official_description": "Palm oil and its fractions, whether or not refined, but not chemically modified : Other",
+    "chapter": "15",
+    "duty_rate": 2.78,
+    "vat_rate": 11.0,
+    "restricted": false,
+    "required_permits": []
+  },
+  {
+    "id": 26,
+    "query_description": "Hydraulic Excavator Crawler Track Shoe Link",
+    "ground_truth_hs": "8431.49",
+    "official_description": "Parts suitable for use solely or principally with the machinery of headings 8425 to 8430 : Of machinery of heading 8426, 8429 or 8430 : Other",
+    "chapter": "84",
+    "duty_rate": 5.0,
+    "vat_rate": 11.0,
+    "restricted": false,
+    "required_permits": []
+  },
+  {
+    "id": 27,
+    "query_description": "Pneumatic Radial Passenger Car Tires Tubeless 205/55R16",
+    "ground_truth_hs": "4011.10",
+    "official_description": "New pneumatic tyres, of rubber : Of a kind used on motor cars (including station wagons and racing cars)",
+    "chapter": "40",
+    "duty_rate": 15.0,
+    "vat_rate": 11.0,
+    "restricted": false,
+    "required_permits": []
+  },
+  {
+    "id": 28,
+    "query_description": "Photovoltaic Solar Panel Module Monocrystalline 550W",
+    "ground_truth_hs": "8541.43",
+    "official_description": "Semiconductor devices (for example, diodes, transistors, semiconductor-based transducers); photosensitive semiconductor devices, including photovoltaic cells whether or not assembled in modules or made up into panels; light-emitting diodes (LED), whether or not assembled with other light-emitting diodes (LED); mounted piezo-electric crystals : Photosensitive semiconductor devices, including photovoltaic cells whether or not assembled in modules or made up into panels; light-emitting diodes (LED) : Photovoltaic cells assembled in modules or made up into panels",
+    "chapter": "85",
+    "duty_rate": 5.0,
+    "vat_rate": 11.0,
+    "restricted": false,
+    "required_permits": []
+  },
+  {
+    "id": 29,
+    "query_description": "Industrial Robotic Arm 6-Axis Welding Automation",
+    "ground_truth_hs": "8479.50",
+    "official_description": "Machines and mechanical appliances having individual functions, not specified or included elsewhere in this chapter : Industrial robots, not elsewhere specified or included",
+    "chapter": "84",
+    "duty_rate": 5.0,
+    "vat_rate": 11.0,
+    "restricted": false,
+    "required_permits": []
+  },
+  {
+    "id": 30,
+    "query_description": "Dental Examination Chair Unit with LED Operating Light",
+    "ground_truth_hs": "9018.49",
+    "official_description": "Instruments and appliances used in medical, surgical, dental or veterinary sciences, including scintigraphic apparatus, other electromedical apparatus and sight-testing instruments : Other instruments and appliances, used in dental sciences : Other",
+    "chapter": "90",
+    "duty_rate": 5.0,
+    "vat_rate": 11.0,
+    "restricted": true,
+    "required_permits": [
+      "Medical Device Import & Distribution License / Izin Edar (Kemenkes)"
+    ]
+  },
+  {
+    "id": 31,
+    "query_description": "Diagnostic Magnetic Resonance Imaging MRI System Superconducting",
+    "ground_truth_hs": "9018.13",
+    "official_description": "Instruments and appliances used in medical, surgical, dental or veterinary sciences, including scintigraphic apparatus, other electromedical apparatus and sight-testing instruments : Electrodiagnostic apparatus (including apparatus for functional exploratory examination or for checking physiological parameters) : Magnetic resonance imaging apparatus",
+    "chapter": "90",
+    "duty_rate": 5.0,
+    "vat_rate": 11.0,
+    "restricted": true,
+    "required_permits": [
+      "Medical Device Import & Distribution License / Izin Edar (Kemenkes)"
+    ]
+  },
+  {
+    "id": 32,
+    "query_description": "Frozen Boneless Beef Meat Cuts Vacuum Packed",
+    "ground_truth_hs": "0202.30",
+    "official_description": "Meat of bovine animals, frozen : Boneless",
+    "chapter": "02",
+    "duty_rate": 5.0,
+    "vat_rate": 11.0,
+    "restricted": false,
+    "required_permits": []
+  },
+  {
+    "id": 33,
+    "query_description": "Synthetic Lubricating Motor Oil 5W-30 Fully Synthetic",
+    "ground_truth_hs": "2710.19",
+    "official_description": "Petroleum oils and oils obtained from bituminous minerals, other than crude; preparations not elsewhere specified or included, containing by weight 70 % or more of petroleum oils or of oils obtained from bituminous minerals, these oils being the basic constituents of the preparations; waste oils : Petroleum oils and oils obtained from bituminous minerals (other than crude) and preparations not elsewhere specified or included, containing by weight 70 % or more of petroleum oils or of oils obtained from bituminous minerals, these oils being the basic constituents of the preparations, other than those containing biodiesel and other than waste oils : Other",
+    "chapter": "27",
+    "duty_rate": 1.47,
+    "vat_rate": 11.0,
+    "restricted": false,
+    "required_permits": []
+  },
+  {
+    "id": 34,
+    "query_description": "Solid State Drive SSD 2TB NVMe M.2 PCIe 4.0",
+    "ground_truth_hs": "8471.70",
+    "official_description": "Automatic data-processing machines and units thereof; magnetic or optical readers, machines for transcribing data onto data media in coded form and machines for processing such data, not elsewhere specified or included : Storage units",
+    "chapter": "84",
+    "duty_rate": 0.0,
+    "vat_rate": 11.0,
+    "restricted": false,
+    "required_permits": []
+  },
+  {
+    "id": 35,
+    "query_description": "Wireless Bluetooth Audio Headset Noise Cancelling",
+    "ground_truth_hs": "8518.30",
+    "official_description": "Microphones and stands therefor; loudspeakers, whether or not mounted in their enclosures; headphones and earphones, whether or not combined with a microphone, and sets consisting of a microphone and one or more loudspeakers; audio-frequency electric amplifiers; electric sound amplifier sets : Headphones and earphones, whether or not combined with a microphone, and sets consisting of a microphone and one or more loudspeakers",
+    "chapter": "85",
+    "duty_rate": 4.17,
+    "vat_rate": 11.0,
+    "restricted": false,
+    "required_permits": []
+  },
+  {
+    "id": 36,
+    "query_description": "Laboratory Analytical Electronic Precision Balance 0.1mg",
+    "ground_truth_hs": "9016.00",
+    "official_description": "Balances of a sensitivity of 5 cg or better, with or without weights",
+    "chapter": "90",
+    "duty_rate": 5.0,
+    "vat_rate": 11.0,
+    "restricted": false,
+    "required_permits": []
+  },
+  {
+    "id": 37,
+    "query_description": "Thermal Receipt Printer Direct Thermal 80mm USB Ethernet",
+    "ground_truth_hs": "8443.32",
+    "official_description": "Printing machinery used for printing by means of plates, cylinders and other printing components of heading 8442; other printers, copying machines and facsimile machines, whether or not combined; parts and accessories thereof : Other printers, copying machines and facsimile machines, whether or not combined : Other, capable of connecting to an automatic data-processing machine or to a network",
+    "chapter": "84",
+    "duty_rate": 2.0,
+    "vat_rate": 11.0,
+    "restricted": false,
+    "required_permits": []
+  },
+  {
+    "id": 38,
+    "query_description": "Corrugated Paperboard Packaging Cartons Folding Box",
+    "ground_truth_hs": "4819.10",
+    "official_description": "Cartons, boxes, cases, bags and other packing containers, of paper, paperboard, cellulose wadding or webs of cellulose fibres; box files, letter trays, and similar articles, of paper or paperboard, of a kind used in offices, shops or the like : Cartons, boxes and cases, of corrugated paper or paperboard",
+    "chapter": "48",
+    "duty_rate": 5.0,
+    "vat_rate": 11.0,
+    "restricted": false,
+    "required_permits": []
+  },
+  {
+    "id": 39,
+    "query_description": "Extruded Aluminium Alloy Profile Architectural Anodized",
+    "ground_truth_hs": "7604.29",
+    "official_description": "Aluminium bars, rods and profiles : Of aluminium alloys : Other",
+    "chapter": "76",
+    "duty_rate": 11.67,
+    "vat_rate": 11.0,
+    "restricted": false,
+    "required_permits": []
+  },
+  {
+    "id": 40,
+    "query_description": "Diesel Internal Combustion Generator Set 100kVA Standby",
+    "ground_truth_hs": "8502.11",
+    "official_description": "Electric generating sets and rotary converters : Generating sets with compression-ignition internal combustion piston engines (diesel or semi-diesel engines) : Of an output not exceeding 75 kVA",
+    "chapter": "85",
+    "duty_rate": 10.0,
+    "vat_rate": 11.0,
+    "restricted": false,
+    "required_permits": []
+  },
+  {
+    "id": 41,
+    "query_description": "Insulated Copper Electric Wire 2.5mm PVC Sheathed",
+    "ground_truth_hs": "8544.49",
+    "official_description": "Insulated (including enamelled or anodised) wire, cable (including coaxial cable) and other insulated electric conductors, whether or not fitted with connectors; optical fibre cables, made up of individually sheathed fibres, whether or not assembled with electric conductors or fitted with connectors : Other electric conductors, for a voltage not exceeding 1000 V : Other",
+    "chapter": "85",
+    "duty_rate": 10.0,
+    "vat_rate": 11.0,
+    "restricted": false,
+    "required_permits": []
+  },
+  {
+    "id": 42,
+    "query_description": "Automated External Defibrillator AED Biphasic Portable",
+    "ground_truth_hs": "9018.90",
+    "official_description": "Instruments and appliances used in medical, surgical, dental or veterinary sciences, including scintigraphic apparatus, other electromedical apparatus and sight-testing instruments : Other instruments and appliances",
+    "chapter": "90",
+    "duty_rate": 6.0,
+    "vat_rate": 11.0,
+    "restricted": true,
+    "required_permits": [
+      "Medical Device Import & Distribution License / Izin Edar (Kemenkes)"
+    ]
+  },
+  {
+    "id": 43,
+    "query_description": "Water Purification Filtration Membrane Reverse Osmosis Cartridge",
+    "ground_truth_hs": "8421.21",
+    "official_description": "Centrifuges, including centrifugal dryers; filtering or purifying machinery and apparatus, for liquids or gases : Filtering or purifying machinery and apparatus for liquids : For filtering or purifying water",
+    "chapter": "84",
+    "duty_rate": 5.0,
+    "vat_rate": 11.0,
+    "restricted": false,
+    "required_permits": []
+  },
+  {
+    "id": 44,
+    "query_description": "Polyvinyl Chloride PVC Rigid Sheet Transparent 2mm",
+    "ground_truth_hs": "3920.49",
+    "official_description": "Other plates, sheets, film, foil and strip, of plastics, non-cellular and not reinforced, laminated, supported or similarly combined with other materials : Of polymers of vinyl chloride : Other",
+    "chapter": "39",
+    "duty_rate": 10.0,
+    "vat_rate": 11.0,
+    "restricted": false,
+    "required_permits": []
+  },
+  {
+    "id": 45,
+    "query_description": "Gasoline Internal Combustion Engine 150cc 4-Stroke Air Cooled",
+    "ground_truth_hs": "8407.32",
+    "official_description": "Spark-ignition reciprocating or rotary internal combustion piston engines : Reciprocating piston engines of a kind used for the propulsion of vehicles of Chapter 87 : Of a cylinder capacity exceeding 50 cm³ but not exceeding 250 cm³",
+    "chapter": "84",
+    "duty_rate": 10.0,
+    "vat_rate": 11.0,
+    "restricted": true,
+    "required_permits": [
+      "Surveyor Technical Inspection / Laporan Surveyor (Sucofindo / Kemenperin)"
+    ]
+  },
+  {
+    "id": 46,
+    "query_description": "Stainless Steel Kitchen Sink Double Bowl Pressed",
+    "ground_truth_hs": "7324.10",
+    "official_description": "Sanitary ware and parts thereof, of iron or steel : Sinks and washbasins, of stainless steel",
+    "chapter": "73",
+    "duty_rate": 15.0,
+    "vat_rate": 11.0,
+    "restricted": false,
+    "required_permits": []
+  },
+  {
+    "id": 47,
+    "query_description": "Digital Multimeter Handheld True RMS Voltage Tester",
+    "ground_truth_hs": "9030.31",
+    "official_description": "Oscilloscopes, spectrum analysers and other instruments and apparatus for measuring or checking electrical quantities, excluding meters of heading 9028; instruments and apparatus for measuring or detecting alpha, beta, gamma, X-ray, cosmic or other ionising radiation : Other instruments and apparatus, for measuring or checking voltage, current, resistance or power (other than those for measuring or checking semiconductor wafers or devices) : Multimeters, without a recording device",
+    "chapter": "90",
+    "duty_rate": 5.0,
+    "vat_rate": 11.0,
+    "restricted": false,
+    "required_permits": []
+  },
+  {
+    "id": 48,
+    "query_description": "Cosmetic Skin Moisturizing Facial Cream Anti-Aging 50ml",
+    "ground_truth_hs": "3304.99",
+    "official_description": "Beauty or make-up preparations and preparations for the care of the skin (other than medicaments), including sunscreen or suntan preparations; manicure or pedicure preparations : Other : Other",
+    "chapter": "33",
+    "duty_rate": 15.0,
+    "vat_rate": 11.0,
+    "restricted": false,
+    "required_permits": []
+  },
+  {
+    "id": 49,
+    "query_description": "Men Formal Leather Oxford Dress Shoes Leather Sole",
+    "ground_truth_hs": "6403.59",
+    "official_description": "Footwear with outer soles of rubber, plastics, leather or composition leather and uppers of leather : Other footwear with outer soles of leather : Other",
+    "chapter": "64",
+    "duty_rate": 25.0,
+    "vat_rate": 11.0,
+    "restricted": false,
+    "required_permits": []
+  },
+  {
+    "id": 50,
+    "query_description": "Household Combined Refrigerator-Freezer Double Door Inverter",
+    "ground_truth_hs": "8418.10",
+    "official_description": "Refrigerators, freezers and other refrigerating or freezing equipment, electric or other; heat pumps other than air-conditioning machines of heading 8415 : Combined refrigerator-freezers, fitted with separate external doors or drawers, or combinations thereof",
+    "chapter": "84",
+    "duty_rate": 14.17,
+    "vat_rate": 11.0,
+    "restricted": true,
+    "required_permits": [
+      "Surveyor Technical Inspection / Laporan Surveyor (Sucofindo / Kemenperin)"
+    ]
+  }
+]

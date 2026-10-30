@@ -14,6 +14,37 @@ from langflow.io import Output
 # CMA CGM Indonesia Merged Import Demurrage & Detention Tariff (Effective July 1, 2026)
 # Standard Dry: 5 Free Days. Slabs: D6-10, D11-15, D16-20, D21+
 # Reefer: 3 Free Days. Slabs: D4-5, D6-7, D8+
+_LOCAL_TARIFF_CACHE = None
+
+
+def _get_local_tariff_fallback(hs_code: str):
+  global _LOCAL_TARIFF_CACHE
+  if _LOCAL_TARIFF_CACHE is None:
+    _LOCAL_TARIFF_CACHE = {}
+    candidate_paths = [
+        os.path.join(
+            os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+            "data",
+            "seed",
+            "tariff_database.json",
+        ),
+        "/app/data/seed/tariff_database.json",
+        "/app/seed/tariff_database.json",
+    ]
+    for path in candidate_paths:
+      if os.path.exists(path):
+        try:
+          with open(path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+            _LOCAL_TARIFF_CACHE = {
+                item["hs_code"]: item for item in data if "hs_code" in item
+            }
+          break
+        except Exception:
+          pass
+  return _LOCAL_TARIFF_CACHE.get(hs_code)
+
+
 CMA_CGM_TARIFFS = {
     "DRY": {
         "free_days": 5,
@@ -512,6 +543,7 @@ class CustomsGuardToolkitComponent(Component):
             "http://localhost:6333/collections/customs_tariffs/points/scroll",
         ]
 
+        lookup_success = False
         for qdrant_url in qdrant_endpoints:
           try:
             req = urllib.request.Request(
@@ -528,9 +560,25 @@ class CustomsGuardToolkitComponent(Component):
                 matched_duty = float(matched["duty_rate"])
                 restricted = matched.get("restricted", False)
                 permits = matched.get("required_permits", [])
+                lookup_success = True
               break
           except Exception:
             continue
+
+        if not lookup_success:
+          fallback_tariff = _get_local_tariff_fallback(declared_hs)
+          if fallback_tariff:
+            matched_code = fallback_tariff["hs_code"]
+            matched_duty = float(fallback_tariff["duty_rate"])
+            restricted = fallback_tariff.get("restricted", False)
+            permits = fallback_tariff.get("required_permits", [])
+            lookup_success = True
+          else:
+            # Fail-closed safety architecture: do not silently assume compliant if tariff is unverified
+            overall_status = "WARNING_DISCREPANCY"
+            critical_notes.append(
+                f"Fail-closed safety alert: Declared HS {declared_hs} could not be verified in official customs tariff database. Flagged for manual customs inspection."
+            )
 
         code_diff = declared_hs != matched_code
         duty_diff = matched_duty - declared_duty
@@ -618,6 +666,11 @@ class CustomsGuardToolkitComponent(Component):
           "demurrage_assessment": demurrage_assessment,
           "critical_notes": critical_notes,
           "findings": findings,
+          "tariff_schedule_version": "BTKI-2022-v2026.1 (WTO/UNCTAD ITC MacMap)",
+          "tariff_effective_date": "2026-07-01",
+          "carrier_tariff_schedule": (
+              "CMA CGM Indonesia Merged Import D&D (Effective July 1, 2026)"
+          ),
       }
       return json.dumps(result, indent=2)
 

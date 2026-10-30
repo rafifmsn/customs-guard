@@ -133,6 +133,9 @@ class AuditResult(BaseModel):
     demurrage_assessment: DemurrageAssessment
     critical_notes: List[str]
     findings: List[FindingItem]
+    tariff_schedule_version: Optional[str] = "BTKI-2022-v2026.1 (WTO/UNCTAD ITC MacMap)"
+    tariff_effective_date: Optional[str] = "2026-07-01"
+    carrier_tariff_schedule: Optional[str] = "CMA CGM Indonesia Merged Import D&D (Effective July 1, 2026)"
 
 
 class AuditResponse(BaseModel):
