@@ -3,11 +3,12 @@ import hashlib
 import json
 import math
 import os
+import re
 import smtplib
 import urllib.request
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from typing import List
+from typing import Any, Dict, List, Union
 from langchain_core.tools import BaseTool, Tool, tool
 from langflow.custom import Component
 from langflow.io import Output
@@ -507,16 +508,37 @@ class CustomsGuardToolkitComponent(Component):
   def build_tools(self) -> List[BaseTool]:
 
     @tool
-    def audit_shipment_compliance(invoice_json: str) -> str:
+    def audit_shipment_compliance(invoice_json: Union[str, Dict[str, Any]]) -> str:
       """Audit commercial invoice items against local Qdrant customs tariff database
       to detect HS code discrepancies, duty shortfalls, missing import permits,
       and container detention risks.
-      Takes an invoice_json string containing items and declarations.
+      Takes an invoice_json string or dictionary containing items and declarations.
       """
-      try:
-        data = json.loads(invoice_json)
-      except Exception as e:
-        return f"Error parsing invoice JSON: {e}"
+      if isinstance(invoice_json, dict):
+        data = invoice_json
+      else:
+        try:
+          data = json.loads(invoice_json)
+        except Exception:
+          match = re.search(r"(\{[\s\S]*\})", str(invoice_json))
+          if match:
+            try:
+              data = json.loads(match.group(1))
+            except Exception as e:
+              return f"Error parsing invoice JSON: {e}"
+          else:
+            return "Error parsing invoice JSON: could not parse string as JSON"
+
+      if isinstance(data, dict):
+        if "invoice_data" in data and isinstance(data["invoice_data"], dict):
+          data = data["invoice_data"]
+        elif "invoice_json" in data and isinstance(data["invoice_json"], dict):
+          data = data["invoice_json"]
+        elif "invoice_json" in data and isinstance(data["invoice_json"], str):
+          try:
+            data = json.loads(data["invoice_json"])
+          except Exception:
+            pass
 
       qdrant_url = (
           "http://qdrant:6333/collections/customs_tariffs/points/scroll"
@@ -729,12 +751,17 @@ class CustomsGuardToolkitComponent(Component):
 
     @tool
     def export_compliance_report(
-        shipment_id: str, audit_summary_json: str
+        shipment_id: str, audit_summary_json: Union[str, Dict[str, Any]]
     ) -> str:
       """Generates and exports an official timestamped audit report in Markdown
       and JSON formats to local storage.
-      Requires shipment_id and audit_summary_json string.
+      Requires shipment_id and audit_summary_json (JSON string or dict).
       """
+      raw_json_str = (
+          json.dumps(audit_summary_json, indent=2)
+          if isinstance(audit_summary_json, dict)
+          else str(audit_summary_json)
+      )
       today = datetime.date.today().isoformat()
       base_dir = (
           "/app/reports" if os.path.exists("/app/reports") else "./data/reports"
@@ -748,13 +775,13 @@ class CustomsGuardToolkitComponent(Component):
 
       json_path = os.path.join(target_dir, "audit_report.json")
       with open(json_path, "w", encoding="utf-8") as f:
-        f.write(audit_summary_json)
+        f.write(raw_json_str)
 
       md_path = os.path.join(target_dir, "audit_report.md")
       generated_at = datetime.datetime.now().isoformat()
       md_content = format_markdown_dossier(
           shipment_id=shipment_id,
-          audit_summary_json=audit_summary_json,
+          audit_summary_json=raw_json_str,
           generated_at=generated_at,
           md_path=md_path,
       )
@@ -765,12 +792,17 @@ class CustomsGuardToolkitComponent(Component):
 
     @tool
     def send_compliance_alert(
-        shipment_id: str, verdict: str, alert_details: str
+        shipment_id: str, verdict: str, alert_details: Union[str, Dict[str, Any]]
     ) -> str:
       """Dispatches an urgent email alert via local Mailpit SMTP when
       high-risk customs discrepancies are detected.
-      Takes shipment_id, verdict, and alert_details.
+      Takes shipment_id, verdict, and alert_details (string or dict).
       """
+      raw_alert_str = (
+          json.dumps(alert_details, indent=2)
+          if isinstance(alert_details, dict)
+          else str(alert_details)
+      )
       smtp_host = "mailpit"
       smtp_port = 1025
       sender = "alerts@customsguard.local"
@@ -784,7 +816,7 @@ class CustomsGuardToolkitComponent(Component):
       body = format_compliance_alert_body(
           shipment_id=shipment_id,
           verdict=verdict,
-          alert_details=alert_details,
+          alert_details=raw_alert_str,
       )
       msg.attach(MIMEText(body, "plain"))
 

@@ -25,9 +25,10 @@ Examples:
 1. **Input Resolution**:
    If the user provides a shipment identifier (e.g., `SHP-2026-0042`), retrieve the corresponding invoice payload from `data/seed/sample_invoices.json`.
    If the user provides a raw JSON invoice, validate that it contains `shipment_id` and an `items` list.
+   If the user provides mixed text with an embedded JSON block, extract the JSON object directly.
 
 2. **Invoke CustomsGuard Tool**:
-   Call the `customsguard` MCP tool, passing the serialized invoice JSON string in `input_value`.
+   Call the `customsguard` MCP tool, passing the clean serialized invoice JSON string in `input_value`.
 
 3. **Format Executive Audit Summary**:
    Present the audit verdict using this standard structure:
