@@ -431,7 +431,7 @@
             ],
             "frozen": false,
             "icon": "bot",
-            "last_updated": "2026-10-26T08:24:02.653Z",
+            "last_updated": "2026-10-30T04:52:01.100Z",
             "legacy": false,
             "lf_version": "1.12.3",
             "metadata": {
@@ -570,7 +570,7 @@
                 "placeholder": "",
                 "real_time_refresh": true,
                 "required": false,
-                "show": true,
+                "show": false,
                 "title_case": false,
                 "track_in_telemetry": false,
                 "type": "str",
@@ -831,6 +831,23 @@
                       "model_name_param": "model",
                       "reasoning": true,
                       "reasoning_models": [
+                        "gpt-6.1-terra"
+                      ]
+                    },
+                    "name": "gpt-6.1-terra",
+                    "provider": "OpenAI"
+                  },
+                  {
+                    "category": "OpenAI",
+                    "icon": "OpenAI",
+                    "metadata": {
+                      "api_key_param": "api_key",
+                      "context_length": 128000,
+                      "max_tokens_field_name": "max_tokens",
+                      "model_class": "ChatOpenAI",
+                      "model_name_param": "model",
+                      "reasoning": true,
+                      "reasoning_models": [
                         "gpt-6.1-sol"
                       ]
                     },
@@ -889,21 +906,18 @@
                     "provider": "OpenAI"
                   },
                   {
-                    "category": "OpenAI",
-                    "icon": "OpenAI",
+                    "category": "Ollama",
+                    "icon": "Ollama",
                     "metadata": {
                       "api_key_param": "api_key",
+                      "base_url_param": "base_url",
                       "context_length": 128000,
                       "max_tokens_field_name": "max_tokens",
-                      "model_class": "ChatOpenAI",
-                      "model_name_param": "model",
-                      "reasoning": true,
-                      "reasoning_models": [
-                        "gpt-daybreak-blue-latest"
-                      ]
+                      "model_class": "ChatOllama",
+                      "model_name_param": "model"
                     },
-                    "name": "gpt-daybreak-blue-latest",
-                    "provider": "OpenAI"
+                    "name": "qwen2.5:3b",
+                    "provider": "Ollama"
                   },
                   {
                     "category": "OpenRouter",
@@ -1026,12 +1040,12 @@
                 "type": "model",
                 "value": [
                   {
-                    "icon": "OpenRouter",
+                    "icon": "Ollama",
                     "metadata": {
-                      "created": 1721260800,
+                      "created": 0,
                       "default": true,
                       "deprecated": false,
-                      "icon": "OpenRouter",
+                      "icon": "Ollama",
                       "model_type": "llm",
                       "not_supported": false,
                       "preview": false,
@@ -1039,8 +1053,8 @@
                       "search": false,
                       "tool_calling": true
                     },
-                    "name": "openai/gpt-4o-mini",
-                    "provider": "OpenRouter"
+                    "name": "qwen2.5:3b",
+                    "provider": "Ollama"
                   }
                 ]
               },
@@ -1851,9 +1865,9 @@
       }
     ],
     "viewport": {
-      "x": -91.7621786585097,
-      "y": -23.80868594135518,
-      "zoom": 1.183251787023256
+      "x": 239.48201719642537,
+      "y": 164.3929252072203,
+      "zoom": 0.6402302068125966
     }
   },
   "description": "Regulatory Q&A Assistant for CustomsGuard.",
