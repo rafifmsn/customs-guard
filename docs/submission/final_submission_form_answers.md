@@ -121,6 +121,28 @@ Pengaruh Hasil Validasi terhadap Solusi dan Rencana Pengembangan:
 2. Keputusan Terkait Light Mode: Permintaan tema terang (Light Mode) saat ini diputuskan untuk ditiadakan guna menjaga konsistensi visual, meskipun secara teknis konfigurasi tema Streamlit sangat fleksibel dan memungkinkan untuk diaktifkan sewaktu-waktu.
 3. Rencana Pengembangan (Roadmap OCR): Masukan Responden 1 mengenai ekstraksi dokumen pindaian dimasukkan ke dalam roadmap pengembangan berikutnya untuk mengintegrasikan pipeline OCR multimodal (EasyOCR atau PaddleOCR) pada alur ingest.
 
+Metode Validasi:
+Pengujian prototype interaktif (hands-on prototype testing) dan wawancara semi-terstruktur untuk menguji alur audit invoice, kalkulasi tarif, serta kegunaan antarmuka.
+
+Jumlah dan Karakteristik Responden:
+Melibatkan 3 responden:
+
+1. Responden 1: Karyawan swasta data analyst dengan latar belakang Machine Learning dan nalar kritis.
+2. Responden 2: Mahasiswa IT yang peka terhadap estetika visual antarmuka dan berlatar belakang Machine Learning.
+3. Responden 3: Mahasiswi IT pengembang web yang memahami konteks operasional logistik pelabuhan (demurrage dan detention).
+
+Temuan Utama dan Umpan Balik:
+
+1. Input Data: Kebutuhan integrasi OCR (EasyOCR atau PaddleOCR) agar invoice fisik atau gambar dapat diubah otomatis menjadi format JSON terstruktur.
+2. Desain Antarmuka: Konsep minimalis dinilai sudah tepat, disarankan menjaga tampilan tetap bersih tanpa ornamen berlebihan yang terkesan artifisial (AI slop).
+3. Keterbacaan dan Tema: Teks laporan audit dinilai terlalu padat sehingga perlu penyajian yang lebih visual, serta usulan opsi Light Mode selain tema gelap.
+
+Pengaruh Hasil Validasi terhadap Solusi dan Rencana Pengembangan:
+
+1. Penyempurnaan Visual Terimplementasi: Mengadopsi masukan Responden 2 dan 3, dasbor antarmuka saat ini telah menerapkan kartu metrik ringkas, badge status kepatuhan, dan tabel komparasi tarif terstruktur sehingga hasil audit langsung terbaca tanpa beban teks padat, dengan tetap mempertahankan estetika minimalis bebas AI slop.
+2. Keputusan Terkait Light Mode: Permintaan tema terang (Light Mode) saat ini diputuskan untuk ditiadakan guna menjaga konsistensi visual, meskipun secara teknis konfigurasi tema Streamlit sangat fleksibel dan memungkinkan untuk diaktifkan sewaktu-waktu.
+3. Rencana Pengembangan (Roadmap OCR): Masukan Responden 1 mengenai ekstraksi dokumen pindaian dimasukkan ke dalam roadmap pengembangan berikutnya untuk mengintegrasikan pipeline OCR multimodal (EasyOCR atau PaddleOCR) pada alur ingest.
+
 ### Perkembangan dan Status Project (Project Development & Current Progress)
 
 Jelaskan perkembangan project sejak tahap preliminary hingga tahap semifinal.
