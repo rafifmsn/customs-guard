@@ -33,12 +33,24 @@ def test_bob_shell_orchestrator_cli_e2e():
     verifying that Bob agent invokes the `customsguard` MCP tool on Langflow,
     and returns structured compliance findings.
     """
+    if os.environ.get("RUN_E2E") != "1" and os.environ.get("RUN_E2E_TESTS") != "1":
+        pytest.skip(
+            "Live IBM Bob Shell E2E tests skipped by default to prevent long API roundtrip delays. "
+            "Set RUN_E2E=1 to execute live IBM Bob Shell orchestrator CLI verification."
+        )
+
     bob_api_key = get_bob_api_key()
     if not bob_api_key:
         pytest.skip(
             "BOB_API_KEY is not set in environment or .env file. "
             "Set BOB_API_KEY to execute live IBM Bob Shell orchestrator CLI tests."
         )
+
+    # Ensure bob settings directory exists
+    try:
+        os.makedirs(os.path.expanduser("~/.bob/settings"), exist_ok=True)
+    except Exception:
+        pass
 
     # Construct execution environment with Node and PNPM in PATH
     env = os.environ.copy()

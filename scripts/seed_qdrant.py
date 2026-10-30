@@ -114,6 +114,87 @@ def create_payload_indexes(qdrant_url: str, collection_name: str):
             print(f"[Qdrant] Warning on index '{field_name}': {e}")
 
 
+def load_or_generate_embeddings(records: list, json_dir: str) -> dict:
+    """
+    Load precomputed 384-dimensional dense semantic embeddings from disk if available,
+    or generate them via Ollama all-minilm embedding model with graceful deterministic fallback.
+    """
+    emb_candidates = [
+        os.path.join(json_dir, "tariff_embeddings_384.json"),
+        os.path.join(os.path.dirname(json_dir), "seed", "tariff_embeddings_384.json"),
+        "/app/seed/tariff_embeddings_384.json",
+        "/app/data/seed/tariff_embeddings_384.json",
+    ]
+    for path in emb_candidates:
+        if os.path.exists(path):
+            try:
+                with open(path, "r", encoding="utf-8") as f:
+                    data = json.load(f)
+                if len(data) >= len(records) * 0.9:
+                    print(f"[Embeddings] Loaded {len(data)} precomputed dense embeddings from {path}")
+                    return data
+            except Exception as e:
+                print(f"[Embeddings] Warning reading {path}: {e}")
+
+    # If file not present, attempt batch generation via Ollama all-minilm
+    ollama_urls = [
+        os.environ.get("OLLAMA_BASE_URL"),
+        "http://localhost:11434",
+        "http://172.18.0.1:11434",
+        "http://host.docker.internal:11434",
+    ]
+    valid_ollama = None
+    for u in ollama_urls:
+        if not u:
+            continue
+        try:
+            req = urllib.request.Request(f"{u}/api/tags")
+            with urllib.request.urlopen(req, timeout=2) as resp:
+                if resp.status == 200:
+                    valid_ollama = u
+                    break
+        except Exception:
+            continue
+
+    if valid_ollama:
+        print(f"[Embeddings] Generating dense embeddings via Ollama ({valid_ollama}) model 'all-minilm'...")
+        embeddings = {}
+        batch_size = 250
+        for i in range(0, len(records), batch_size):
+            batch = records[i : i + batch_size]
+            texts = [r["search_text"] for r in batch]
+            try:
+                payload = json.dumps({"model": "all-minilm", "input": texts}).encode("utf-8")
+                req = urllib.request.Request(
+                    f"{valid_ollama}/api/embed",
+                    data=payload,
+                    headers={"Content-Type": "application/json"},
+                )
+                with urllib.request.urlopen(req, timeout=45) as resp:
+                    res = json.loads(resp.read().decode("utf-8"))
+                    embs = res.get("embeddings", [])
+                    for r, emb in zip(batch, embs):
+                        norm = math.sqrt(sum(x * x for x in emb))
+                        vec = [x / norm for x in emb] if norm > 0 else emb
+                        embeddings[r["hs_code"]] = [round(x, 6) for x in vec]
+            except Exception as e:
+                print(f"[Embeddings] Batch failed at {i}: {e}")
+                break
+
+        if len(embeddings) == len(records):
+            out_cache = os.path.join(json_dir, "tariff_embeddings_384.json")
+            try:
+                with open(out_cache, "w", encoding="utf-8") as f:
+                    json.dump(embeddings, f)
+                print(f"[Embeddings] Saved {len(embeddings)} dense embeddings to cache: {out_cache}")
+            except Exception:
+                pass
+            return embeddings
+
+    print("[Embeddings] Ollama not reachable; falling back to deterministic token hash projection.")
+    return {r["hs_code"]: generate_deterministic_vector(r["search_text"]) for r in records}
+
+
 def seed_database(qdrant_url: str, json_path: str, collection_name: str = "customs_tariffs"):
     """Load JSON database and upload batch points into Qdrant."""
     if not os.path.exists(json_path):
@@ -124,6 +205,9 @@ def seed_database(qdrant_url: str, json_path: str, collection_name: str = "custo
         records = json.load(f)
 
     print(f"Loaded {len(records)} records from {json_path}")
+    json_dir = os.path.dirname(os.path.abspath(json_path))
+    embeddings_map = load_or_generate_embeddings(records, json_dir)
+
     create_collection(qdrant_url, collection_name)
     create_payload_indexes(qdrant_url, collection_name)
 
@@ -135,7 +219,9 @@ def seed_database(qdrant_url: str, json_path: str, collection_name: str = "custo
         batch = records[i : i + batch_size]
         points = []
         for idx, r in enumerate(batch, start=i + 1):
-            vector = generate_deterministic_vector(r["search_text"])
+            vector = embeddings_map.get(r["hs_code"])
+            if not vector:
+                vector = generate_deterministic_vector(r["search_text"])
             points.append({"id": idx, "vector": vector, "payload": r})
 
         payload = json.dumps({"points": points}).encode("utf-8")

@@ -667,41 +667,6 @@ def page_audit_workspace() -> None:
             },
         )
 
-        # Human-in-the-Loop Decision & Governance Workflow
-        st.markdown("---")
-        st.markdown("**:material/verified_user: Human-in-the-Loop Sign-Off & Regulatory Governance**")
-        gov_col1, gov_col2 = st.columns(2)
-        with gov_col1:
-            st.caption(
-                f"**Tariff Dataset:** `{audit.get('tariff_schedule_version', 'BTKI-2022-v2026.1 (WTO/UNCTAD ITC MacMap)')}`\n\n"
-                f"**Effective Date:** `{audit.get('tariff_effective_date', '2026-07-01')}`"
-            )
-        with gov_col2:
-            st.caption(
-                f"**Carrier Benchmark:** `{audit.get('carrier_tariff_schedule', 'CMA CGM Indonesia Merged Import D&D (Effective July 1, 2026)')}`\n\n"
-                f"**Sign-off Authority:** Licensed Customs Broker (PPJK)"
-            )
-
-        current_signoff = st.session_state.get(f"signoff_{audit['shipment_id']}", "PENDING_REVIEW")
-        if current_signoff == "APPROVED":
-            st.success("✅ **Cargo Release Authorized**: Approved by Human Compliance Officer for green-lane declaration.", icon="✅")
-        elif current_signoff == "HELD":
-            st.error("🛑 **Cargo Held for Inspection**: Flagged for physical verification (Jalur Merah / SPTNP rectification).", icon="🚨")
-        else:
-            st.info("ℹ️ **Human Verification Pending**: Review AI findings above before authorizing final clearance.", icon="⏳")
-
-        action_col1, action_col2 = st.columns(2)
-        with action_col1:
-            if st.button("Authorize Cargo Release (Sign Off)", key=f"btn_approve_{audit['shipment_id']}", type="primary", use_container_width=True):
-                st.session_state[f"signoff_{audit['shipment_id']}"] = "APPROVED"
-                st.toast("Cargo release successfully authorized by licensed broker.", icon="✅")
-                st.rerun()
-        with action_col2:
-            if st.button("Hold for Physical Inspection (Jalur Merah)", key=f"btn_hold_{audit['shipment_id']}", use_container_width=True):
-                st.session_state[f"signoff_{audit['shipment_id']}"] = "HELD"
-                st.toast("Shipment flagged for human physical inspection.", icon="🛑")
-                st.rerun()
-
 
 def page_demurrage_matrix() -> None:
     ensure_session_defaults()

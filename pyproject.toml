@@ -15,6 +15,7 @@ dependencies = [
     "requests>=2.31.0",
     "streamlit>=1.38.0",
     "uvicorn>=0.29.0",
+    "matplotlib>=3.10.9",
 ]
 
 [tool.uv]

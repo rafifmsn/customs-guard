@@ -53,7 +53,7 @@ export default function () {
     'audit payload returned overall_status': (r) => {
       try {
         const body = JSON.parse(r.body);
-        return body && body.overall_status !== undefined;
+        return Boolean(body && (body.overall_status !== undefined || (body.audit && body.audit.overall_status !== undefined)));
       } catch (e) {
         return false;
       }

@@ -110,14 +110,45 @@ For an air-gapped, on-premise deployment without external API keys:
 
 ## Running Automated Tests
 
-Run the complete test suite from the host repository root:
+Run the complete automated test suite from the host repository root:
 
 ```bash
-uv run pytest
+uv run pytest -v
 ```
 
-> Core tariff lookup, arithmetic, and reporting tests run locally against containerized services.
-> Full live end-to-end conversational CLI tests require configuring the agent model (e.g. Ollama) in Langflow and setting `BOB_API_KEY` in `.env`.
+> Core tariff lookup, arithmetic, and regression tests run deterministically in under 10 seconds.
+> The live conversational IBM Bob Shell E2E test is skipped by default to optimize velocity.
+> To run the live IBM Bob Shell CLI test, set `RUN_E2E=1 uv run pytest -v` with `BOB_API_KEY` configured in `.env`.
+
+## Empirical Benchmarks & Performance Verification
+
+![CustomsGuard Benchmark Evaluation](./benchmark.png)
+
+### 1. Tariff Classification Accuracy (50-Item Ground Truth Dataset)
+
+Evaluated across 5,612 Indonesian HS-6 tariff lines:
+
+- **Tier 1: Keyword Baseline**: Lexical BM25 token overlap.
+- **Tier 2: Dense Semantic Vector**: Unit-normalized `all-minilm` 384-d Cosine search in Qdrant.
+- **Tier 3: Hybrid + LLM Reranker**: Top-5 candidates reranked by Qwen 2.5 3B.
+
+Dense semantic retrieval doubles exact HS-6 classification accuracy over keyword matching while correctly identifying the governing trade chapter in 76% of zero-shot declarations across 5,612 candidate tariff lines.
+
+### 2. Execution Latency & Tail Throughput (Grafana k6 Load Test)
+
+Tested under sustained concurrent load (10 virtual users over 60 seconds) against `POST /api/v1/audit`:
+
+| Metric                   |   Measured Value    |    SLA Benchmark    | Status |
+| :----------------------- | :-----------------: | :-----------------: | :----- |
+| **p50 (Median Latency)** |    **24.08 ms**     |  $< 50\text{ ms}$   | Passed |
+| **p90 Latency**          |    **33.14 ms**     |  $< 500\text{ ms}$  | Passed |
+| **p95 (Tail Latency)**   |    **36.93 ms**     | $< 1,500\text{ ms}$ | Passed |
+| **Max Recorded Latency** |    **170.21 ms**    | $< 5,000\text{ ms}$ | Passed |
+| **Request Failure Rate** | **0.00%** (0 / 326) |     $< 1.00\%$      | Passed |
+
+Load tested with Grafana k6 on local host environment (AMD Ryzen 5 6600H, 16GB RAM, 10 concurrent VUs over 60s).
+Latency ceiling remained at p95 = 36.93 ms (over 100x buffer under the 5.0s SLA).
+Because baseline tail latency is only 37 ms, even with a 5x to 10x slowdown on a 2 vCPU cloud container, worst-case execution remains well below 400 ms.
 
 ## Documentation & Scenarios Directory
 

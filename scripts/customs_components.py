@@ -1,5 +1,7 @@
 import datetime
+import hashlib
 import json
+import math
 import os
 import smtplib
 import urllib.request
@@ -43,6 +45,60 @@ def _get_local_tariff_fallback(hs_code: str):
         except Exception:
           pass
   return _LOCAL_TARIFF_CACHE.get(hs_code)
+
+
+def _generate_query_embedding(text: str, dim: int = 384) -> list:
+  """Generate normalized 384-dimensional dense semantic embedding for commodity query.
+
+  Queries Ollama model 'all-minilm' (with automatic candidate endpoints for host & container)
+  and falls back to deterministic token hash projection if Ollama is unreachable.
+  """
+  clean_text = str(text or "").strip()
+  if not clean_text:
+    return [1.0] + [0.0] * (dim - 1)
+
+  ollama_candidates = [
+      os.environ.get("OLLAMA_BASE_URL"),
+      "http://localhost:11434",
+      "http://172.18.0.1:11434",
+      "http://host.docker.internal:11434",
+  ]
+  for base_url in ollama_candidates:
+    if not base_url:
+      continue
+    try:
+      payload = json.dumps({"model": "all-minilm", "prompt": clean_text}).encode("utf-8")
+      req = urllib.request.Request(
+          f"{base_url}/api/embeddings",
+          data=payload,
+          headers={"Content-Type": "application/json"},
+      )
+      with urllib.request.urlopen(req, timeout=2.0) as resp:
+        if resp.status == 200:
+          data = json.loads(resp.read().decode("utf-8"))
+          emb = data.get("embedding")
+          if emb and len(emb) == dim:
+            norm = math.sqrt(sum(x * x for x in emb))
+            return [round(x / norm, 6) for x in emb] if norm > 0 else emb
+    except Exception:
+      continue
+
+  # Fast, deterministic fallback vector projection (matches Qdrant seed dimensions)
+  words = clean_text.lower().split()
+  vec = [0.0] * dim
+  for i, word in enumerate(words):
+    h = int(hashlib.sha256(word.encode("utf-8")).hexdigest(), 16)
+    idx = h % dim
+    sign = 1.0 if ((h >> 8) & 1) == 0 else -1.0
+    weight = 1.0 / (1.0 + math.log(1.0 + i))
+    vec[idx] += sign * weight
+
+  norm = math.sqrt(sum(x * x for x in vec))
+  if norm > 0:
+    vec = [x / norm for x in vec]
+  else:
+    vec[0] = 1.0
+  return [round(x, 6) for x in vec]
 
 
 CMA_CGM_TARIFFS = {
@@ -503,34 +559,12 @@ class CustomsGuardToolkitComponent(Component):
         except (ValueError, TypeError):
           total_val = 0.0
 
-        desc_lower = declared_desc.lower()
-
-        # Intelligent trade keyword selection (avoids brand false positives like Apple -> Apple juice)
-        if any(
-            w in desc_lower
-            for w in ["iphone", "smartphone", "cellular", "mobile phone"]
-        ):
-          search_term = "smartphones"
-        elif any(w in desc_lower for w in ["ultrasound", "ultrasonic"]):
-          search_term = "ultrasonic"
-        elif any(w in desc_lower for w in ["server", "processing unit"]):
-          search_term = "8471.50"
-        elif any(w in desc_lower for w in ["laptop", "notebook"]):
-          search_term = "8471.30"
-        elif any(w in desc_lower for w in ["t-shirt", "singlet", "vest"]):
-          search_term = "6109.10"
-        elif declared_desc.strip():
-          search_term = declared_desc.split()[-1]
-        else:
-          search_term = declared_hs
-
-        query_payload = json.dumps({
-            "filter": {
-                "must": [
-                    {"key": "search_text", "match": {"text": search_term}}
-                ]
-            },
-            "limit": 1,
+        # True semantic vector retrieval: convert declared description into dense vector embedding
+        query_vec = _generate_query_embedding(declared_desc or declared_hs)
+        vector_query_payload = json.dumps({
+            "vector": query_vec,
+            "limit": 5,
+            "with_payload": True,
         }).encode("utf-8")
 
         matched_code = declared_hs
@@ -539,6 +573,8 @@ class CustomsGuardToolkitComponent(Component):
         permits = []
 
         qdrant_endpoints = [
+            "http://qdrant:6333/collections/customs_tariffs/points/search",
+            "http://localhost:6333/collections/customs_tariffs/points/search",
             "http://qdrant:6333/collections/customs_tariffs/points/scroll",
             "http://localhost:6333/collections/customs_tariffs/points/scroll",
         ]
@@ -548,20 +584,37 @@ class CustomsGuardToolkitComponent(Component):
           try:
             req = urllib.request.Request(
                 qdrant_url,
-                data=query_payload,
+                data=vector_query_payload,
                 headers={"Content-Type": "application/json"},
             )
             with urllib.request.urlopen(req, timeout=3) as resp:
               res = json.loads(resp.read().decode("utf-8"))
-              points = res.get("result", {}).get("points", [])
+              raw_result = res.get("result", [])
+              if isinstance(raw_result, dict):
+                points = raw_result.get("points", [])
+              elif isinstance(raw_result, list):
+                points = raw_result
+              else:
+                points = []
+
               if points:
-                matched = points[0]["payload"]
-                matched_code = matched["hs_code"]
-                matched_duty = float(matched["duty_rate"])
-                restricted = matched.get("restricted", False)
-                permits = matched.get("required_permits", [])
-                lookup_success = True
-              break
+                candidates = [
+                    p["payload"]
+                    for p in points
+                    if isinstance(p, dict) and "payload" in p
+                ]
+                if candidates:
+                  # If declared HS matches one candidate exactly, select it; otherwise take Top-1 candidate
+                  matched = next(
+                      (c for c in candidates if c.get("hs_code") == declared_hs),
+                      candidates[0],
+                  )
+                  matched_code = matched["hs_code"]
+                  matched_duty = float(matched["duty_rate"])
+                  restricted = matched.get("restricted", False)
+                  permits = matched.get("required_permits", [])
+                  lookup_success = True
+                  break
           except Exception:
             continue
 
