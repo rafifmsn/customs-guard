@@ -83,7 +83,7 @@ def get_query_vector(text: str, dim: int = 384) -> List[float]:
                 data=payload,
                 headers={"Content-Type": "application/json"},
             )
-            with urllib.request.urlopen(req, timeout=2.0) as resp:
+            with urllib.request.urlopen(req, timeout=5.0) as resp:
                 data = json.loads(resp.read().decode("utf-8"))
                 emb = data.get("embedding")
                 if emb and len(emb) == dim:

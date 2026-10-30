@@ -107,3 +107,26 @@ CustomsGuard provides two web-based user interfaces and a high-speed REST contro
 - **FastAPI Controller (`:8000`)**:
   Centralized gateway in [`api/main.py`](../../api/main.py) serving sub-50ms deterministic audit endpoints (`/api/v1/audit`), stack health checks (`/api/v1/health`), dossier archives (`/api/v1/reports`), and Swagger UI documentation at `http://localhost:8000/docs`.
   For full schema details, see [`docs/technical/api_reference.md`](./api_reference.md).
+
+## 5. Dense Semantic Vector Architecture & Seeding Pipeline
+
+CustomsGuard indexes the complete Indonesian HS-6 customs tariff schedule (5,612 subheadings from the WTO/UNCTAD ITC Market Access Map dataset) in Qdrant using dense vector embeddings.
+
+### Embedding Model & Vector Space
+
+- **Embedding Model**: `all-minilm` (`sentence-transformers/all-MiniLM-L6-v2`) hosted locally via Ollama (`:11434/api/embeddings`).
+- **Vector Dimensionality**: 384 dimensions, unit-normalized ($\|\mathbf{v}\|_2 = 1.0$).
+- **Distance Metric**: Cosine distance in Qdrant collection `customs_tariffs`.
+
+### Seeding Workflow (`scripts/seed_qdrant.py`)
+
+1. Ingests raw tariff entries and regulatory license schedules from `data/seed/tariff_database.json`.
+2. Generates 384-dimensional dense semantic vectors using `all-minilm` via Ollama with batch processing.
+3. Persists precomputed embeddings to disk cache at `data/seed/tariff_embeddings_384.json` to enable instant offline container initialization.
+4. Seeds and indexes the `customs_tariffs` collection in Qdrant with payload metadata including HS codes, MFN duty rates, restriction flags, and required ministry permits.
+
+### Real-Time Query Retrieval (`scripts/customs_components.py`)
+
+1. Converts incoming declared commodity descriptions into a 384-dimensional query vector using local `all-minilm`.
+2. Executes a Top-5 vector search in Qdrant to retrieve the closest official tariff candidates.
+3. If Ollama is temporarily unavailable, the query pipeline falls back to a deterministic projection to maintain uninterrupted service.

@@ -12,9 +12,9 @@ CustomsGuard provides sub-second Harmonized System tariff classification across 
 
 The platform also uncovers duty overpayment restitution opportunities, automatically archives timestamped Markdown and JSON dossiers, and dispatches real-time detention alerts via SMTP whenever non-compliant cargo is detected.
 
-<video src="https://github.com/user-attachments/assets/1dc1310a-240b-4a38-bdef-00af51e4a578" controls width="100%"></video>
+<video src="https://github.com/user-attachments/assets/8da30cb2-9999-4702-89c9-ed2b6bbcd43c" controls width="100%"></video>
 
-> 🎬 **Demo Walkthrough**: [YouTube](https://youtu.be/At2xb9baTYQ) | [Github (Download)](https://github.com/user-attachments/assets/1dc1310a-240b-4a38-bdef-00af51e4a578).
+> 🎬 **Demo Walkthrough**: [YouTube](https://youtu.be/OBHL-cSZEY8) | [Github (Download)](https://github.com/user-attachments/assets/8da30cb2-9999-4702-89c9-ed2b6bbcd43c).
 
 ## The Problem & Strategic Context
 

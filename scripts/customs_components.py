@@ -74,7 +74,7 @@ def _generate_query_embedding(text: str, dim: int = 384) -> list:
           data=payload,
           headers={"Content-Type": "application/json"},
       )
-      with urllib.request.urlopen(req, timeout=2.0) as resp:
+      with urllib.request.urlopen(req, timeout=5.0) as resp:
         if resp.status == 200:
           data = json.loads(resp.read().decode("utf-8"))
           emb = data.get("embedding")
