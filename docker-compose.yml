@@ -48,9 +48,6 @@ services:
     ports:
       - "${MAILPIT_SMTP_PORT:-1025}:1025"
       - "${MAILPIT_WEB_PORT:-8025}:8025"
-    networks:
-      - default
-      - caddy_proxy
     restart: always
 
   # Langflow Execution Backend & MCP Provider
@@ -77,9 +74,6 @@ services:
       - ./data/reports:/app/reports
       - ./data/seed:/app/seed
       - ./scripts:/app/scripts
-    networks:
-      - default
-      - caddy_proxy
     depends_on:
       postgres:
         condition: service_healthy
@@ -140,14 +134,6 @@ services:
       - ./scripts:/app/scripts
       - ./api:/app/api
       - ./ui:/app/ui
-    networks:
-      - default
-      - caddy_proxy
     depends_on:
       - customsguard-api
     restart: always
-
-networks:
-  default:
-  caddy_proxy:
-    external: true
