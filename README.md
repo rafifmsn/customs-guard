@@ -1,9 +1,21 @@
-# CustomsGuard
+<p align="center">
+  <img src="./customs-guard-thumb.jpg" alt="CustomsGuard" width="100%" />
+</p>
 
-[![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white)](https://www.docker.com/)
-[![Ollama](https://img.shields.io/badge/Ollama-Qwen_2.5-black?logo=ollama&logoColor=white)](https://ollama.com/)
-[![uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json)](https://github.com/astral-sh/uv)
-[![npm](https://img.shields.io/badge/npm-CB3837?logo=npm&logoColor=white)](https://www.npmjs.com/)
+<p align="center">
+  <a href="https://www.docker.com/">
+    <img src="https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white" alt="Docker" />
+  </a>
+  <a href="https://ollama.com/">
+    <img src="https://img.shields.io/badge/Ollama-Qwen_2.5-black?logo=ollama&logoColor=white" alt="Ollama" />
+  </a>
+  <a href="https://github.com/astral-sh/uv">
+    <img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json" alt="uv" />
+  </a>
+  <a href="https://www.npmjs.com/">
+    <img src="https://img.shields.io/badge/npm-CB3837?logo=npm&logoColor=white" alt="npm" />
+  </a>
+</p>
 
 **Autonomous Trade Compliance & Tariff Discrepancy Engine**  
 _IBM SkillsBuild x Hacktiv8 National Hackathon 2026 (Productivity & Smart Business)_
@@ -12,9 +24,9 @@ CustomsGuard provides sub-second Harmonized System tariff classification across 
 
 The platform also uncovers duty overpayment restitution opportunities, automatically archives timestamped Markdown and JSON dossiers, and dispatches real-time detention alerts via SMTP whenever non-compliant cargo is detected.
 
-<video src="https://github.com/user-attachments/assets/8da30cb2-9999-4702-89c9-ed2b6bbcd43c" controls width="100%"></video>
+![Walkthrough](./customs-guard-demo.avif)
 
-> 🎬 **Demo Walkthrough**: Video walkthrough available [here](https://github.com/user-attachments/assets/8da30cb2-9999-4702-89c9-ed2b6bbcd43c).
+> Video walkthrough available [here](https://github.com/user-attachments/assets/8da30cb2-9999-4702-89c9-ed2b6bbcd43c).
 
 ## The Problem & Strategic Context
 
